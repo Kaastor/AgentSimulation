@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dissim">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dissim.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
