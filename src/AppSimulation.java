@@ -19,7 +19,7 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-        Map map = new Map(1200, 800, 50);
+        Map map = new Map(1200, 800, 25);
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
 
         root.getChildren().add( envVisualisation );

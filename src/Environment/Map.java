@@ -28,7 +28,7 @@ public class Map {
     }
 
     private void initializeMap(){
-        for(int i =0 ; i < mapWidth/cellSize ; i++){
+        for(int i = 0 ; i < mapWidth/cellSize ; i++){
             for(int j = 0 ; j < mapHeight/cellSize ; j++){
                 cellMap[i][j] = new Cell(this, new Point2D(i*cellSize, j*cellSize), CellType.FLOOR);
             }
