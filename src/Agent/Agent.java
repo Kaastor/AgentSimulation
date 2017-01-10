@@ -23,9 +23,14 @@ public class Agent extends BasicSimEntity{
         this.id = id;
         this.positionOnMap = positionOnMap;
         this.agentState = AgentState.NOP;
-
-
-        /////tego tu nie bedzie potem bo tym sie zajmą zdarzenia
-        parentMap.addAgent(this);
     }
+
+    public void collisionCheck(){
+
+    }
+
+    public void moveAgent(Agent agent, GraphNode from, GraphNode to){
+        parentMap.moveAgent(this, from, to);
+    }
+
 }

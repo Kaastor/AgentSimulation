@@ -25,16 +25,22 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
     @Override
     public double controlStateTransitions() {
         parentAgent.setAgentState(AgentState.WALK);
-        walkToNewPosition();
-
+        walkToNewPositionIfIsSet();
+        reserveNewPositionOnMap();
         return 0;
     }
 
-    private void walkToNewPosition(){
+    private void walkToNewPositionIfIsSet(){
         if(currentPositionOnMap.getX() != nextPositionOnMap.getX()
                 || currentPositionOnMap.getY() != nextPositionOnMap.getY()){
-            parentAgent.getParentMap().setCellOccupancyStatus(currentPositionOnMap, false);
-            //...
+            parentAgent.moveAgent(parentAgent, currentPositionOnMap, nextPositionOnMap);
         }
+    }
+
+    private void reserveNewPositionOnMap(){
+        //parentAgent.collisionCheck();
+        //if free
+        //then reserve
+        //else wait
     }
 }

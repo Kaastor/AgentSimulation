@@ -38,8 +38,19 @@ public class Map {
         agents.add(agent);
     }
 
-    public void setCellOccupancyStatus(GraphNode cellCoordinates, boolean status){
+    public void moveAgent(Agent agent, GraphNode from, GraphNode to){
+        setCellOccupancyStatus(from, false);
+        agents.get(agent.getId()).setPositionOnMap(to);
+        setCellOccupancyStatus(to, true);
+        //repaint
+    }
+
+    public void setCellReservationStatus(GraphNode cellCoordinates, boolean status){
         cellMap[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
+    }
+
+    public void setCellOccupancyStatus(GraphNode cellCoordinates, boolean status){
+        cellMap[cellCoordinates.getX()][cellCoordinates.getY()].setHasAgent(status);
     }
 
     public Cell getCell(int x, int y){
