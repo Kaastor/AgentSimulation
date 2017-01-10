@@ -17,6 +17,7 @@ public class EnvVisualisation extends Canvas{
     private Image agentImage;
     private int cellSize;
 
+
     public EnvVisualisation(Map map, int width, int height){
         super(width, height);
         this.map = map;
@@ -31,7 +32,7 @@ public class EnvVisualisation extends Canvas{
         for(int i =0 ; i < map.getMapWidth()/map.getCellSize() ; i++){
             for(int j = 0 ; j< map.getMapHeight()/map.getCellSize()  ; j++){
                 Cell cell = cellMap[i][j];
-                GraphNode cellCoordinates = cellMap[i][j].getCoordinates();
+                GraphNode cellCoordinates = cellMap[i][j].getWorldCoordinates();
 
                 if(cell.getCellType() == CellType.FLOOR) {
                     graphicsContext.strokeRect(cellCoordinates.getX(), cellCoordinates.getY(), cellSize, cellSize);

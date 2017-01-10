@@ -10,17 +10,17 @@ public class Cell {
 
     private boolean hasAgent;
     private boolean isReserved;
-    private GraphNode coordinates;
+    private GraphNode worldCoordinates;
     private CellType cellType;
 
     private Map mapParent;
     private Agent agent;
 
-    Cell(Map mapParent, GraphNode coordinates, CellType cellType){
+    Cell(Map mapParent, GraphNode worldCoordinates, CellType cellType){
         this.hasAgent = false;
         this.isReserved = false;
         this.mapParent = mapParent;
-        this.coordinates = coordinates;
+        this.worldCoordinates = worldCoordinates;
         this.cellType = cellType;
     }
 }

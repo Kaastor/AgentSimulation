@@ -11,12 +11,14 @@ public class Map {
 
     private int mapHeight;
     private int mapWidth;
+    private int mapWorldHeight;
+    private int mapWorldWidth;
     private int cellSize;
 
     private Cell[][] cellMap;
+    private GraphMap graphMap;
     private ArrayList<Agent> agents;
     private ArrayList<GraphNode> doors;
-    private ArrayList<GraphNode> walls;
 
     public Map(int mapWidth, int mapHeight, int cellSize){
         this.mapHeight = mapHeight;
@@ -24,18 +26,18 @@ public class Map {
         this.cellSize = cellSize;
         this.agents = new ArrayList<>();
         this.doors = new ArrayList<>();
-        this.walls = new ArrayList<>();
         cellMap = new Cell[mapHeight][mapWidth];
-
+        this.mapWorldHeight = mapHeight/cellSize;
+        this.mapWorldWidth = mapWidth/cellSize;
         initializeMap();
         addWalls();
         addDoors();
-        //createGraphMap - mapa złozona tylko z podłogi ze wspolrzednymi swiata - 0.0, 1.1...
+        this.graphMap = new GraphMap(this);
     }
 
     private void initializeMap(){
-        for(int i = 0 ; i < mapWidth/cellSize ; i++){
-            for(int j = 0 ; j < mapHeight/cellSize ; j++){
+        for(int i = 0 ; i < mapWorldWidth ; i++){
+            for(int j = 0 ; j < mapWorldHeight ; j++){
                 cellMap[i][j] = new Cell(this, new GraphNode(i*cellSize, j*cellSize), CellType.FLOOR);
             }
         }
@@ -44,14 +46,12 @@ public class Map {
     private void addWallsInRealCoordX(GraphNode from, GraphNode to){
         for(int i = from.getX() ; i <= to.getX() ; i++){
                 cellMap[i][from.getY()].setCellType(CellType.WALL);
-                walls.add(new GraphNode(i, from.getY()));
         }
     }
 
     private void addWallsInRealCoordY(GraphNode from, GraphNode to){
         for(int i = from.getY() ; i <= to.getY() ; i++){
             cellMap[from.getX()][i].setCellType(CellType.WALL);
-            walls.add(new GraphNode(from.getX(), i));
         }
     }
 
