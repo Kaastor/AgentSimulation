@@ -15,17 +15,22 @@ public class Map {
 
     private Cell[][] cellMap;
     private ArrayList<Agent> agents;
+    private ArrayList<GraphNode> doors;
+    private ArrayList<GraphNode> walls;
 
     public Map(int mapWidth, int mapHeight, int cellSize){
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.cellSize = cellSize;
         this.agents = new ArrayList<>();
+        this.doors = new ArrayList<>();
+        this.walls = new ArrayList<>();
         cellMap = new Cell[mapHeight][mapWidth];
 
         initializeMap();
         addWalls();
         addDoors();
+        //createGraphMap - mapa złozona tylko z podłogi ze wspolrzednymi swiata - 0.0, 1.1...
     }
 
     private void initializeMap(){
@@ -39,12 +44,14 @@ public class Map {
     private void addWallsInRealCoordX(GraphNode from, GraphNode to){
         for(int i = from.getX() ; i <= to.getX() ; i++){
                 cellMap[i][from.getY()].setCellType(CellType.WALL);
+                walls.add(new GraphNode(i, from.getY()));
         }
     }
 
     private void addWallsInRealCoordY(GraphNode from, GraphNode to){
         for(int i = from.getY() ; i <= to.getY() ; i++){
             cellMap[from.getX()][i].setCellType(CellType.WALL);
+            walls.add(new GraphNode(from.getX(), i));
         }
     }
 
@@ -76,13 +83,18 @@ public class Map {
 
     private void addDoorX(GraphNode coordinates){
         cellMap[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
+        doors.add(new GraphNode(coordinates.getX(), coordinates.getY()));
         cellMap[coordinates.getX()+1][coordinates.getY()].setCellType(CellType.DOOR);
+        doors.add(new GraphNode(coordinates.getX()+1, coordinates.getY()));
     }
 
     private void addDoorY(GraphNode coordinates){
         cellMap[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
+        doors.add(new GraphNode(coordinates.getX(), coordinates.getY()));
         cellMap[coordinates.getX()][coordinates.getY()+1].setCellType(CellType.DOOR);
+        doors.add(new GraphNode(coordinates.getX(), coordinates.getY()+1));
     }
+
     private void addDoors(){
         addDoorX(new GraphNode(2, 10)); //1.
         addDoorX(new GraphNode(10, 10)); //2.

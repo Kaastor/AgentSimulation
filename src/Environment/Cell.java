@@ -4,6 +4,7 @@ package Environment;
 import Agent.Agent;
 import lombok.Data;
 
+//powoduje stackoverfloww
 @Data
 public class Cell {
 
