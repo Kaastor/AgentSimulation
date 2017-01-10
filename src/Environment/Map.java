@@ -44,7 +44,7 @@ public class Map {
         addWalls();
         addDoors();
 
-        Agent agent = new Agent(this, 0, new GraphNode(11, 11));
+        Agent agent = new Agent(this, 0, new GraphNode(11, 15));
     }
 
     public void addAgent(Agent agent, int positionX, int positionY){

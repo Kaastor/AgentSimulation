@@ -2,6 +2,7 @@ import Environment.Map;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,8 +24,9 @@ public class AppSimulation extends Application{
         Map map = new Map(1200, 800, 25);
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
 
-        VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
-
+        Platform.runLater( () -> {
+            VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
+        });
 
         root.getChildren().add( envVisualisation );
         theStage.show();
