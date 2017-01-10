@@ -1,4 +1,5 @@
 import Environment.Map;
+import Environment.MapInitialization;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
 import javafx.application.Application;
@@ -21,7 +22,7 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-        Map map = new Map(1200, 800, 25);
+        Map map = new MapInitialization(1200, 800, 25).initialize();
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
 
         Platform.runLater( () -> {

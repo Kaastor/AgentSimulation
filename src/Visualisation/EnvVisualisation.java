@@ -3,6 +3,7 @@ package Visualisation;
 
 import Environment.Cell;
 import Environment.CellType;
+import Environment.GraphMap;
 import Environment.Map;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;

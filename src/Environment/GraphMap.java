@@ -20,13 +20,13 @@ public class GraphMap {
     private void initializeGraphMap(Map map){
         for(int i =0 ; i < map.getMapWorldWidth() ; i++) {
             for (int j = 0; j < map.getMapWorldHeight(); j++) {
-                if(isCellFloorType(cellMap[i][j]))
+                if(isCellFloorOrDoorType(cellMap[i][j]))
                     graphNodesList.add(cellMap[i][j].getWorldCoordinates());
             }
         }
     }
 
-    private boolean isCellFloorType(Cell cell){
-        return  (cell.getCellType() == CellType.FLOOR);
+    private boolean isCellFloorOrDoorType(Cell cell){
+        return  (cell.getCellType() == CellType.FLOOR || cell.getCellType() == CellType.DOOR );
     }
 }

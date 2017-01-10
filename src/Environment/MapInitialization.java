@@ -1,19 +1,19 @@
 package Environment;
 
+import dissim.random.SimGenerator;
 import Agent.Agent;
 
-class MapInitialization {
+public class MapInitialization {
 
     private Map map;
     private Cell[][] cellMap;
 
-    MapInitialization(Map map){
-        this.map = map;
+    public MapInitialization(int mapWidth, int mapHeight, int cellSize){
+        this.map = new Map(mapWidth, mapHeight, cellSize);
         this.cellMap = map.getCellMap();
-        initialize();
     }
 
-    private void initialize(){
+    public Map initialize(){
         for(int i = 0 ; i < map.getMapWorldWidth() ; i++){
             for(int j = 0 ; j < map.getMapWorldHeight() ; j++){
                 addFloors(i, j);
@@ -21,7 +21,22 @@ class MapInitialization {
         }
         addWalls();
         addDoors();
-        new Agent(map, 0, new GraphNode(11, 15));
+        addAgents(5);
+
+        return map;
+    }
+
+    private void addAgents(int agentNumber){
+        SimGenerator generator = RandomGenerator.getInstance();
+        int count = 0, x, y;
+        while(count != agentNumber){
+            x = generator.uniformInt(0, map.getMapWorldWidth());
+            y = generator.uniformInt(0, map.getMapWorldHeight());
+            if(map.getCell(x, y).getCellType() == CellType.FLOOR){
+                map.addAgent(new Agent(map, count, new GraphNode(x, y)));
+                count++;
+            }
+        }
     }
 
     private void addFloors(int i, int j){

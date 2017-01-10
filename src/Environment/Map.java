@@ -30,12 +30,11 @@ public class Map {
         cellMap = new Cell[mapHeight][mapWidth];
         this.mapWorldHeight = mapHeight/cellSize;
         this.mapWorldWidth = mapWidth/cellSize;
-        new MapInitialization(this);
-        this.graphMap = new GraphMap(this);
     }
 
-    public void addAgent(Agent agent, int positionX, int positionY){
-        cellMap[positionX][positionY].setCellType(CellType.AGENT);
+    public void addAgent(Agent agent){
+        cellMap[agent.getPositionOnMap().getX()][agent.getPositionOnMap().getY()]
+                .setCellType(CellType.AGENT);
         agents.add(agent);
     }
 
@@ -43,4 +42,12 @@ public class Map {
         cellMap[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
     }
 
+    public Cell getCell(int x, int y){
+        return cellMap[x][y];
+    }
+
+    public GraphMap createAndGetGraphMap(){
+        this.graphMap = new GraphMap(this);
+        return graphMap;
+    }
 }

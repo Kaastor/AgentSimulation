@@ -26,6 +26,6 @@ public class Agent extends BasicSimEntity{
 
 
         /////tego tu nie bedzie potem bo tym sie zajmą zdarzenia
-        parentMap.addAgent(this, positionOnMap.getX(), positionOnMap.getY());
+        parentMap.addAgent(this);
     }
 }
