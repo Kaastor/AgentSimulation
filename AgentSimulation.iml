@@ -9,5 +9,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lombok" level="project" />
     <orderEntry type="library" name="dissim" level="project" />
+    <orderEntry type="library" name="log4j-1.2.17" level="project" />
+    <orderEntry type="library" name="jspf.core-1.0.2" level="project" />
+    <orderEntry type="library" name="groovy-all-2.4.7" level="project" />
   </component>
 </module>

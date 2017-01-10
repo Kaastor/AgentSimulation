@@ -3,10 +3,12 @@ package Environment;
 
 import Agent.Agent;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 
 @Data
+@EqualsAndHashCode(exclude="agents")
 public class Map {
 
     private int mapHeight;
@@ -14,7 +16,6 @@ public class Map {
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
-
     private Cell[][] cellMap;
     private GraphMap graphMap;
     private ArrayList<Agent> agents;
@@ -30,17 +31,30 @@ public class Map {
         this.mapWorldHeight = mapHeight/cellSize;
         this.mapWorldWidth = mapWidth/cellSize;
         initializeMap();
-        addWalls();
-        addDoors();
+
         this.graphMap = new GraphMap(this);
     }
 
     private void initializeMap(){
         for(int i = 0 ; i < mapWorldWidth ; i++){
             for(int j = 0 ; j < mapWorldHeight ; j++){
-                cellMap[i][j] = new Cell(this, new GraphNode(i*cellSize, j*cellSize), CellType.FLOOR);
+                addFloors(i, j);
             }
         }
+        addWalls();
+        addDoors();
+
+        Agent agent = new Agent(this, 0, new GraphNode(11, 11));
+    }
+
+    public void addAgent(Agent agent, int positionX, int positionY){
+        cellMap[positionX][positionY].setCellType(CellType.AGENT);
+        agents.add(agent);
+    }
+
+
+    private void addFloors(int i, int j){
+        cellMap[i][j] = new Cell(new GraphNode(i, j), cellSize, CellType.FLOOR);
     }
 
     private void addWallsInRealCoordX(GraphNode from, GraphNode to){

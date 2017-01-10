@@ -2,23 +2,22 @@ package Environment;
 
 
 import lombok.Data;
+
 import java.util.ArrayList;
 
 @Data
 public class GraphMap {
 
     private ArrayList<GraphNode> graphNodesList;
-    private Map map;
     private Cell[][] cellMap;
 
     public GraphMap(Map map){
-        this.map = map;
         this.cellMap = map.getCellMap();
         this.graphNodesList = new ArrayList<>();
-        initializeGraphMap();
+        initializeGraphMap(map);
     }
 
-    private void initializeGraphMap(){
+    private void initializeGraphMap(Map map){
         for(int i =0 ; i < map.getMapWorldWidth() ; i++) {
             for (int j = 0; j < map.getMapWorldHeight(); j++) {
                 if(isCellFloorType(cellMap[i][j]))

@@ -3,13 +3,15 @@ package Visualisation;
 
 import Environment.Cell;
 import Environment.CellType;
-import Environment.GraphNode;
 import Environment.Map;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import lombok.Data;
 
+@Data
 public class EnvVisualisation extends Canvas{
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
@@ -22,37 +24,39 @@ public class EnvVisualisation extends Canvas{
         super(width, height);
         this.map = map;
         this.cellSize = map.getCellSize();
-        this.agentImage = new Image("file:resources/agent_smith.gif");
+        this.agentImage = new Image("file:resources/agentSmith.png");
+
         drawMapOnScreen();
     }
 
-    private void drawMapOnScreen(){
+    public void drawMapOnScreen(){
         Cell[][] cellMap = map.getCellMap();
 
         for(int i =0 ; i < map.getMapWidth()/map.getCellSize() ; i++){
             for(int j = 0 ; j< map.getMapHeight()/map.getCellSize()  ; j++){
                 Cell cell = cellMap[i][j];
-                GraphNode cellCoordinates = cellMap[i][j].getWorldCoordinates();
+                Point2D screenCoordinates = cellMap[i][j].getScreenCoordinates();
 
                 if(cell.getCellType() == CellType.FLOOR) {
-                    graphicsContext.strokeRect(cellCoordinates.getX(), cellCoordinates.getY(), cellSize, cellSize);
+                    graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
                 if(cell.getCellType() == CellType.WALL) {
                     graphicsContext.setFill(Color.BLACK);
-                    graphicsContext.fillRect(cellCoordinates.getX(), cellCoordinates.getY(), cellSize, cellSize);
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
                 if(cell.getCellType() == CellType.DOOR) {
                     graphicsContext.setFill(Color.GREENYELLOW);
-                    graphicsContext.fillRect(cellCoordinates.getX(), cellCoordinates.getY(), cellSize, cellSize);
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
                 if(cell.getCellType() == CellType.AGENT) {
-                    drawAgent(cellCoordinates, cellSize);
+                    graphicsContext.setFill(Color.BLACK);
+                    drawAgent(screenCoordinates);
                 }
             }
         }
     }
 
-    private void drawAgent(GraphNode agentPosition, int imageSize){
-        graphicsContext.drawImage(agentImage, agentPosition.getX(), agentPosition.getY(), imageSize, imageSize);
+    private void drawAgent(Point2D agentPosition){
+        graphicsContext.drawImage(agentImage, agentPosition.getX(), agentPosition.getY(), cellSize, cellSize);
     }
 }
