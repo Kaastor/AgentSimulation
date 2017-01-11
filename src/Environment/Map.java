@@ -2,14 +2,19 @@ package Environment;
 
 
 import Agent.Agent;
+import dissim.broker.IEvent;
+import dissim.broker.IEventPublisher;
+import dissim.broker.IEventSubscriber;
+import dissim.simspace.core.BasicSimEntity;
+import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 
 @Data
-@EqualsAndHashCode(exclude="agents")
-public class Map {
+@EqualsAndHashCode(exclude="agents", callSuper = false)
+public class Map extends BasicSimEntity implements IEventSubscriber{
 
     private int mapHeight;
     private int mapWidth;
@@ -20,8 +25,10 @@ public class Map {
     private GraphMap graphMap;
     private ArrayList<Agent> agents;
     private ArrayList<GraphNode> doors;
+    private boolean dirtyFlag;
 
     public Map(int mapWidth, int mapHeight, int cellSize){
+        super(SimModel.getInstance().getCommonSimContext());
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.cellSize = cellSize;
@@ -30,6 +37,9 @@ public class Map {
         cellMap = new Cell[mapHeight][mapWidth];
         this.mapWorldHeight = mapHeight/cellSize;
         this.mapWorldWidth = mapWidth/cellSize;
+        //
+        this.getContextInstance().getContextEventBroker().subscribe(Agent.class, this);
+        this.dirtyFlag = false;
     }
 
     public void addAgent(Agent agent){
@@ -38,11 +48,12 @@ public class Map {
         agents.add(agent);
     }
 
-    public void moveAgent(Agent agent, GraphNode from, GraphNode to){
-        setCellOccupancyStatus(from, false);
-        agents.get(agent.getId()).setPositionOnMap(to);
-        setCellOccupancyStatus(to, true);
-        //repaint
+    public void moveAgent(Agent agent){
+        setCellOccupancyStatus(agent.getPositionOnMap(), false);
+        agents.get(agent.getId()).setPositionOnMap(agent.getNextPositionOnMap());
+        setCellOccupancyStatus(agent.getNextPositionOnMap(), true);
+        setDirtyFlag(true);
+
     }
 
     public void setCellReservationStatus(GraphNode cellCoordinates, boolean status){
@@ -60,5 +71,17 @@ public class Map {
     public GraphMap createAndGetGraphMap(){
         this.graphMap = new GraphMap(this);
         return graphMap;
+    }
+
+
+    @Override
+    public void reflect(IEvent iEvent, IEventPublisher iEventPublisher) {
+        moveAgent((Agent) iEventPublisher);
+        System.out.println("event");
+    }
+
+    @Override
+    public void reflect(IEvent iEvent) {
+
     }
 }

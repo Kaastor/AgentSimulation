@@ -1,18 +1,26 @@
 import Environment.Map;
 import Environment.MapInitialization;
+import Environment.SimulationContext;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
+import dissim.simspace.core.SimModel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Data;
+import lombok.SneakyThrows;
 
+@Data
 public class AppSimulation extends Application{
 
+    @SneakyThrows
     public static void main(String[] args)
     {
+        System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         launch(args);
+        SimModel.getInstance().startSimulation();
     }
 
     public void start(Stage theStage)
@@ -22,9 +30,9 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-        Map map = new MapInitialization(1200, 800, 25).initialize();
-        EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
 
+        Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
+        EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
         Platform.runLater( () -> {
             VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
         });

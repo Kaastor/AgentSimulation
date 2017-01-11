@@ -1,8 +1,10 @@
 package Visualisation;
 
-import Agent.Agent;
-import Environment.GraphNode;
+import dissim.simspace.core.SimModel;
 import javafx.animation.AnimationTimer;
+import lombok.SneakyThrows;
+
+import static java.lang.Thread.sleep;
 
 public class VisualisationTimer extends AnimationTimer {
 
@@ -14,14 +16,10 @@ public class VisualisationTimer extends AnimationTimer {
     }
 
     @Override
+    @SneakyThrows
     public void handle(long now) {
-        Agent agent = envVisualisation.getMap().getAgents().get(0);
-        int x = agent.getPositionOnMap().getX();
-        int y = agent.getPositionOnMap().getY();
-        GraphNode graphNode =  new GraphNode(++x, ++y);
-        agent.setPositionOnMap(graphNode);
 
         envVisualisation.drawMapOnScreen();
-
+        sleep(100);
     }
 }

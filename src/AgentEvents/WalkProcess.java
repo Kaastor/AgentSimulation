@@ -20,27 +20,36 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
         this.parentAgent = getSimEntity();
         this.currentPositionOnMap = parentAgent.getPositionOnMap();
         this.nextPositionOnMap = parentAgent.getPositionOnMap();
+        System.out.print("Tworzenie procesu "+ getRunSimTime());
     }
 
     @Override
     public double controlStateTransitions() {
+        System.out.print("Wykonanie procesu");
         parentAgent.setAgentState(AgentState.WALK);
+
         walkToNewPositionIfIsSet();
+
+        int nextX = currentPositionOnMap.getX();
+        int nextY = currentPositionOnMap.getY();
+        nextPositionOnMap.setX(++nextX);
+        nextPositionOnMap.setY(++nextY);
+
         reserveNewPositionOnMap();
-        return 0;
+
+
+        return parentAgent.getAgentSpeed();
     }
 
     private void walkToNewPositionIfIsSet(){
         if(currentPositionOnMap.getX() != nextPositionOnMap.getX()
                 || currentPositionOnMap.getY() != nextPositionOnMap.getY()){
-            parentAgent.moveAgent(parentAgent, currentPositionOnMap, nextPositionOnMap);
+
+            parentAgent.moveAgent(nextPositionOnMap);
         }
     }
 
     private void reserveNewPositionOnMap(){
-        //parentAgent.collisionCheck();
-        //if free
-        //then reserve
-        //else wait
+        parentAgent.reservePosition(nextPositionOnMap);
     }
 }

@@ -7,10 +7,12 @@ public class MapInitialization {
 
     private Map map;
     private Cell[][] cellMap;
+    private int maxAgentsNumber;
 
-    public MapInitialization(int mapWidth, int mapHeight, int cellSize){
+    public MapInitialization(int  mapWidth, int mapHeight, int cellSize, int maxAgentsNumber){
         this.map = new Map(mapWidth, mapHeight, cellSize);
         this.cellMap = map.getCellMap();
+        this.maxAgentsNumber = maxAgentsNumber;
     }
 
     public Map initialize(){
@@ -21,7 +23,7 @@ public class MapInitialization {
         }
         addWalls();
         addDoors();
-        addAgents(5);
+        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
 
         return map;
     }
