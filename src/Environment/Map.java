@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @Data
 @EqualsAndHashCode(exclude="agents", callSuper = false)
-public class Map extends BasicSimEntity implements IEventSubscriber{
+public class Map  implements IEventSubscriber{
 
     private int mapHeight;
     private int mapWidth;
@@ -28,7 +28,7 @@ public class Map extends BasicSimEntity implements IEventSubscriber{
     private boolean dirtyFlag;
 
     public Map(int mapWidth, int mapHeight, int cellSize){
-        super(SimModel.getInstance().getCommonSimContext());
+
         this.mapHeight = mapHeight;
         this.mapWidth = mapWidth;
         this.cellSize = cellSize;
@@ -38,7 +38,7 @@ public class Map extends BasicSimEntity implements IEventSubscriber{
         this.mapWorldHeight = mapHeight/cellSize;
         this.mapWorldWidth = mapWidth/cellSize;
         //
-        this.getContextInstance().getContextEventBroker().subscribe(Agent.class, this);
+        SimModel.getInstance().getCommonSimContext().getContextEventBroker().subscribe(Agent.class, this);
         this.dirtyFlag = false;
     }
 

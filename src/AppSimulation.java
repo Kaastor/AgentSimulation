@@ -3,9 +3,11 @@ import Environment.MapInitialization;
 import Environment.SimulationContext;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
+import dissim.simspace.core.SimControlException;
 import dissim.simspace.core.SimModel;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,9 +22,9 @@ public class AppSimulation extends Application{
     {
         System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
         launch(args);
-        SimModel.getInstance().startSimulation();
     }
 
+    @SneakyThrows
     public void start(Stage theStage)
     {
         theStage.setTitle( "Agent Simulator" );
@@ -33,11 +35,22 @@ public class AppSimulation extends Application{
 
         Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
-        Platform.runLater( () -> {
-            VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
-        });
+        VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
+
 
         root.getChildren().add( envVisualisation );
         theStage.show();
+
+
+        Task task = new Task<Void>() {
+            @SneakyThrows
+            @Override public Void call() {
+                SimModel.getInstance().ASTRONOMICALSimulation();
+                SimModel.getInstance().startSimulation();
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
 }

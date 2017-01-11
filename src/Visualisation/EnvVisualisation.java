@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class EnvVisualisation extends Canvas implements IEventSubscriber{
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
-    private Map map;
+    private Map map; //INTERFEJS DO MAPY TU
     private Image agentImage;
     private int cellSize;
 
@@ -62,7 +62,7 @@ public class EnvVisualisation extends Canvas implements IEventSubscriber{
 
     private void drawAgent(GraphNode agentPosition){
         Point2D agentScreenPosition = conversionToScreenCoordinates(agentPosition);
-        graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize, cellSize);
+        graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
     }
 
     private Point2D conversionToScreenCoordinates(GraphNode coordinates){

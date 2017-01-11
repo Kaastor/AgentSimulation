@@ -36,6 +36,7 @@ public class Agent extends BasicSimEntity {
         this.agentState = AgentState.NOP;
 
         this.walkProcess = new WalkProcess(this);
+        walkProcess.start();
     }
 
     public void collisionCheck(){
