@@ -2,6 +2,8 @@ package Environment;
 
 
 import Agent.Agent;
+import dissim.simspace.core.BasicSimEntity;
+import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 
 @Data
 @EqualsAndHashCode(exclude="agentsList", callSuper = false)
-public class CellMap implements Map{
+public class CellMap extends BasicSimEntity implements Map{
 
     private int mapScreenHeight;
     private int mapScreenWidth;
@@ -23,7 +25,7 @@ public class CellMap implements Map{
     private ArrayList<GraphNode> doorsList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
-
+        super(SimModel.getInstance().getCommonSimContext());
         this.mapScreenHeight = mapScreenHeight;
         this.mapScreenWidth = mapScreenWidth;
         this.cellSize = cellSize;

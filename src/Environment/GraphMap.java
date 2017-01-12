@@ -18,12 +18,12 @@ public class GraphMap {
     }
 
     private void initializeGraphMap(CellMap cellMap){
-        for(int i = 0; i < cellMap.getMapWorldWidth() ; i++) {
-            for (int j = 0; j < cellMap.getMapWorldHeight(); j++) {
-                if(isCellFloorOrDoorType(this.cellMap[i][j]))
-                    graphNodesList.add(this.cellMap[i][j].getWorldCoordinates());
-            }
-        }
+//        for(int i = 0; i < cellMap.getMapWorldWidth() ; i++) {
+//            for (int j = 0; j < cellMap.getMapWorldHeight(); j++) {
+//                if(isCellFloorOrDoorType(this.cellMap[i][j]))
+//                    graphNodesList.add(this.cellMap[i][j].getWorldCoordinates());
+//            }
+//        }
     }
 
     private boolean isCellFloorOrDoorType(Cell cell){

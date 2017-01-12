@@ -8,13 +8,13 @@ import lombok.Data;
 @Data
 public class Cell {
 
-    private boolean hasAgent;
-    private boolean isReserved;
     private GraphNode worldCoordinates;
     private Point2D screenCoordinates;
     private CellType cellType;
     private int cellSize;
 
+    private boolean hasAgent;
+    private boolean isReserved;
     private Agent agent;
 
     Cell(GraphNode worldCoordinates, int cellSize, CellType cellType){

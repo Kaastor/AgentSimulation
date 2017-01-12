@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class EnvVisualisation extends Canvas {
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
-    private Map map; //INTERFEJS DO MAPY TU
+    private Map map;
     private Image agentImage;
     private Cell[][] cells;
     private int cellSize;
@@ -62,7 +62,6 @@ public class EnvVisualisation extends Canvas {
             drawAgent(agent.getPositionOnMap());
         }
     }
-
 
     private void drawAgent(GraphNode agentPosition){
         Point2D agentScreenPosition = map.conversionToScreenCoordinates(agentPosition);

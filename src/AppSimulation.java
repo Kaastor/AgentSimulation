@@ -29,28 +29,26 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-
         Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
         VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
-
-
-        root.getChildren().add( envVisualisation );
-        theStage.show();
-
 
         Task task = new Task<Void>() {
             @SneakyThrows
             @Override public Void call() {
                 SimModel.getInstance().ASTRONOMICALSimulation();
                 SimModel.getInstance().startSimulation();
-
                 return null;
             }
         };
-
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
+
+
+        root.getChildren().add( envVisualisation );
+        theStage.show();
+
+
     }
 }

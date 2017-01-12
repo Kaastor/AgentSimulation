@@ -2,6 +2,7 @@ package Environment;
 
 import lombok.Data;
 
+
 @Data
 public class GraphNode {
 

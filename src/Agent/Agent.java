@@ -6,7 +6,6 @@ import Environment.GraphNode;
 
 import Environment.CellMap;
 import Environment.RandomGenerator;
-import dissim.broker.IEventPublisher;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import lombok.Data;

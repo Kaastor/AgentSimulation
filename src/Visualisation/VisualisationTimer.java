@@ -1,7 +1,6 @@
 package Visualisation;
 
 import javafx.animation.AnimationTimer;
-import lombok.SneakyThrows;
 
 
 public class VisualisationTimer extends AnimationTimer {
@@ -14,7 +13,6 @@ public class VisualisationTimer extends AnimationTimer {
     }
 
     @Override
-    @SneakyThrows
     public void handle(long now) {
         envVisualisation.clearMapOnScreen();
         envVisualisation.drawMapOnScreen();
