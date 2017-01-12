@@ -6,8 +6,10 @@ import Environment.GraphNode;
 import dissim.simspace.core.SimControlException;
 import dissim.simspace.process.BasicSimProcess;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(exclude = "parentAgent", callSuper = false)
 public class WalkProcess extends BasicSimProcess<Agent, Object>{
 
     private Agent parentAgent;

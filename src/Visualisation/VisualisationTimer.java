@@ -16,7 +16,7 @@ public class VisualisationTimer extends AnimationTimer {
     @Override
     @SneakyThrows
     public void handle(long now) {
-//        System.out.println("TIMER");
+        envVisualisation.clearMapOnScreen();
         envVisualisation.drawMapOnScreen();
 
     }

@@ -2,7 +2,6 @@ package Environment;
 
 
 import Agent.Agent;
-import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 @EqualsAndHashCode(exclude="agents", callSuper = false)
 public class CellMap {
 
-    private int mapHeight;
-    private int mapWidth;
+    private int mapScreenHeight;
+    private int mapScreenWidth;
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
@@ -23,16 +22,16 @@ public class CellMap {
     private ArrayList<Agent> agents;
     private ArrayList<GraphNode> doors;
 
-    public CellMap(int mapWidth, int mapHeight, int cellSize){
+    public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
 
-        this.mapHeight = mapHeight;
-        this.mapWidth = mapWidth;
+        this.mapScreenHeight = mapScreenHeight;
+        this.mapScreenWidth = mapScreenWidth;
         this.cellSize = cellSize;
         this.agents = new ArrayList<>();
         this.doors = new ArrayList<>();
-        cellMap = new Cell[mapHeight][mapWidth];
-        this.mapWorldHeight = mapHeight/cellSize;
-        this.mapWorldWidth = mapWidth/cellSize;
+        cellMap = new Cell[mapScreenHeight][mapScreenWidth];
+        this.mapWorldHeight = mapScreenHeight /cellSize;
+        this.mapWorldWidth = mapScreenWidth/cellSize;
     }
 
     public void addAgent(Agent agent){

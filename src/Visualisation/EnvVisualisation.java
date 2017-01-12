@@ -18,21 +18,30 @@ public class EnvVisualisation extends Canvas {
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
     private CellMap cellMap; //INTERFEJS DO MAPY TU
     private Image agentImage;
+    private Cell[][] cells;
     private int cellSize;
+    private int mapScreenHeight;
+    private int mapScreenWidth;
+    private int mapWorldHeight;
+    private int mapWorldWidth;
+    private ArrayList<Agent> agentArrayList;
 
     public EnvVisualisation(CellMap cellMap, int width, int height){
         super(width, height);
         this.cellMap = cellMap;
         this.cellSize = cellMap.getCellSize();
+        this.cells = cellMap.getCellMap();
+        this.agentArrayList = cellMap.getAgents();
+        this.mapWorldHeight = cellMap.getMapWorldHeight();
+        this.mapWorldWidth = cellMap.getMapWorldWidth();
+        this.mapScreenHeight = cellMap.getMapScreenHeight();
+        this.mapScreenWidth = cellMap.getMapScreenWidth();
         this.agentImage = new Image("file:resources/agentSmith.png");
     }
 
     public void drawMapOnScreen(){
-        Cell[][] cells = this.cellMap.getCellMap();
-        ArrayList<Agent> agentArrayList = this.cellMap.getAgents();
-
-        for(int i = 0; i < this.cellMap.getMapWidth()/ this.cellMap.getCellSize() ; i++){
-            for(int j = 0; j< this.cellMap.getMapHeight()/ this.cellMap.getCellSize()  ; j++){
+        for(int i = 0; i < mapWorldWidth ; i++){
+            for(int j = 0; j< mapWorldHeight  ; j++){
                 Cell cell = cells[i][j];
                 Point2D screenCoordinates = cells[i][j].getScreenCoordinates();
 
@@ -49,21 +58,19 @@ public class EnvVisualisation extends Canvas {
                 }
             }
         }
-        graphicsContext.setFill(Color.BLACK);
         for(Agent agent : agentArrayList){
-//            System.out.println(agentArrayList.get(0).getPositionOnMap());
             drawAgent(agent.getPositionOnMap());
         }
     }
+
 
     private void drawAgent(GraphNode agentPosition){
         Point2D agentScreenPosition = cellMap.conversionToScreenCoordinates(agentPosition);
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
     }
 
-
-    public void clear(){
-        graphicsContext.clearRect(0, 0, getWidth(), getHeight());
+    public void clearMapOnScreen(){
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillRect(0, 0, mapScreenWidth, mapScreenHeight);
     }
-
 }
