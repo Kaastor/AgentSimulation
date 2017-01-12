@@ -9,45 +9,45 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 
 @Data
-@EqualsAndHashCode(exclude="agents", callSuper = false)
-public class CellMap {
+@EqualsAndHashCode(exclude="agentsList", callSuper = false)
+public class CellMap implements Map{
 
     private int mapScreenHeight;
     private int mapScreenWidth;
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
-    private Cell[][] cellMap;
+    private Cell[][] cells;
     private GraphMap graphMap;
-    private ArrayList<Agent> agents;
-    private ArrayList<GraphNode> doors;
+    private ArrayList<Agent> agentsList;
+    private ArrayList<GraphNode> doorsList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
 
         this.mapScreenHeight = mapScreenHeight;
         this.mapScreenWidth = mapScreenWidth;
         this.cellSize = cellSize;
-        this.agents = new ArrayList<>();
-        this.doors = new ArrayList<>();
-        cellMap = new Cell[mapScreenHeight][mapScreenWidth];
+        this.agentsList = new ArrayList<>();
+        this.doorsList = new ArrayList<>();
+        cells = new Cell[mapScreenHeight][mapScreenWidth];
         this.mapWorldHeight = mapScreenHeight /cellSize;
         this.mapWorldWidth = mapScreenWidth/cellSize;
     }
 
     public void addAgent(Agent agent){
-        agents.add(agent);
+        agentsList.add(agent);
     }
 
     public void setCellReservationStatus(GraphNode cellCoordinates, boolean status){
-        cellMap[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
+        cells[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
     }
 
     public void setCellOccupancyStatus(GraphNode cellCoordinates, boolean status){
-        cellMap[cellCoordinates.getX()][cellCoordinates.getY()].setHasAgent(status);
+        cells[cellCoordinates.getX()][cellCoordinates.getY()].setHasAgent(status);
     }
 
     public Cell getCell(int x, int y){
-        return cellMap[x][y];
+        return cells[x][y];
     }
 
     public GraphMap createAndGetGraphMap(){

@@ -12,7 +12,7 @@ public class GraphMap {
     private Cell[][] cellMap;
 
     public GraphMap(CellMap cellMap){
-        this.cellMap = cellMap.getCellMap();
+        this.cellMap = cellMap.getCells();
         this.graphNodesList = new ArrayList<>();
         initializeGraphMap(cellMap);
     }

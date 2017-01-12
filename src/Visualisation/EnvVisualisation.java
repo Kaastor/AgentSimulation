@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class EnvVisualisation extends Canvas {
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
-    private CellMap cellMap; //INTERFEJS DO MAPY TU
+    private Map map; //INTERFEJS DO MAPY TU
     private Image agentImage;
     private Cell[][] cells;
     private int cellSize;
@@ -26,16 +26,16 @@ public class EnvVisualisation extends Canvas {
     private int mapWorldWidth;
     private ArrayList<Agent> agentArrayList;
 
-    public EnvVisualisation(CellMap cellMap, int width, int height){
+    public EnvVisualisation(Map map, int width, int height){
         super(width, height);
-        this.cellMap = cellMap;
-        this.cellSize = cellMap.getCellSize();
-        this.cells = cellMap.getCellMap();
-        this.agentArrayList = cellMap.getAgents();
-        this.mapWorldHeight = cellMap.getMapWorldHeight();
-        this.mapWorldWidth = cellMap.getMapWorldWidth();
-        this.mapScreenHeight = cellMap.getMapScreenHeight();
-        this.mapScreenWidth = cellMap.getMapScreenWidth();
+        this.map = map;
+        this.cellSize = map.getCellSize();
+        this.cells = map.getCells();
+        this.agentArrayList = map.getAgentsList();
+        this.mapWorldHeight = map.getMapWorldHeight();
+        this.mapWorldWidth = map.getMapWorldWidth();
+        this.mapScreenHeight = map.getMapScreenHeight();
+        this.mapScreenWidth = map.getMapScreenWidth();
         this.agentImage = new Image("file:resources/agentSmith.png");
     }
 
@@ -65,7 +65,7 @@ public class EnvVisualisation extends Canvas {
 
 
     private void drawAgent(GraphNode agentPosition){
-        Point2D agentScreenPosition = cellMap.conversionToScreenCoordinates(agentPosition);
+        Point2D agentScreenPosition = map.conversionToScreenCoordinates(agentPosition);
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
     }
 

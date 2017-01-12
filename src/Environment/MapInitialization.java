@@ -11,11 +11,11 @@ public class MapInitialization {
 
     public MapInitialization(int  mapWidth, int mapHeight, int cellSize, int maxAgentsNumber){
         this.cellMap = new CellMap(mapWidth, mapHeight, cellSize);
-        this.cells = cellMap.getCellMap();
+        this.cells = cellMap.getCells();
         this.maxAgentsNumber = maxAgentsNumber;
     }
 
-    public CellMap initialize(){
+    public Map initialize(){
         for(int i = 0; i < cellMap.getMapWorldWidth() ; i++){
             for(int j = 0; j < cellMap.getMapWorldHeight() ; j++){
                 addFloors(i, j);
@@ -85,16 +85,16 @@ public class MapInitialization {
 
     private void addDoorX(GraphNode coordinates){
         cells[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
-        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
+        cellMap.getDoorsList().add(new GraphNode(coordinates.getX(), coordinates.getY()));
         cells[coordinates.getX()+1][coordinates.getY()].setCellType(CellType.DOOR);
-        cellMap.getDoors().add(new GraphNode(coordinates.getX()+1, coordinates.getY()));
+        cellMap.getDoorsList().add(new GraphNode(coordinates.getX()+1, coordinates.getY()));
     }
 
     private void addDoorY(GraphNode coordinates){
         cells[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
-        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
+        cellMap.getDoorsList().add(new GraphNode(coordinates.getX(), coordinates.getY()));
         cells[coordinates.getX()][coordinates.getY()+1].setCellType(CellType.DOOR);
-        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()+1));
+        cellMap.getDoorsList().add(new GraphNode(coordinates.getX(), coordinates.getY()+1));
     }
 
     private void addDoors(){

@@ -1,12 +1,9 @@
-import Environment.CellMap;
+import Environment.Map;
 import Environment.MapInitialization;
-import Environment.SimulationContext;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
-import dissim.simspace.core.SimControlException;
 import dissim.simspace.core.SimModel;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -33,8 +30,8 @@ public class AppSimulation extends Application{
         theStage.setScene( theScene );
 
 
-        CellMap cellMap = new MapInitialization( 1200, 800, 25, 10).initialize();
-        EnvVisualisation envVisualisation = new EnvVisualisation(cellMap, 1200, 800 );
+        Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
+        EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
         VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
 
 
