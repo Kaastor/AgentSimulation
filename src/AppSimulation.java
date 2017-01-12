@@ -1,4 +1,4 @@
-import Environment.Map;
+import Environment.CellMap;
 import Environment.MapInitialization;
 import Environment.SimulationContext;
 import Visualisation.EnvVisualisation;
@@ -33,8 +33,8 @@ public class AppSimulation extends Application{
         theStage.setScene( theScene );
 
 
-        Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
-        EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
+        CellMap cellMap = new MapInitialization( 1200, 800, 25, 10).initialize();
+        EnvVisualisation envVisualisation = new EnvVisualisation(cellMap, 1200, 800 );
         VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
 
 
@@ -47,10 +47,13 @@ public class AppSimulation extends Application{
             @Override public Void call() {
                 SimModel.getInstance().ASTRONOMICALSimulation();
                 SimModel.getInstance().startSimulation();
+
                 return null;
             }
         };
 
-        new Thread(task).start();
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

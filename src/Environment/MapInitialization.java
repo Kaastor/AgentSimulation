@@ -5,19 +5,19 @@ import Agent.Agent;
 
 public class MapInitialization {
 
-    private Map map;
-    private Cell[][] cellMap;
+    private CellMap cellMap;
+    private Cell[][] cells;
     private int maxAgentsNumber;
 
     public MapInitialization(int  mapWidth, int mapHeight, int cellSize, int maxAgentsNumber){
-        this.map = new Map(mapWidth, mapHeight, cellSize);
-        this.cellMap = map.getCellMap();
+        this.cellMap = new CellMap(mapWidth, mapHeight, cellSize);
+        this.cells = cellMap.getCellMap();
         this.maxAgentsNumber = maxAgentsNumber;
     }
 
-    public Map initialize(){
-        for(int i = 0 ; i < map.getMapWorldWidth() ; i++){
-            for(int j = 0 ; j < map.getMapWorldHeight() ; j++){
+    public CellMap initialize(){
+        for(int i = 0; i < cellMap.getMapWorldWidth() ; i++){
+            for(int j = 0; j < cellMap.getMapWorldHeight() ; j++){
                 addFloors(i, j);
             }
         }
@@ -25,35 +25,35 @@ public class MapInitialization {
         addDoors();
         addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
 
-        return map;
+        return cellMap;
     }
 
     private void addAgents(int agentNumber){
         SimGenerator generator = RandomGenerator.getInstance();
         int count = 0, x, y;
         while(count != agentNumber){
-            x = generator.uniformInt(0, map.getMapWorldWidth());
-            y = generator.uniformInt(0, map.getMapWorldHeight());
-            if(map.getCell(x, y).getCellType() == CellType.FLOOR){
-                map.addAgent(new Agent(map, count, new GraphNode(x, y)));
+            x = generator.uniformInt(0, cellMap.getMapWorldWidth());
+            y = generator.uniformInt(0, cellMap.getMapWorldHeight());
+            if(cellMap.getCell(x, y).getCellType() == CellType.FLOOR){
+                cellMap.addAgent(new Agent(cellMap, count, new GraphNode(x, y)));
                 count++;
             }
         }
     }
 
     private void addFloors(int i, int j){
-        cellMap[i][j] = new Cell(new GraphNode(i, j), map.getCellSize(), CellType.FLOOR);
+        cells[i][j] = new Cell(new GraphNode(i, j), cellMap.getCellSize(), CellType.FLOOR);
     }
 
     private void addWallsInRealCoordX(GraphNode from, GraphNode to){
         for(int i = from.getX() ; i <= to.getX() ; i++){
-            cellMap[i][from.getY()].setCellType(CellType.WALL);
+            cells[i][from.getY()].setCellType(CellType.WALL);
         }
     }
 
     private void addWallsInRealCoordY(GraphNode from, GraphNode to){
         for(int i = from.getY() ; i <= to.getY() ; i++){
-            cellMap[from.getX()][i].setCellType(CellType.WALL);
+            cells[from.getX()][i].setCellType(CellType.WALL);
         }
     }
 
@@ -84,17 +84,17 @@ public class MapInitialization {
     }
 
     private void addDoorX(GraphNode coordinates){
-        cellMap[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
-        map.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
-        cellMap[coordinates.getX()+1][coordinates.getY()].setCellType(CellType.DOOR);
-        map.getDoors().add(new GraphNode(coordinates.getX()+1, coordinates.getY()));
+        cells[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
+        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
+        cells[coordinates.getX()+1][coordinates.getY()].setCellType(CellType.DOOR);
+        cellMap.getDoors().add(new GraphNode(coordinates.getX()+1, coordinates.getY()));
     }
 
     private void addDoorY(GraphNode coordinates){
-        cellMap[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
-        map.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
-        cellMap[coordinates.getX()][coordinates.getY()+1].setCellType(CellType.DOOR);
-        map.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()+1));
+        cells[coordinates.getX()][coordinates.getY()].setCellType(CellType.DOOR);
+        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()));
+        cells[coordinates.getX()][coordinates.getY()+1].setCellType(CellType.DOOR);
+        cellMap.getDoors().add(new GraphNode(coordinates.getX(), coordinates.getY()+1));
     }
 
     private void addDoors(){

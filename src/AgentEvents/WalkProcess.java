@@ -20,12 +20,11 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
         this.parentAgent = getSimEntity();
         this.currentPositionOnMap = parentAgent.getPositionOnMap();
         this.nextPositionOnMap = parentAgent.getPositionOnMap();
-        System.out.print(" Tworzenie procesu "+ getSimStatus());
     }
 
     @Override
     public double controlStateTransitions() {
-        System.out.print("Wykonanie procesu");
+//        System.out.print("Wykonanie procesu");
         parentAgent.setAgentState(AgentState.WALK);
 
         walkToNewPositionIfIsSet();

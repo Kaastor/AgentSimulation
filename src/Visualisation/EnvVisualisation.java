@@ -3,10 +3,6 @@ package Visualisation;
 
 import Agent.Agent;
 import Environment.*;
-import dissim.broker.IEvent;
-import dissim.broker.IEventPublisher;
-import dissim.broker.IEventSubscriber;
-import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,29 +13,28 @@ import lombok.Data;
 import java.util.ArrayList;
 
 @Data
-public class EnvVisualisation extends Canvas implements IEventSubscriber{
+public class EnvVisualisation extends Canvas {
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
-    private Map map; //INTERFEJS DO MAPY TU
+    private CellMap cellMap; //INTERFEJS DO MAPY TU
     private Image agentImage;
     private int cellSize;
 
-    public EnvVisualisation(Map map, int width, int height){
+    public EnvVisualisation(CellMap cellMap, int width, int height){
         super(width, height);
-        this.map = map;
-        this.cellSize = map.getCellSize();
+        this.cellMap = cellMap;
+        this.cellSize = cellMap.getCellSize();
         this.agentImage = new Image("file:resources/agentSmith.png");
-        SimModel.getInstance().getCommonSimContext().getContextEventBroker().subscribe(Map.class, this);
     }
 
     public void drawMapOnScreen(){
-        Cell[][] cellMap = map.getCellMap();
-        ArrayList<Agent> agentArrayList = map.getAgents();
+        Cell[][] cells = this.cellMap.getCellMap();
+        ArrayList<Agent> agentArrayList = this.cellMap.getAgents();
 
-        for(int i =0 ; i < map.getMapWidth()/map.getCellSize() ; i++){
-            for(int j = 0 ; j< map.getMapHeight()/map.getCellSize()  ; j++){
-                Cell cell = cellMap[i][j];
-                Point2D screenCoordinates = cellMap[i][j].getScreenCoordinates();
+        for(int i = 0; i < this.cellMap.getMapWidth()/ this.cellMap.getCellSize() ; i++){
+            for(int j = 0; j< this.cellMap.getMapHeight()/ this.cellMap.getCellSize()  ; j++){
+                Cell cell = cells[i][j];
+                Point2D screenCoordinates = cells[i][j].getScreenCoordinates();
 
                 if(cell.getCellType() == CellType.FLOOR) {
                     graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
@@ -56,27 +51,19 @@ public class EnvVisualisation extends Canvas implements IEventSubscriber{
         }
         graphicsContext.setFill(Color.BLACK);
         for(Agent agent : agentArrayList){
+//            System.out.println(agentArrayList.get(0).getPositionOnMap());
             drawAgent(agent.getPositionOnMap());
         }
     }
 
     private void drawAgent(GraphNode agentPosition){
-        Point2D agentScreenPosition = conversionToScreenCoordinates(agentPosition);
+        Point2D agentScreenPosition = cellMap.conversionToScreenCoordinates(agentPosition);
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
     }
 
-    private Point2D conversionToScreenCoordinates(GraphNode coordinates){
-        return new Point2D(coordinates.getX()*cellSize, coordinates.getY()*cellSize);
-    }
 
     public void clear(){
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
     }
 
-
-    @Override
-    public void reflect(IEvent iEvent, IEventPublisher iEventPublisher) {  }
-
-    @Override
-    public void reflect(IEvent iEvent) { clear(); }
 }
