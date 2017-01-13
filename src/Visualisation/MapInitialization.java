@@ -8,7 +8,7 @@ public class MapInitialization {
 
     private final int maxAgentsNumber;
     private final CellMap cellMap;
-
+    private GraphMap graphMap;
 
     public MapInitialization(int  mapWidth, int mapHeight, int cellSize, int maxAgentsNumber){
         this.cellMap = new CellMap(mapWidth, mapHeight, cellSize);
@@ -19,7 +19,9 @@ public class MapInitialization {
         addFloors();
         addWalls();
         addDoors();
-        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
+        this.graphMap = cellMap.createAndGetGraphMap();
+        //addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));///////////////////
+        addAgents(1);
         return cellMap;
     }
 
@@ -31,16 +33,11 @@ public class MapInitialization {
         }
     }
     private void addAgents(int agentNumber){
-        SimGenerator generator = RandomGenerator.getInstance();
-        int count = 0, x, y;
+        int count = 0;
         while(count != agentNumber){
-            x = generator.uniformInt(0, cellMap.getMapWorldWidth());
-            y = generator.uniformInt(0, cellMap.getMapWorldHeight());
-            if(cellMap.getCellType(x,y) == CellType.FLOOR){
-                cellMap.addAgent(new Agent(count, new WorldCoordinates(x, y)));
-                count++;
+            cellMap.addAgent(new Agent(graphMap, count));
+            count++;
             }
-        }
     }
 
     private void addWallsInRealCoordinatesX(WorldCoordinates from, WorldCoordinates to){

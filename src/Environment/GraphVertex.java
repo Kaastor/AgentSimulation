@@ -5,7 +5,7 @@ import Agent.Agent;
 import lombok.Data;
 
 @Data
-class GraphVertex {
+public class GraphVertex {
 
     private int id;
     private WorldCoordinates worldCoordinates;

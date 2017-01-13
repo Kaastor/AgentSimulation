@@ -2,6 +2,7 @@ package AgentEvents;
 
 import Agent.Agent;
 import Agent.AgentState;
+import Environment.GraphVertex;
 import Environment.WorldCoordinates;
 import dissim.simspace.core.SimControlException;
 import dissim.simspace.process.BasicSimProcess;
@@ -14,14 +15,20 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
 
     private Agent parentAgent;
     private WorldCoordinates currentPositionOnMap;
-    private WorldCoordinates nextPositionOnMap;
+    private GraphVertex nextPositionOnMap;
 
 
     public WalkProcess(Agent parentAgent) throws SimControlException{
         super(parentAgent);
         this.parentAgent = getSimEntity();
         this.currentPositionOnMap = parentAgent.getPositionOnMap();
-        this.nextPositionOnMap = parentAgent.getPositionOnMap();
+        parentAgent.getPathForSearchArea();
+        this.nextPositionOnMap = parentAgent.getSearchPath().next();
+
+
+//        while(parentAgent.getSearchPath().hasNext())
+//            System.out.println(parentAgent.getSearchPath().next());
+
     }
 
     @Override
@@ -29,27 +36,20 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
         parentAgent.setAgentState(AgentState.WALK);
 
         walkToNewPositionIfIsSet();
-
-        int nextX = currentPositionOnMap.getX();
-        int nextY = currentPositionOnMap.getY();
-        nextPositionOnMap.setX(++nextX);
-        nextPositionOnMap.setY(++nextY);
-
-        System.out.println(parentAgent.getId() + " " +currentPositionOnMap);
+        System.out.println(parentAgent.getId() + " " + currentPositionOnMap);//pozsie nie zmienia, raz pojawilsie dziwnego exceptiona
         reserveNewPositionOnMap();
 
         return parentAgent.getAgentSpeed();
     }
 
     private void walkToNewPositionIfIsSet(){
-        if(currentPositionOnMap.getX() != nextPositionOnMap.getX()
-                || currentPositionOnMap.getY() != nextPositionOnMap.getY()){
-
+        if(nextPositionOnMap != null ){
             parentAgent.moveAgent(nextPositionOnMap);
         }
     }
 
     private void reserveNewPositionOnMap(){
-        parentAgent.reservePosition(nextPositionOnMap);
+        if(parentAgent.getSearchPath().hasNext())
+            parentAgent.reservePosition(parentAgent.getSearchPath().next());
     }
 }

@@ -87,4 +87,8 @@ public class CellMap extends BasicSimEntity implements Map{
     public Point2D getCellScreenCoordinates(int worldX, int worldY){
         return getCell(worldX, worldY).getScreenCoordinates();
     }
+
+    public GraphMap createAndGetGraphMap(){
+        return new GraphMap(this);
+    }
 }

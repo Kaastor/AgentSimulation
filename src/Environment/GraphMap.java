@@ -5,6 +5,8 @@ import lombok.Data;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
 
 import java.util.ArrayList;
 
@@ -100,5 +102,9 @@ public class GraphMap {
     private WorldCoordinates getVertexUpRightCoordinates(GraphVertex vertex) {
         WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()-1 );
+    }
+
+    public GraphIterator<GraphVertex, DefaultEdge> DepthFirstSearch(){
+        return new DepthFirstIterator<>(graph);
     }
 }
