@@ -7,17 +7,18 @@ import lombok.Data;
 
 @Data
 public class Cell {
-
-    private GraphNode worldCoordinates;
+    //czesc wizualizacyjna
+    private WorldCoordinates worldCoordinates;
     private Point2D screenCoordinates;
     private CellType cellType;
     private int cellSize;
 
+    //czesc logiczna
     private boolean hasAgent;
     private boolean isReserved;
     private Agent agent;
 
-    Cell(GraphNode worldCoordinates, int cellSize, CellType cellType){
+    Cell(WorldCoordinates worldCoordinates, int cellSize, CellType cellType){
         this.hasAgent = false;
         this.isReserved = false;
         this.cellSize = cellSize;

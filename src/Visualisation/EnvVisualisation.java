@@ -18,7 +18,6 @@ public class EnvVisualisation extends Canvas {
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
     private Map map;
     private Image agentImage;
-    private Cell[][] cells;
     private int cellSize;
     private int mapScreenHeight;
     private int mapScreenWidth;
@@ -30,7 +29,6 @@ public class EnvVisualisation extends Canvas {
         super(width, height);
         this.map = map;
         this.cellSize = map.getCellSize();
-        this.cells = map.getCells();
         this.agentArrayList = map.getAgentsList();
         this.mapWorldHeight = map.getMapWorldHeight();
         this.mapWorldWidth = map.getMapWorldWidth();
@@ -39,20 +37,21 @@ public class EnvVisualisation extends Canvas {
         this.agentImage = new Image("file:resources/agentSmith.png");
     }
 
-    public void drawMapOnScreen(){
+    void drawMapOnScreen(){
         for(int i = 0; i < mapWorldWidth ; i++){
             for(int j = 0; j< mapWorldHeight  ; j++){
-                Cell cell = cells[i][j];
-                Point2D screenCoordinates = cells[i][j].getScreenCoordinates();
 
-                if(cell.getCellType() == CellType.FLOOR) {
+                CellType cellType = map.getCellType(i, j);
+                Point2D screenCoordinates = map.getCellScreenCoordinates(i, j);
+
+                if(cellType == CellType.FLOOR) {
                     graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
-                if(cell.getCellType() == CellType.WALL) {
+                if(cellType== CellType.WALL) {
                     graphicsContext.setFill(Color.BLACK);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
-                if(cell.getCellType() == CellType.DOOR) {
+                if(cellType == CellType.DOOR) {
                     graphicsContext.setFill(Color.GREENYELLOW);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
@@ -63,12 +62,12 @@ public class EnvVisualisation extends Canvas {
         }
     }
 
-    private void drawAgent(GraphNode agentPosition){
-        Point2D agentScreenPosition = map.conversionToScreenCoordinates(agentPosition);
+    private void drawAgent(WorldCoordinates agentWorldCoordinates){
+        Point2D agentScreenPosition = map.getCellScreenCoordinates(agentWorldCoordinates.getX(), agentWorldCoordinates.getY());
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
     }
 
-    public void clearMapOnScreen(){
+    void clearMapOnScreen(){
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillRect(0, 0, mapScreenWidth, mapScreenHeight);
     }

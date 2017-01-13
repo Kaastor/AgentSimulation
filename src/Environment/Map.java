@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public interface Map {
 
-    Cell[][] getCells();
+    CellType getCellType(int x, int y);
     ArrayList<Agent> getAgentsList();
+    Point2D getCellScreenCoordinates(int x, int y);
 
-    Point2D conversionToScreenCoordinates(GraphNode graphNode);
     int getCellSize();
     int getMapScreenHeight();
     int getMapScreenWidth();

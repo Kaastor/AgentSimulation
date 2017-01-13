@@ -1,5 +1,5 @@
 import Environment.Map;
-import Environment.MapInitialization;
+import Visualisation.MapInitialization;
 import Visualisation.EnvVisualisation;
 import Visualisation.VisualisationTimer;
 import dissim.simspace.core.SimModel;

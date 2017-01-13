@@ -16,6 +16,5 @@ public class VisualisationTimer extends AnimationTimer {
     public void handle(long now) {
         envVisualisation.clearMapOnScreen();
         envVisualisation.drawMapOnScreen();
-
     }
 }

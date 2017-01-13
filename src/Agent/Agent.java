@@ -2,9 +2,8 @@ package Agent;
 
 
 import AgentEvents.WalkProcess;
-import Environment.GraphNode;
+import Environment.WorldCoordinates;
 
-import Environment.CellMap;
 import Environment.RandomGenerator;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
@@ -16,18 +15,16 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
-    private GraphNode positionOnMap;
-    private GraphNode nextPositionOnMap;
+    private WorldCoordinates positionOnMap;
+    private WorldCoordinates nextPositionOnMap;
     private AgentState agentState;
     private int KnowledgeOfArea;
-    private CellMap parentCellMap;
 
     private WalkProcess walkProcess;
 
     @SneakyThrows
-    public Agent(CellMap parentCellMap, int id, GraphNode positionOnMap){
+    public Agent(int id, WorldCoordinates positionOnMap){
         super(SimModel.getInstance().getCommonSimContext());
-        this.parentCellMap = parentCellMap;
         this.id = id;
         this.agentSpeed = RandomGenerator.getInstance().exponential(3.0);
         this.positionOnMap = positionOnMap;
@@ -42,11 +39,11 @@ public class Agent extends BasicSimEntity {
 
     }
 
-    public void moveAgent(GraphNode to){
+    public void moveAgent(WorldCoordinates to){
         setPositionOnMap(to);
     }
 
-    public void reservePosition(GraphNode nextPosition){
+    public void reservePosition(WorldCoordinates nextPosition){
         setNextPositionOnMap(nextPosition);
     }
 

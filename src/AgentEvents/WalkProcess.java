@@ -2,7 +2,7 @@ package AgentEvents;
 
 import Agent.Agent;
 import Agent.AgentState;
-import Environment.GraphNode;
+import Environment.WorldCoordinates;
 import dissim.simspace.core.SimControlException;
 import dissim.simspace.process.BasicSimProcess;
 import lombok.Data;
@@ -13,8 +13,8 @@ import lombok.EqualsAndHashCode;
 public class WalkProcess extends BasicSimProcess<Agent, Object>{
 
     private Agent parentAgent;
-    private GraphNode currentPositionOnMap;
-    private GraphNode nextPositionOnMap;
+    private WorldCoordinates currentPositionOnMap;
+    private WorldCoordinates nextPositionOnMap;
 
 
     public WalkProcess(Agent parentAgent) throws SimControlException{

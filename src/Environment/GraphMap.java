@@ -2,13 +2,16 @@ package Environment;
 
 
 import lombok.Data;
+import org.jgrapht.UndirectedGraph;
 
 import java.util.ArrayList;
 
 @Data
 public class GraphMap {
 
-    private ArrayList<GraphNode> graphNodesList;
+    private UndirectedGraph<Object, Object> graph;
+
+    private ArrayList<WorldCoordinates> graphNodesList;
     private Cell[][] cellMap;
 
     public GraphMap(CellMap cellMap){

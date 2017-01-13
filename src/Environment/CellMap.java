@@ -5,8 +5,10 @@ import Agent.Agent;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.ArrayList;
 
@@ -19,10 +21,10 @@ public class CellMap extends BasicSimEntity implements Map{
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
-    private Cell[][] cells;
+    @Getter(AccessLevel.PROTECTED) private Cell[][] cells;
     private GraphMap graphMap;
     private ArrayList<Agent> agentsList;
-    private ArrayList<GraphNode> doorsList;
+    private ArrayList<WorldCoordinates> doorsList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
         super(SimModel.getInstance().getCommonSimContext());
@@ -34,22 +36,60 @@ public class CellMap extends BasicSimEntity implements Map{
         cells = new Cell[mapScreenHeight][mapScreenWidth];
         this.mapWorldHeight = mapScreenHeight /cellSize;
         this.mapWorldWidth = mapScreenWidth/cellSize;
+
+        initializeMapWithCells();
+    }
+
+    private void initializeMapWithCells(){
+        for(int i = 0; i < mapWorldWidth; i++){
+            for(int j = 0; j < mapWorldHeight ; j++){
+                addCell(i, j);
+            }
+        }
+    }
+
+    private void addCell(int worldX, int worldY){
+        cells[worldX][worldY] = new Cell(new WorldCoordinates(worldX, worldY), cellSize, CellType.FLOOR);
+    }
+
+    public CellType getCellType(int x, int y){
+        return cells[x][y].getCellType();
+    }
+
+    public void setCellToFloor(int worldX, int worldY){
+        cells[worldX][worldY].setCellType(CellType.FLOOR);
+    }
+
+    public void setCellToDoor(int worldX, int worldY){
+        cells[worldX][worldY].setCellType(CellType.DOOR);
+    }
+
+    public void setCellToWall(int worldX, int worldY){
+        cells[worldX][worldY].setCellType(CellType.WALL);
     }
 
     public void addAgent(Agent agent){
         agentsList.add(agent);
     }
 
-    public void setCellReservationStatus(GraphNode cellCoordinates, boolean status){
+    //lista potrzebna?
+    public void addDoor(WorldCoordinates doorCoordinates){ doorsList.add(doorCoordinates);}
+
+    private Cell getCell(int worldX, int worldY){
+        return cells[worldX][worldY];
+    }
+
+    public Point2D getCellScreenCoordinates(int x, int y){
+        return getCell(x, y).getScreenCoordinates();
+    }
+
+    //logika
+    public void setCellReservationStatus(WorldCoordinates cellCoordinates, boolean status){
         cells[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
     }
 
-    public void setCellOccupancyStatus(GraphNode cellCoordinates, boolean status){
+    public void setCellOccupancyStatus(WorldCoordinates cellCoordinates, boolean status){
         cells[cellCoordinates.getX()][cellCoordinates.getY()].setHasAgent(status);
-    }
-
-    public Cell getCell(int x, int y){
-        return cells[x][y];
     }
 
     public GraphMap createAndGetGraphMap(){
@@ -57,8 +97,6 @@ public class CellMap extends BasicSimEntity implements Map{
         return graphMap;
     }
 
-    public Point2D conversionToScreenCoordinates(GraphNode coordinates){
-        return new Point2D(coordinates.getX()*cellSize, coordinates.getY()*cellSize);
-    }
+
 
 }
