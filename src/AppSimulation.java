@@ -9,9 +9,11 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class AppSimulation extends Application{
 
     @SneakyThrows

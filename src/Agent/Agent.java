@@ -8,9 +8,11 @@ import Environment.RandomGenerator;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class Agent extends BasicSimEntity {
 
     private int id;

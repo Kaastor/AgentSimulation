@@ -3,33 +3,37 @@ package Environment;
 
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
-
-import java.util.ArrayList;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 @Data
 public class GraphMap {
 
-    private UndirectedGraph<Object, Object> graph;
+    private UndirectedGraph<GraphNode, DefaultEdge> graph;
+    private Map map;
 
-    private ArrayList<WorldCoordinates> graphNodesList;
-    private Cell[][] cellMap;
-
-    public GraphMap(CellMap cellMap){
-        this.cellMap = cellMap.getCells();
-        this.graphNodesList = new ArrayList<>();
-        initializeGraphMap(cellMap);
+    public GraphMap(Map map){
+        this.map = map;
+        this.graph = new SimpleGraph<>(DefaultEdge.class);
+        createGraphFromMap();
     }
 
-    private void initializeGraphMap(CellMap cellMap){
-//        for(int i = 0; i < cellMap.getMapWorldWidth() ; i++) {
-//            for (int j = 0; j < cellMap.getMapWorldHeight(); j++) {
-//                if(isCellFloorOrDoorType(this.cellMap[i][j]))
-//                    graphNodesList.add(this.cellMap[i][j].getWorldCoordinates());
-//            }
-//        }
+    private void createGraphFromMap(){
+        addNodesToGraph();
     }
 
-    private boolean isCellFloorOrDoorType(Cell cell){
-        return  (cell.getCellType() == CellType.FLOOR || cell.getCellType() == CellType.DOOR );
+    private void addNodesToGraph() {
+        for (int x = 0; x < map.getMapWorldWidth(); x++) {
+            for (int y = 0; y < map.getMapWorldHeight(); y++) {
+                if(cellIsWalkable(x, y)){
+                    graph.addVertex(new GraphNode(new WorldCoordinates(x, y)));
+                }
+            }
+        }
+    }
+
+    private boolean cellIsWalkable(int worldX, int worldY){
+        return map.getCellType(worldX, worldY) == (CellType.FLOOR)
+                || map.getCellType(worldX, worldY) == (CellType.DOOR);
     }
 }

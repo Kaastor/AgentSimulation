@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public interface Map {
 
-    CellType getCellType(int x, int y);
+    CellType getCellType(int worldX, int worldY);
     ArrayList<Agent> getAgentsList();
-    Point2D getCellScreenCoordinates(int x, int y);
+    Point2D getCellScreenCoordinates(int worldX, int worldY);
 
     int getCellSize();
     int getMapScreenHeight();

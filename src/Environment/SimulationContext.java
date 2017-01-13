@@ -6,10 +6,12 @@ import dissim.simspace.core.SimContextInterface;
 import dissim.simspace.core.SimModel;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @PluginImplementation
 public class SimulationContext extends BasicSimContext implements SimContextInterface{
 

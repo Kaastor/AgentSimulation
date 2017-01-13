@@ -6,8 +6,9 @@ import Agent.Agent;
 
 public class MapInitialization {
 
-    private CellMap cellMap;
-    private int maxAgentsNumber;
+    private final int maxAgentsNumber;
+    private final CellMap cellMap;
+
 
     public MapInitialization(int  mapWidth, int mapHeight, int cellSize, int maxAgentsNumber){
         this.cellMap = new CellMap(mapWidth, mapHeight, cellSize);
@@ -15,12 +16,20 @@ public class MapInitialization {
     }
 
     public Map initialize(){
+        addFloors();
         addWalls();
         addDoors();
         addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
         return cellMap;
     }
 
+    private void addFloors(){
+        for(int x = 0; x < cellMap.getMapWorldWidth(); x++){
+            for(int y = 0; y < cellMap.getMapWorldHeight() ; y++){
+                cellMap.setCellToFloor(x, y);
+            }
+        }
+    }
     private void addAgents(int agentNumber){
         SimGenerator generator = RandomGenerator.getInstance();
         int count = 0, x, y;
@@ -34,42 +43,42 @@ public class MapInitialization {
         }
     }
 
-    private void addWallsInRealCoordX(WorldCoordinates from, WorldCoordinates to){
-        for(int i = from.getX() ; i <= to.getX() ; i++){
-            cellMap.setCellToWall(i, from.getY());
+    private void addWallsInRealCoordinatesX(WorldCoordinates from, WorldCoordinates to){
+        for(int x = from.getX() ; x <= to.getX() ; x++){
+            cellMap.setCellToWall(x, from.getY());
         }
     }
 
-    private void addWallsInRealCoordY(WorldCoordinates from, WorldCoordinates to){
-        for(int i = from.getY() ; i <= to.getY() ; i++){
-            cellMap.setCellToWall(from.getX(), i);
+    private void addWallsInRealCoordinatesY(WorldCoordinates from, WorldCoordinates to){
+        for(int y = from.getY() ; y <= to.getY() ; y++){
+            cellMap.setCellToWall(from.getX(), y);
         }
     }
 
     private void addWalls(){
         //ściany zewnetrzne
-        addWallsInRealCoordX(new WorldCoordinates(0, 0), new WorldCoordinates(47, 0));
-        addWallsInRealCoordX(new WorldCoordinates(0, 31), new WorldCoordinates(47, 31));
-        addWallsInRealCoordY(new WorldCoordinates(0, 0), new WorldCoordinates(0, 31));
-        addWallsInRealCoordY(new WorldCoordinates(47, 0), new WorldCoordinates(47, 31));
+        addWallsInRealCoordinatesX(new WorldCoordinates(0, 0), new WorldCoordinates(47, 0));
+        addWallsInRealCoordinatesX(new WorldCoordinates(0, 31), new WorldCoordinates(47, 31));
+        addWallsInRealCoordinatesY(new WorldCoordinates(0, 0), new WorldCoordinates(0, 31));
+        addWallsInRealCoordinatesY(new WorldCoordinates(47, 0), new WorldCoordinates(47, 31));
         //sklep 1.&2.
-        addWallsInRealCoordX(new WorldCoordinates(1, 10), new WorldCoordinates(16, 10));
-        addWallsInRealCoordY(new WorldCoordinates(16, 1), new WorldCoordinates(16, 10));
-        addWallsInRealCoordY(new WorldCoordinates(6, 1), new WorldCoordinates(6, 10));
+        addWallsInRealCoordinatesX(new WorldCoordinates(1, 10), new WorldCoordinates(16, 10));
+        addWallsInRealCoordinatesY(new WorldCoordinates(16, 1), new WorldCoordinates(16, 10));
+        addWallsInRealCoordinatesY(new WorldCoordinates(6, 1), new WorldCoordinates(6, 10));
         //sklep 3.&4.
-        addWallsInRealCoordX(new WorldCoordinates(27, 10), new WorldCoordinates(47, 10));
-        addWallsInRealCoordY(new WorldCoordinates(27, 1), new WorldCoordinates(27, 10));
-        addWallsInRealCoordY(new WorldCoordinates(37, 1), new WorldCoordinates(37, 10));
+        addWallsInRealCoordinatesX(new WorldCoordinates(27, 10), new WorldCoordinates(47, 10));
+        addWallsInRealCoordinatesY(new WorldCoordinates(27, 1), new WorldCoordinates(27, 10));
+        addWallsInRealCoordinatesY(new WorldCoordinates(37, 1), new WorldCoordinates(37, 10));
         //sklep 5. - przed regionem
-        addWallsInRealCoordX(new WorldCoordinates(1, 19), new WorldCoordinates(47, 19));
-        addWallsInRealCoordY(new WorldCoordinates(16, 20), new WorldCoordinates(16, 31));
-        addWallsInRealCoordX(new WorldCoordinates(1, 24), new WorldCoordinates(15, 24));
+        addWallsInRealCoordinatesX(new WorldCoordinates(1, 19), new WorldCoordinates(47, 19));
+        addWallsInRealCoordinatesY(new WorldCoordinates(16, 20), new WorldCoordinates(16, 31));
+        addWallsInRealCoordinatesX(new WorldCoordinates(1, 24), new WorldCoordinates(15, 24));
         //sklep 6. - na koncu regionu 2.
-        addWallsInRealCoordY(new WorldCoordinates(37, 20), new WorldCoordinates(37, 31));
+        addWallsInRealCoordinatesY(new WorldCoordinates(37, 20), new WorldCoordinates(37, 31));
         //fontanna
-        addWallsInRealCoordX(new WorldCoordinates(25, 24), new WorldCoordinates(27, 24));
-        addWallsInRealCoordX(new WorldCoordinates(25, 25), new WorldCoordinates(27, 25));
-        addWallsInRealCoordX(new WorldCoordinates(25, 26), new WorldCoordinates(27, 26));
+        addWallsInRealCoordinatesX(new WorldCoordinates(25, 24), new WorldCoordinates(27, 24));
+        addWallsInRealCoordinatesX(new WorldCoordinates(25, 25), new WorldCoordinates(27, 25));
+        addWallsInRealCoordinatesX(new WorldCoordinates(25, 26), new WorldCoordinates(27, 26));
     }
 
     private void addDoorX(WorldCoordinates coordinates){

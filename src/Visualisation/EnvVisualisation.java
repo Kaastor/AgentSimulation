@@ -9,10 +9,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class EnvVisualisation extends Canvas {
 
     private final GraphicsContext graphicsContext = this.getGraphicsContext2D();
@@ -38,11 +40,11 @@ public class EnvVisualisation extends Canvas {
     }
 
     void drawMapOnScreen(){
-        for(int i = 0; i < mapWorldWidth ; i++){
-            for(int j = 0; j< mapWorldHeight  ; j++){
+        for(int x = 0; x < mapWorldWidth ; x++){
+            for(int y = 0; y< mapWorldHeight  ; y++){
 
-                CellType cellType = map.getCellType(i, j);
-                Point2D screenCoordinates = map.getCellScreenCoordinates(i, j);
+                CellType cellType = map.getCellType(x, y);
+                Point2D screenCoordinates = map.getCellScreenCoordinates(x, y);
 
                 if(cellType == CellType.FLOOR) {
                     graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);

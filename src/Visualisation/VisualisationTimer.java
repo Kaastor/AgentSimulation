@@ -5,7 +5,7 @@ import javafx.animation.AnimationTimer;
 
 public class VisualisationTimer extends AnimationTimer {
 
-    private EnvVisualisation envVisualisation;
+    private final EnvVisualisation envVisualisation;
 
     public VisualisationTimer(EnvVisualisation envVisualisation){
         this.envVisualisation = envVisualisation;
