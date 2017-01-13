@@ -14,5 +14,7 @@
     <orderEntry type="library" name="groovy-all-2.4.7" level="project" />
     <orderEntry type="library" name="slf4j-simple-1.7.7" level="project" />
     <orderEntry type="library" name="jgrapht-core-1.0.0" level="project" />
+    <orderEntry type="library" name="jgraph" level="project" />
+    <orderEntry type="library" name="jgrapht-ext-1.0.0" level="project" />
   </component>
 </module>

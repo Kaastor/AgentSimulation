@@ -77,6 +77,13 @@ public class CellMap extends BasicSimEntity implements Map{
         return cells[worldX][worldY];
     }
 
+    public boolean cellExist(WorldCoordinates worldCoordinates){
+        return worldCoordinates.getX() < mapWorldWidth &&
+                worldCoordinates.getY() < mapWorldHeight &&
+                worldCoordinates.getX() >= 0 &&
+                worldCoordinates.getY() >= 0;
+    }
+
     public Point2D getCellScreenCoordinates(int worldX, int worldY){
         return getCell(worldX, worldY).getScreenCoordinates();
     }

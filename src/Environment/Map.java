@@ -10,12 +10,11 @@ public interface Map {
     CellType getCellType(int worldX, int worldY);
     ArrayList<Agent> getAgentsList();
     Point2D getCellScreenCoordinates(int worldX, int worldY);
-
+    boolean cellExist(WorldCoordinates worldCoordinates);
     int getCellSize();
     int getMapScreenHeight();
     int getMapScreenWidth();
     int getMapWorldHeight();
     int getMapWorldWidth();
-
 
 }

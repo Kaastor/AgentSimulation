@@ -62,6 +62,8 @@ public class EnvVisualisation extends Canvas {
         for(Agent agent : agentArrayList){
             drawAgent(agent.getPositionOnMap());
         }
+
+
     }
 
     private void drawAgent(WorldCoordinates agentWorldCoordinates){

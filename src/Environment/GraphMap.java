@@ -6,34 +6,99 @@ import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import java.util.ArrayList;
+
 @Data
 public class GraphMap {
 
-    private UndirectedGraph<GraphNode, DefaultEdge> graph;
+    private UndirectedGraph<GraphVertex, DefaultEdge> graph;
+    private ArrayList<GraphVertex> vertices;
     private Map map;
+
 
     public GraphMap(Map map){
         this.map = map;
         this.graph = new SimpleGraph<>(DefaultEdge.class);
+        vertices = new ArrayList<>();
         createGraphFromMap();
     }
 
     private void createGraphFromMap(){
-        addNodesToGraph();
+        addVerticesToGraph();
+        addEdgesToGraph();
     }
 
-    private void addNodesToGraph() {
-        for (int x = 0; x < map.getMapWorldWidth(); x++) {
-            for (int y = 0; y < map.getMapWorldHeight(); y++) {
-                if(cellIsWalkable(x, y)){
-                    graph.addVertex(new GraphNode(new WorldCoordinates(x, y)));
+    private void addVerticesToGraph() {
+        int count = 0;
+        for (int y = 0; y < map.getMapWorldHeight(); y++) {
+            for (int x = 0; x < map.getMapWorldWidth(); x++) {
+                if (cellIsWalkable(new WorldCoordinates(x,y))) {
+                    GraphVertex vertex = new GraphVertex(count, new WorldCoordinates(x, y));
+                    graph.addVertex(vertex);
+                    vertices.add(vertex);
+                    count++;
                 }
             }
         }
     }
 
-    private boolean cellIsWalkable(int worldX, int worldY){
-        return map.getCellType(worldX, worldY) == (CellType.FLOOR)
-                || map.getCellType(worldX, worldY) == (CellType.DOOR);
+    private void addEdgesToGraph(){
+        for (GraphVertex vertex : vertices){
+            addEdgesToVertex(vertex);
+        }
+    }
+
+    private void addEdgesToVertex(GraphVertex vertexFrom) {
+        boolean cellsAroundExist = true;
+        if(cellExistAndIsWalkable(getVertexUpCoordinates(vertexFrom))){
+            GraphVertex graphVertexTo = getVertexTo(getVertexUpCoordinates(vertexFrom));
+            graph.addEdge(vertexFrom, graphVertexTo);
+        }
+        else{
+            cellsAroundExist = false;
+        }
+        if(cellExistAndIsWalkable(getVertexRightCoordinates(vertexFrom))){
+            GraphVertex graphVertexTo = getVertexTo(getVertexRightCoordinates(vertexFrom));
+            graph.addEdge(vertexFrom, graphVertexTo);
+        }
+        else{
+            cellsAroundExist = false;
+        }
+        if(cellsAroundExist && cellExistAndIsWalkable(getVertexUpRightCoordinates(vertexFrom))){
+            GraphVertex graphVertexTo = getVertexTo(getVertexUpRightCoordinates(vertexFrom));
+            graph.addEdge(vertexFrom, graphVertexTo);
+        }
+    }
+
+    private GraphVertex getVertexTo(WorldCoordinates vertexCoordinates){
+        GraphVertex vertexTo = null;
+        for (GraphVertex vertex : vertices){
+            if(vertex.equals(new GraphVertex(vertexCoordinates)))
+                vertexTo = vertex;
+        }
+        return vertexTo;
+    }
+    private boolean cellIsWalkable(WorldCoordinates cellCoordinates){
+        return map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.FLOOR)
+                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.DOOR);
+    }
+
+    private boolean cellExistAndIsWalkable(WorldCoordinates cellCoordinates){
+        return (map.cellExist(cellCoordinates) && cellIsWalkable(cellCoordinates));
+    }
+
+    private WorldCoordinates getVertexUpCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX(), vertexCoordinates.getY()-1 );
+    }
+
+    private WorldCoordinates getVertexRightCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY() );
+    }
+
+    private WorldCoordinates getVertexUpRightCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()-1 );
     }
 }
