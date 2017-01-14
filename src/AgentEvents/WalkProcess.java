@@ -18,7 +18,8 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
         super(parentAgent);
         this.parentAgent = getSimEntity();
     }
-
+//kolizje, rodzaje sciezek, losowa zmiana decyzji, przyspieszanie symulacji
+    //statystyki
     @Override
     public double controlStateTransitions() {
         parentAgent.setAgentState(AgentState.WALK);
@@ -30,6 +31,7 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
     private void walkToNextPositionIfSet(){
         if(parentAgent.getNextPosition() != null &&
                 !(parentAgent.getNextPosition().equals(parentAgent.getPosition()))){
+            parentAgent.setPreviousPosition(parentAgent.getPosition());
             parentAgent.moveToNextPosition();
         }
     }

@@ -22,6 +22,7 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
+    private GraphVertex previousPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
     private AgentState agentState;
@@ -37,18 +38,17 @@ public class Agent extends BasicSimEntity {
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.graphMap = graphMap;
+        this.agentState = AgentState.NOP;
         this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.previousPosition = graphMap.getVertex(startPosition);
         this.position = graphMap.getVertex(startPosition);
 
-//        makePathForRandomWalk(position);
-        makePathForWholeAreaSearch(position);
+        makePathForRandomWalk(position);
+//        makePathForWholeAreaSearch(position);
+
         this.nextPosition = notPlannedPath.next();
-        this.agentState = AgentState.NOP;
+
         this.walkProcess = new WalkProcess(this);
-
-        //proces myslowy
-
-
         walkProcess.start();
     }
 

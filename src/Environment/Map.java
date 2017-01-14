@@ -10,6 +10,8 @@ public interface Map {
     GraphMap createAndGetGraphMap();
     CellType getCellType(int worldX, int worldY);
     ArrayList<Agent> getAgentsList();
+    ArrayList<WorldCoordinates> getDoorsList();
+    ArrayList<WorldCoordinates> getEntrancesList();
     Point2D getCellScreenCoordinates(int worldX, int worldY);
     boolean cellExist(WorldCoordinates worldCoordinates);
     int getCellSize();

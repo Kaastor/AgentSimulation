@@ -29,13 +29,4 @@ public class GraphVertex {
         GraphVertex vertex = (GraphVertex) o;
         return worldCoordinates.equals(vertex.worldCoordinates);
     }
-
-
-//    public void setCellReservationStatus(WorldCoordinates cellCoordinates, boolean status){
-//        cells[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
-//    }
-//
-//    public void setCellOccupancyStatus(WorldCoordinates cellCoordinates, boolean status){
-//        cells[cellCoordinates.getX()][cellCoordinates.getY()].setHasAgent(status);
-//    }
 }

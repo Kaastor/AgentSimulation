@@ -5,10 +5,7 @@ import Agent.Agent;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 
@@ -21,7 +18,7 @@ public class CellMap extends BasicSimEntity implements Map{
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
-    @Getter(AccessLevel.PROTECTED) private Cell[][] cells;
+    @Setter(AccessLevel.PRIVATE)@Getter(AccessLevel.PROTECTED) private Cell[][] cells;
     private ArrayList<Agent> agentsList;
     private ArrayList<WorldCoordinates> doorsList;
     private ArrayList<WorldCoordinates> entrancesList;

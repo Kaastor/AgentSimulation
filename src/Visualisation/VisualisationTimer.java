@@ -2,7 +2,6 @@ package Visualisation;
 
 import javafx.animation.AnimationTimer;
 
-
 public class VisualisationTimer extends AnimationTimer {
 
     private final EnvVisualisation envVisualisation;
@@ -14,7 +13,8 @@ public class VisualisationTimer extends AnimationTimer {
 
     @Override
     public void handle(long now) {
-        envVisualisation.clearMapOnScreen();
-        envVisualisation.drawMapOnScreen();
+//        envVisualisation.clearMapOnScreen();
+//        envVisualisation.drawMapOnScreen();
+        envVisualisation.renderMap();
     }
 }
