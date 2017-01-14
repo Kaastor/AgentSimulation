@@ -53,33 +53,38 @@ public class GraphMap {
     private void addEdgesToVertex(GraphVertex vertexFrom) {
         boolean cellsAroundExist = true;
         if(cellExistAndIsWalkable(getVertexUpCoordinates(vertexFrom))){
-            GraphVertex graphVertexTo = getVertexTo(getVertexUpCoordinates(vertexFrom));
+            GraphVertex graphVertexTo = getVertex(getVertexUpCoordinates(vertexFrom));
             graph.addEdge(vertexFrom, graphVertexTo);
         }
         else{
             cellsAroundExist = false;
         }
         if(cellExistAndIsWalkable(getVertexRightCoordinates(vertexFrom))){
-            GraphVertex graphVertexTo = getVertexTo(getVertexRightCoordinates(vertexFrom));
+            GraphVertex graphVertexTo = getVertex(getVertexRightCoordinates(vertexFrom));
             graph.addEdge(vertexFrom, graphVertexTo);
         }
         else{
             cellsAroundExist = false;
         }
         if(cellsAroundExist && cellExistAndIsWalkable(getVertexUpRightCoordinates(vertexFrom))){
-            GraphVertex graphVertexTo = getVertexTo(getVertexUpRightCoordinates(vertexFrom));
+            GraphVertex graphVertexTo = getVertex(getVertexUpRightCoordinates(vertexFrom));
             graph.addEdge(vertexFrom, graphVertexTo);
         }
     }
 
-    private GraphVertex getVertexTo(WorldCoordinates vertexCoordinates){
-        GraphVertex vertexTo = null;
+    public GraphVertex getVertex(WorldCoordinates vertexCoordinates){
+        return searchForVertex(vertexCoordinates);
+    }
+
+    private GraphVertex searchForVertex(WorldCoordinates vertexCoordinates){
+        GraphVertex searchedVertex = null;
         for (GraphVertex vertex : vertices){
             if(vertex.equals(new GraphVertex(vertexCoordinates)))
-                vertexTo = vertex;
+                searchedVertex = vertex;
         }
-        return vertexTo;
+        return searchedVertex;
     }
+
     private boolean cellIsWalkable(WorldCoordinates cellCoordinates){
         return map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.FLOOR)
                 || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.DOOR);

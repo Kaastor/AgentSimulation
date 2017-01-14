@@ -12,6 +12,9 @@ import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import org.jgrapht.GraphPath;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.AStarShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.GraphIterator;
 
@@ -21,7 +24,7 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
-    private WorldCoordinates positionOnMap;
+    private GraphVertex positionOnMap;
     private GraphVertex nextPositionOnMap;
     private AgentState agentState;
     private int KnowledgeOfArea;
@@ -30,6 +33,7 @@ public class Agent extends BasicSimEntity {
 
     private WalkProcess walkProcess;
 
+    GraphPath<GraphVertex, DefaultEdge> agentCurrentPath;
     GraphIterator<GraphVertex, DefaultEdge> searchPath;
 
     @SneakyThrows
@@ -37,27 +41,34 @@ public class Agent extends BasicSimEntity {
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.graphMap = graphMap;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(1.0);
-        this.positionOnMap = new WorldCoordinates(0,0);
-        this.nextPositionOnMap = null;
+        this.agentSpeed = RandomGenerator.getInstance().exponential(0.3);
+        this.positionOnMap = null;
+
+        makePathForWholeAreaSearch();
+
+        this.nextPositionOnMap = searchPath.next();
         this.agentState = AgentState.NOP;
 
         this.walkProcess = new WalkProcess(this);
+
+        //proces myslowy
+
+
         walkProcess.start();
     }
 
     public void collisionCheck(){}
 
-    public void moveAgent(GraphVertex to){
-        setPositionOnMap(to.getWorldCoordinates());
+    public void moveToNextPosition(){
+        setPositionOnMap(getNextPositionOnMap());
     }
 
     public void reservePosition(GraphVertex nextPosition){
-        setNextPositionOnMap(nextPosition);
     }
 
-    public void getPathForSearchArea() {
+    private void makePathForWholeAreaSearch() {
         searchPath = graphMap.DepthFirstSearch();
     }
+
 
 }

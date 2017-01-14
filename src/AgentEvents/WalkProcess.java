@@ -14,17 +14,10 @@ import lombok.EqualsAndHashCode;
 public class WalkProcess extends BasicSimProcess<Agent, Object>{
 
     private Agent parentAgent;
-    private WorldCoordinates currentPositionOnMap;
-    private GraphVertex nextPositionOnMap;
-
 
     public WalkProcess(Agent parentAgent) throws SimControlException{
         super(parentAgent);
         this.parentAgent = getSimEntity();
-        this.currentPositionOnMap = parentAgent.getPositionOnMap();
-        parentAgent.getPathForSearchArea();
-        this.nextPositionOnMap = parentAgent.getSearchPath().next();
-
 
 //        while(parentAgent.getSearchPath().hasNext())
 //            System.out.println(parentAgent.getSearchPath().next());
@@ -35,21 +28,29 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
     public double controlStateTransitions() {
         parentAgent.setAgentState(AgentState.WALK);
 
-        walkToNewPositionIfIsSet();
-        System.out.println(parentAgent.getId() + " " + currentPositionOnMap);//pozsie nie zmienia, raz pojawilsie dziwnego exceptiona
-        reserveNewPositionOnMap();
+//        System.out.println("before move " + parentAgent.getPositionOnMap());
+//        System.out.println("before move " + parentAgent.getNextPositionOnMap());
+        walkToNextPositionIfSet();
+//        System.out.println(parentAgent.getId() + " " + parentAgent.getPositionOnMap());//pozsie nie zmienia, raz pojawilsie dziwnego exceptiona
+        setNextPositionOnMap();
 
         return parentAgent.getAgentSpeed();
     }
 
-    private void walkToNewPositionIfIsSet(){
-        if(nextPositionOnMap != null ){
-            parentAgent.moveAgent(nextPositionOnMap);
+    private void walkToNextPositionIfSet(){
+        if(parentAgent.getNextPositionOnMap() != null &&
+                !(parentAgent.getNextPositionOnMap().equals(parentAgent.getPositionOnMap()))){ //equals cos niszczy...
+//            System.out.println("move");
+            parentAgent.moveToNextPosition();
         }
     }
 
-    private void reserveNewPositionOnMap(){
-        if(parentAgent.getSearchPath().hasNext())
-            parentAgent.reservePosition(parentAgent.getSearchPath().next());
+    private void setNextPositionOnMap(){
+        if(parentAgent.getSearchPath().hasNext()) {
+            GraphVertex next = parentAgent.getSearchPath().next();
+//            System.out.println("setNext " + next);
+            parentAgent.setNextPositionOnMap(next);
+//            System.out.println("Next " + parentAgent.getNextPositionOnMap());
+        }
     }
 }

@@ -39,6 +39,7 @@ public class AppSimulation extends Application{
         Task task = new Task<Void>() {
             @SneakyThrows
             @Override public Void call() {
+
                 SimModel.getInstance().ASTRONOMICALSimulation();
                 SimModel.getInstance().startSimulation();
                 return null;

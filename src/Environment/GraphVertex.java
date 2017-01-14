@@ -22,10 +22,6 @@ public class GraphVertex {
         this.worldCoordinates = worldCoordinates;
     }
 
-//    public boolean equals(GraphVertex graphVertex){
-//        return worldCoordinates.equals(graphVertex.getWorldCoordinates());
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

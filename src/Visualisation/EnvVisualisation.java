@@ -60,7 +60,8 @@ public class EnvVisualisation extends Canvas {
             }
         }
         for(Agent agent : agentArrayList){
-            drawAgent(agent.getPositionOnMap());
+            if(agent.getPositionOnMap() != null)
+                drawAgent(agent.getPositionOnMap().getWorldCoordinates());
         }
     }
 
