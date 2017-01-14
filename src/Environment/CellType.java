@@ -1,5 +1,5 @@
 package Environment;
 
 public enum CellType {
-    FLOOR, WALL, DOOR
+    FLOOR, WALL, DOOR, ENTRANCE
 }

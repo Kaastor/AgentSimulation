@@ -24,6 +24,7 @@ public class CellMap extends BasicSimEntity implements Map{
     @Getter(AccessLevel.PROTECTED) private Cell[][] cells;
     private ArrayList<Agent> agentsList;
     private ArrayList<WorldCoordinates> doorsList;
+    private ArrayList<WorldCoordinates> entrancesList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
         super(SimModel.getInstance().getCommonSimContext());
@@ -32,6 +33,7 @@ public class CellMap extends BasicSimEntity implements Map{
         this.cellSize = cellSize;
         this.agentsList = new ArrayList<>();
         this.doorsList = new ArrayList<>();
+        this.entrancesList = new ArrayList<>();
         cells = new Cell[mapScreenHeight][mapScreenWidth];
         this.mapWorldHeight = mapScreenHeight /cellSize;
         this.mapWorldWidth = mapScreenWidth/cellSize;
@@ -59,12 +61,14 @@ public class CellMap extends BasicSimEntity implements Map{
         cells[worldX][worldY].setCellType(CellType.FLOOR);
     }
 
-    public void setCellToDoor(int worldX, int worldY){
-        cells[worldX][worldY].setCellType(CellType.DOOR);
-    }
+    public void setCellToDoor(int worldX, int worldY){ cells[worldX][worldY].setCellType(CellType.DOOR); }
 
     public void setCellToWall(int worldX, int worldY){
         cells[worldX][worldY].setCellType(CellType.WALL);
+    }
+
+    public void setCellToEntrance(int worldX, int worldY){
+        cells[worldX][worldY].setCellType(CellType.ENTRANCE);
     }
 
     public void addAgent(Agent agent){
@@ -72,6 +76,8 @@ public class CellMap extends BasicSimEntity implements Map{
     }
 
     public void addDoor(WorldCoordinates doorCoordinates){ doorsList.add(doorCoordinates);}
+
+    public void addEntrance(WorldCoordinates entranceCoordinates){ entrancesList.add(entranceCoordinates);}
 
     private Cell getCell(int worldX, int worldY){
         return cells[worldX][worldY];

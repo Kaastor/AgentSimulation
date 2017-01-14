@@ -7,6 +7,7 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
+import org.jgrapht.traverse.RandomWalkIterator;
 
 import java.util.ArrayList;
 
@@ -87,7 +88,8 @@ public class GraphMap {
 
     private boolean cellIsWalkable(WorldCoordinates cellCoordinates){
         return map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.FLOOR)
-                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.DOOR);
+                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.DOOR)
+                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.ENTRANCE);
     }
 
     private boolean cellExistAndIsWalkable(WorldCoordinates cellCoordinates){
@@ -109,7 +111,11 @@ public class GraphMap {
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()-1 );
     }
 
-    public GraphIterator<GraphVertex, DefaultEdge> DepthFirstSearch(){
-        return new DepthFirstIterator<>(graph);
+    public GraphIterator<GraphVertex, DefaultEdge> depthFirstSearch(GraphVertex startPosition){
+        return new DepthFirstIterator<>(graph, startPosition);
+    }
+
+    public GraphIterator<GraphVertex, DefaultEdge> randomWalk(GraphVertex startPosition){
+        return new RandomWalkIterator<>(graph, startPosition);
     }
 }

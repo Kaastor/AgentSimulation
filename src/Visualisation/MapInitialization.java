@@ -1,7 +1,6 @@
 package Visualisation;
 
 import Environment.*;
-import dissim.random.SimGenerator;
 import Agent.Agent;
 
 public class MapInitialization {
@@ -20,8 +19,7 @@ public class MapInitialization {
         addWalls();
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
-        //addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));///////////////////
-        addAgents(1);
+        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
         return cellMap;
     }
 
@@ -35,7 +33,8 @@ public class MapInitialization {
     private void addAgents(int agentNumber){
         int count = 0;
         while(count != agentNumber){
-            cellMap.addAgent(new Agent(graphMap, count));
+            int entranceNumber = RandomGenerator.getInstance().uniformInt(0, cellMap.getEntrancesList().size());
+            cellMap.addAgent(new Agent(graphMap, cellMap.getEntrancesList().get(entranceNumber), count));
             count++;
             }
     }
@@ -92,6 +91,20 @@ public class MapInitialization {
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 
+    private void addEntranceX(WorldCoordinates coordinates){
+        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY());
+        cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
+        cellMap.setCellToEntrance(coordinates.getX()+1, coordinates.getY());
+        cellMap.addEntrance(new WorldCoordinates(coordinates.getX()+1, coordinates.getY()));
+    }
+
+    private void addEntranceY(WorldCoordinates coordinates){
+        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY());
+        cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
+        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY()+1);
+        cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
+    }
+
     private void addDoors(){
         addDoorX(new WorldCoordinates(2, 10)); //1.
         addDoorX(new WorldCoordinates(10, 10)); //2.
@@ -101,8 +114,8 @@ public class MapInitialization {
         addDoorY(new WorldCoordinates(27, 6)); //3.
         addDoorY(new WorldCoordinates(16, 21)); //region
         addDoorY(new WorldCoordinates(37, 24)); //6.
-        addDoorY(new WorldCoordinates(0, 14)); //wejscie lewe
-        addDoorY(new WorldCoordinates(47, 14)); //wejscie prawe
-        addDoorX(new WorldCoordinates(21, 0)); //wejscie gorne
+        addEntranceY(new WorldCoordinates(0, 14)); //wejscie lewe
+        addEntranceY(new WorldCoordinates(47, 14)); //wejscie prawe
+        addEntranceX(new WorldCoordinates(21, 0)); //wejscie gorne
     }
 }

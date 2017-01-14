@@ -4,17 +4,15 @@ package Agent;
 import AgentEvents.WalkProcess;
 import Environment.GraphMap;
 import Environment.GraphVertex;
-import Environment.WorldCoordinates;
 
 import Environment.RandomGenerator;
+import Environment.WorldCoordinates;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import org.jgrapht.GraphPath;
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.AStarShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.GraphIterator;
 
@@ -24,31 +22,28 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
-    private GraphVertex positionOnMap;
-    private GraphVertex nextPositionOnMap;
+    private GraphVertex position;
+    private GraphVertex nextPosition;
     private AgentState agentState;
     private int KnowledgeOfArea;
-
     private GraphMap graphMap;
+    GraphPath<GraphVertex, DefaultEdge> plannedPath;
+    GraphIterator<GraphVertex, DefaultEdge> notPlannedPath;
 
     private WalkProcess walkProcess;
 
-    GraphPath<GraphVertex, DefaultEdge> agentCurrentPath;
-    GraphIterator<GraphVertex, DefaultEdge> searchPath;
-
     @SneakyThrows
-    public Agent(GraphMap graphMap, int id){
+    public Agent(GraphMap graphMap, WorldCoordinates startPosition, int id){
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.graphMap = graphMap;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(0.3);
-        this.positionOnMap = null;
+        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.position = graphMap.getVertex(startPosition);
 
-        makePathForWholeAreaSearch();
-
-        this.nextPositionOnMap = searchPath.next();
+//        makePathForRandomWalk(position);
+        makePathForWholeAreaSearch(position);
+        this.nextPosition = notPlannedPath.next();
         this.agentState = AgentState.NOP;
-
         this.walkProcess = new WalkProcess(this);
 
         //proces myslowy
@@ -60,14 +55,18 @@ public class Agent extends BasicSimEntity {
     public void collisionCheck(){}
 
     public void moveToNextPosition(){
-        setPositionOnMap(getNextPositionOnMap());
+        setPosition(getNextPosition());
     }
 
     public void reservePosition(GraphVertex nextPosition){
     }
 
-    private void makePathForWholeAreaSearch() {
-        searchPath = graphMap.DepthFirstSearch();
+    private void makePathForWholeAreaSearch(GraphVertex startPosition) {
+        notPlannedPath = graphMap.depthFirstSearch(startPosition);
+    }
+
+    private void makePathForRandomWalk(GraphVertex startPosition) {
+        notPlannedPath = graphMap.randomWalk(startPosition);
     }
 
 

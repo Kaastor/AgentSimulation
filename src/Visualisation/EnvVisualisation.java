@@ -57,11 +57,15 @@ public class EnvVisualisation extends Canvas {
                     graphicsContext.setFill(Color.GREENYELLOW);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
+                if(cellType == CellType.ENTRANCE) {
+                    graphicsContext.setFill(Color.ORANGERED);
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
+                }
             }
         }
         for(Agent agent : agentArrayList){
-            if(agent.getPositionOnMap() != null)
-                drawAgent(agent.getPositionOnMap().getWorldCoordinates());
+            if(agent.getPosition() != null)
+                drawAgent(agent.getPosition().getWorldCoordinates());
         }
     }
 

@@ -1,4 +1,4 @@
-import Environment.GraphMap;
+
 import Environment.Map;
 import Visualisation.MapInitialization;
 import Visualisation.EnvVisualisation;
@@ -32,9 +32,9 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-        Map map = new MapInitialization( 1200, 800, 25, 10).initialize();
+        Map map = new MapInitialization( 1200, 800, 25, 20).initialize();
         EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
-        VisualisationTimer visualisationTimer = new VisualisationTimer(envVisualisation);
+        new VisualisationTimer(envVisualisation);
 
         Task task = new Task<Void>() {
             @SneakyThrows
@@ -48,7 +48,6 @@ public class AppSimulation extends Application{
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-
 
         root.getChildren().add( envVisualisation );
         theStage.show();

@@ -30,8 +30,7 @@ public class GraphVertex {
         return worldCoordinates.equals(vertex.worldCoordinates);
     }
 
-//
-//    //logika
+
 //    public void setCellReservationStatus(WorldCoordinates cellCoordinates, boolean status){
 //        cells[cellCoordinates.getX()][cellCoordinates.getY()].setReserved(status);
 //    }

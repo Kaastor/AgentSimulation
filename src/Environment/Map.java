@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface Map {
 
+    GraphMap createAndGetGraphMap();
     CellType getCellType(int worldX, int worldY);
     ArrayList<Agent> getAgentsList();
     Point2D getCellScreenCoordinates(int worldX, int worldY);
