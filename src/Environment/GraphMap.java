@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class GraphMap {
 
     private UndirectedGraph<GraphVertex, DefaultEdge> graph;
+//    private UndirectedGraph<GraphVertex, DefaultEdge> topLevelGraph;
     private ArrayList<GraphVertex> vertices;
     private Map map;
 

@@ -58,6 +58,10 @@ public class Agent extends BasicSimEntity {
         setPosition(getNextPosition());
     }
 
+    public void moveToPreviousPosition(){
+        setPosition(getPreviousPosition());
+    }
+
     public void reservePosition(GraphVertex nextPosition){
     }
 

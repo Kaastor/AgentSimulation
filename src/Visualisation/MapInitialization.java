@@ -19,8 +19,7 @@ public class MapInitialization {
         addWalls();
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
-//        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
-        addAgents(1);
+        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
         return cellMap;
     }
 
