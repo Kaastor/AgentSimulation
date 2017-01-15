@@ -18,7 +18,7 @@ public class GraphVertex {
         this.worldCoordinates = worldCoordinates;
     }
 
-    GraphVertex(WorldCoordinates worldCoordinates){
+    public GraphVertex(WorldCoordinates worldCoordinates){
         this.worldCoordinates = worldCoordinates;
     }
 

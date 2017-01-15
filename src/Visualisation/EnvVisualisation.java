@@ -53,8 +53,7 @@ public class EnvVisualisation extends Canvas {
 
                 if(cellType == CellType.FLOOR) {
                     graphicsContext.setFill(Color.WHITE);
-                    graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
-//                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
                 if(cellType== CellType.WALL) {
                     graphicsContext.setFill(Color.BLACK);
@@ -114,8 +113,6 @@ public class EnvVisualisation extends Canvas {
                         agent.getPreviousPosition().getWorldCoordinates().getY());
                 graphicsContext.setFill(Color.WHITE);
                 graphicsContext.fillRect(agentScreenPosition.getX(),
-                        agentScreenPosition.getY(), cellSize, cellSize);
-                graphicsContext.strokeRect(agentScreenPosition.getX(),
                         agentScreenPosition.getY(), cellSize, cellSize);
 
             }

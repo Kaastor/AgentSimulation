@@ -13,8 +13,6 @@ public class VisualisationTimer extends AnimationTimer {
 
     @Override
     public void handle(long now) {
-//        envVisualisation.clearMapOnScreen();
-//        envVisualisation.drawMapOnScreen();
         envVisualisation.renderMap();
     }
 }

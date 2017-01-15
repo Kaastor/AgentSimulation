@@ -2,11 +2,8 @@ package Agent;
 
 
 import AgentEvents.WalkProcess;
-import Environment.GraphMap;
-import Environment.GraphVertex;
+import Environment.*;
 
-import Environment.RandomGenerator;
-import Environment.WorldCoordinates;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import lombok.Data;
@@ -15,7 +12,7 @@ import lombok.SneakyThrows;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.GraphIterator;
 
-import java.util.List;
+import java.util.Iterator;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = "graphMap")
@@ -26,10 +23,13 @@ public class Agent extends BasicSimEntity {
     private GraphVertex previousPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
+
+    private GraphVertex endPosition;
+
     private AgentState agentState;
     private int KnowledgeOfArea;
     private GraphMap graphMap;
-    List<GraphVertex> plannedPath;
+    Iterator<GraphVertex> plannedPath;
     GraphIterator<GraphVertex, DefaultEdge> notPlannedPath;
 
     private WalkProcess walkProcess;
@@ -44,10 +44,16 @@ public class Agent extends BasicSimEntity {
         this.previousPosition = graphMap.getVertex(startPosition);
         this.position = graphMap.getVertex(startPosition);
 
-        createPathForRandomWalk(position);
-//        createPathForWholeAreaSearch(position);
+        this.endPosition = graphMap.getVertex(new WorldCoordinates(6, 30));
 
-        this.nextPosition = notPlannedPath.next();
+//        createPathForRandomWalk(position);
+//        createPathForWholeAreaSearch(position);
+        createShortestPath(position, endPosition);
+
+//        System.out.println(graphMap.getVertex(new WorldCoordinates(6, 25)));
+//          createShortestPath(position, new GraphVertex(new WorldCoordinates(15, 10)));
+//        this.nextPosition = notPlannedPath.next();
+        this.nextPosition = plannedPath.next();
 
         this.walkProcess = new WalkProcess(this);
         walkProcess.start();
@@ -75,7 +81,7 @@ public class Agent extends BasicSimEntity {
     }
 
     private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
-        plannedPath = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList();
+        plannedPath = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
     }
 
 }
