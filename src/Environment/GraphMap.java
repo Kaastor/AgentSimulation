@@ -2,7 +2,11 @@ package Environment;
 
 
 import lombok.Data;
+import org.jgrapht.GraphPath;
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.AStarShortestPath;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
@@ -10,9 +14,10 @@ import org.jgrapht.traverse.GraphIterator;
 import org.jgrapht.traverse.RandomWalkIterator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
-public class GraphMap {
+public class GraphMap implements Graph{
 
     private UndirectedGraph<GraphVertex, DefaultEdge> graph;
 //    private UndirectedGraph<GraphVertex, DefaultEdge> topLevelGraph;
@@ -20,7 +25,7 @@ public class GraphMap {
     private Map map;
 
 
-    public GraphMap(Map map){
+    GraphMap(Map map){
         this.map = map;
         this.graph = new SimpleGraph<>(DefaultEdge.class);
         vertices = new ArrayList<>();
@@ -112,11 +117,17 @@ public class GraphMap {
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()-1 );
     }
 
-    public GraphIterator<GraphVertex, DefaultEdge> depthFirstSearch(GraphVertex startPosition){
+    public GraphIterator<GraphVertex, DefaultEdge> getWholeMapSearchPath(GraphVertex startPosition){
         return new DepthFirstIterator<>(graph, startPosition);
     }
 
-    public GraphIterator<GraphVertex, DefaultEdge> randomWalk(GraphVertex startPosition){
+    public GraphIterator<GraphVertex, DefaultEdge> getRandomWalkPath(GraphVertex startPosition){
         return new RandomWalkIterator<>(graph, startPosition);
     }
+
+    public DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(GraphVertex startPosition, GraphVertex endPosition){
+        return new DijkstraShortestPath<>(graph, startPosition, endPosition);
+    }
+
+
 }

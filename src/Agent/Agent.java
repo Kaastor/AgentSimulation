@@ -12,9 +12,10 @@ import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
-import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.GraphIterator;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = "graphMap")
@@ -28,7 +29,7 @@ public class Agent extends BasicSimEntity {
     private AgentState agentState;
     private int KnowledgeOfArea;
     private GraphMap graphMap;
-    GraphPath<GraphVertex, DefaultEdge> plannedPath;
+    List<GraphVertex> plannedPath;
     GraphIterator<GraphVertex, DefaultEdge> notPlannedPath;
 
     private WalkProcess walkProcess;
@@ -43,8 +44,8 @@ public class Agent extends BasicSimEntity {
         this.previousPosition = graphMap.getVertex(startPosition);
         this.position = graphMap.getVertex(startPosition);
 
-        makePathForRandomWalk(position);
-//        makePathForWholeAreaSearch(position);
+        createPathForRandomWalk(position);
+//        createPathForWholeAreaSearch(position);
 
         this.nextPosition = notPlannedPath.next();
 
@@ -65,13 +66,16 @@ public class Agent extends BasicSimEntity {
     public void reservePosition(GraphVertex nextPosition){
     }
 
-    private void makePathForWholeAreaSearch(GraphVertex startPosition) {
-        notPlannedPath = graphMap.depthFirstSearch(startPosition);
+    private void createPathForWholeAreaSearch(GraphVertex startPosition) {
+        notPlannedPath = graphMap.getWholeMapSearchPath(startPosition);
     }
 
-    private void makePathForRandomWalk(GraphVertex startPosition) {
-        notPlannedPath = graphMap.randomWalk(startPosition);
+    private void createPathForRandomWalk(GraphVertex startPosition) {
+        notPlannedPath = graphMap.getRandomWalkPath(startPosition);
     }
 
+    private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
+        plannedPath = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList();
+    }
 
 }
