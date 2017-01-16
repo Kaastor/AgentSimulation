@@ -37,13 +37,11 @@ public class Agent extends BasicSimEntity {
         this.id = id;
         this.graphMap = graphMap;
         this.agentState = AgentState.NOP;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(0.18);
+        this.agentSpeed = RandomGenerator.getInstance().exponential(0.3);
         this.previousPosition = graphMap.getVertex(startPosition);
 
         this.position = graphMap.getVertex(startPosition);
-        System.out.println(position);
         this.endPosition = graphMap.getVertex(new WorldCoordinates(6, 30));
-        System.out.println(endPosition);
 
 //        createPathForRandomWalk(position);
         createPathForWholeAreaSearch(position);

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 @EqualsAndHashCode(callSuper = false, exclude = "agentsList")
 public class CellMap extends BasicSimEntity implements Map{
 
+    public final int regionsNumber = 3;
     private int mapScreenHeight;
     private int mapScreenWidth;
     private int mapWorldHeight;

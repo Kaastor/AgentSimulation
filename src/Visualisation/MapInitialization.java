@@ -78,45 +78,58 @@ public class MapInitialization {
         addWallsInRealCoordinatesX(new WorldCoordinates(25, 26), new WorldCoordinates(27, 26));
     }
 
-    private void addDoorX(WorldCoordinates coordinates){
+    private void addDoorX(WorldCoordinates coordinates, CellType... regionTypes){
         cellMap.addTypeToCell(CellType.DOOR, coordinates.getX(), coordinates.getY());
+        addRegionTypes(coordinates.getX(), coordinates.getY(), regionTypes);
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
         cellMap.addTypeToCell(CellType.DOOR,coordinates.getX()+1, coordinates.getY());
+        addRegionTypes(coordinates.getX()+1, coordinates.getY(), regionTypes);
         cellMap.addDoor(new WorldCoordinates(coordinates.getX()+1, coordinates.getY()));
     }
 
-    private void addDoorY(WorldCoordinates coordinates){
+    private void addDoorY(WorldCoordinates coordinates, CellType... regionTypes){
         cellMap.addTypeToCell(CellType.DOOR,coordinates.getX(), coordinates.getY());
+        addRegionTypes(coordinates.getX(), coordinates.getY(), regionTypes);
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
         cellMap.addTypeToCell(CellType.DOOR,coordinates.getX(), coordinates.getY()+1);
+        addRegionTypes(coordinates.getX(), coordinates.getY()+1, regionTypes);
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 
-    private void addEntranceX(WorldCoordinates coordinates){
+    private void addEntranceX(WorldCoordinates coordinates, CellType... regionTypes){
         cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY());
+        addRegionTypes(coordinates.getX(), coordinates.getY(), regionTypes);
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
+        addRegionTypes(coordinates.getX()+1, coordinates.getY(), regionTypes);
         cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX()+1, coordinates.getY());
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX()+1, coordinates.getY()));
     }
 
-    private void addEntranceY(WorldCoordinates coordinates){
+    private void addEntranceY(WorldCoordinates coordinates, CellType... regionTypes){
+        addRegionTypes(coordinates.getX(), coordinates.getY(), regionTypes);
         cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY());
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
+        addRegionTypes(coordinates.getX(), coordinates.getY()+1, regionTypes);
         cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY()+1);
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 
+    private void addRegionTypes(int x, int y, CellType... regionTypes){
+        for(CellType regionType : regionTypes){
+            cellMap.addTypeToCell(regionType ,x, y);
+        }
+    }
     private void addDoors(){
-        addDoorX(new WorldCoordinates(2, 10)); //1.
-        addDoorX(new WorldCoordinates(10, 10)); //2.
-        addDoorX(new WorldCoordinates(41, 10)); //4.
-        addDoorX(new WorldCoordinates(6, 19)); //przed-region
-        addDoorX(new WorldCoordinates(1, 24)); //5.
-        addDoorY(new WorldCoordinates(27, 6)); //3.
-        addDoorY(new WorldCoordinates(16, 21)); //region
-        addDoorY(new WorldCoordinates(37, 24)); //6.
-        addEntranceY(new WorldCoordinates(0, 14)); //wejscie lewe
-        addEntranceY(new WorldCoordinates(47, 14)); //wejscie prawe
-        addEntranceX(new WorldCoordinates(21, 0)); //wejscie gorne
+        addDoorX(new WorldCoordinates(2, 10), CellType.REGION_1); //1.
+        addDoorX(new WorldCoordinates(10, 10), CellType.REGION_1); //2.
+        addDoorX(new WorldCoordinates(41, 10), CellType.REGION_1); //4.
+        addDoorX(new WorldCoordinates(6, 19), CellType.REGION_1, CellType.REGION_2); //przed-region
+        addDoorX(new WorldCoordinates(1, 24), CellType.REGION_2); //5.
+        addDoorY(new WorldCoordinates(27, 6), CellType.REGION_1); //3.
+        addDoorY(new WorldCoordinates(16, 21), CellType.REGION_2, CellType.REGION_3); //region
+        addDoorY(new WorldCoordinates(37, 24), CellType.REGION_3); //6.
+        addEntranceY(new WorldCoordinates(0, 14), CellType.REGION_1); //wejscie lewe
+        addEntranceY(new WorldCoordinates(47, 14), CellType.REGION_1); //wejscie prawe
+        addEntranceX(new WorldCoordinates(21, 0), CellType.REGION_1); //wejscie gorne
     }
 }

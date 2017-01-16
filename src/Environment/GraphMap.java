@@ -2,11 +2,8 @@ package Environment;
 
 
 import lombok.Data;
-import org.jgrapht.GraphPath;
 import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.AStarShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgrapht.alg.interfaces.AStarAdmissibleHeuristic;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.traverse.DepthFirstIterator;
@@ -14,36 +11,39 @@ import org.jgrapht.traverse.GraphIterator;
 import org.jgrapht.traverse.RandomWalkIterator;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class GraphMap implements Graph{
 
-    private UndirectedGraph<GraphVertex, DefaultEdge> graph;
-//    private UndirectedGraph<GraphVertex, DefaultEdge> graphTop;
+    private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
+    private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
     private ArrayList<GraphVertex> vertices;
     private Map map;
 
 
     GraphMap(Map map){
         this.map = map;
-        this.graph = new SimpleGraph<>(DefaultEdge.class);
+        this.graphCells = new SimpleGraph<>(DefaultEdge.class);
+        this.graphRegions = new SimpleGraph<>(DefaultEdge.class);
         vertices = new ArrayList<>();
         createGraphFromMap();
     }
 
     private void createGraphFromMap(){
-        addVerticesToGraph();
-        addEdgesToGraph();
+        addVerticesToGraphs();
+        addEdgesToCellsGraph();
+        addEdgesToRegionsGraph();
     }
 
-    private void addVerticesToGraph() {
+    private void addVerticesToGraphs() {
         int count = 0;
         for (int y = 0; y < map.getMapWorldHeight(); y++) {
             for (int x = 0; x < map.getMapWorldWidth(); x++) {
                 if (cellIsWalkable(new WorldCoordinates(x,y))) {
                     GraphVertex vertex = new GraphVertex(count, new WorldCoordinates(x, y));
-                    graph.addVertex(vertex);
+                    addVertexToRegionsGraph(new WorldCoordinates(x,y), vertex);
+                    addVertexToCellGraph(vertex);
                     vertices.add(vertex);
                     count++;
                 }
@@ -51,7 +51,41 @@ public class GraphMap implements Graph{
         }
     }
 
-    private void addEdgesToGraph(){
+    private void addVertexToCellGraph(GraphVertex vertex){
+        graphCells.addVertex(vertex);
+    }
+
+    private void addVertexToRegionsGraph(WorldCoordinates cellCoordinates, GraphVertex vertex){
+        if(cellIsRegion(cellCoordinates))
+            graphRegions.addVertex(vertex);
+    }
+
+    private void addEdgesToRegionsGraph(){
+        for(GraphVertex checkedVertex : graphCells.vertexSet()){
+            ArrayList<CellType> regionTypes = getVertexRegions(checkedVertex);
+            for(CellType type : regionTypes) {
+                Set<GraphVertex> vertexSet = graphCells.vertexSet();
+                for (GraphVertex matchedVertex : vertexSet) {
+                    if(cellIsSpecificRegion(matchedVertex, type) && !matchedVertex.equals(checkedVertex)) {
+                        graphRegions.addEdge(checkedVertex, matchedVertex);
+                    }
+                }
+            }
+        }
+    }
+
+    private ArrayList<CellType> getVertexRegions(GraphVertex vertex){
+        ArrayList<CellType> types = map.getCellTypes(vertex.getWorldCoordinates().getX(),
+                vertex.getWorldCoordinates().getY());
+        ArrayList<CellType> regionTypes = new ArrayList<>();
+        for(CellType cellType : types){
+            if(cellType.toString().contains("REGION"))
+                regionTypes.add(cellType);
+        }
+        return regionTypes;
+    }
+
+    private void addEdgesToCellsGraph(){
         for (GraphVertex vertex : vertices){
             addEdgesToVertex(vertex);
         }
@@ -61,21 +95,21 @@ public class GraphMap implements Graph{
         boolean cellsAroundExist = true;
         if(cellExistAndIsWalkable(getVertexUpCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexUpCoordinates(vertexFrom));
-            graph.addEdge(vertexFrom, graphVertexTo);
+            graphCells.addEdge(vertexFrom, graphVertexTo);
         }
         else{
             cellsAroundExist = false;
         }
         if(cellExistAndIsWalkable(getVertexRightCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexRightCoordinates(vertexFrom));
-            graph.addEdge(vertexFrom, graphVertexTo);
+            graphCells.addEdge(vertexFrom, graphVertexTo);
         }
         else{
             cellsAroundExist = false;
         }
         if(cellsAroundExist && cellExistAndIsWalkable(getVertexUpRightCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexUpRightCoordinates(vertexFrom));
-            graph.addEdge(vertexFrom, graphVertexTo);
+            graphCells.addEdge(vertexFrom, graphVertexTo);
         }
     }
 
@@ -101,6 +135,17 @@ public class GraphMap implements Graph{
                         contains(CellType.FLOOR);
     }
 
+    private boolean cellIsRegion(WorldCoordinates cellCoordinates){
+        ArrayList<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
+        return (cellTypes.toString().contains("REGION"));
+    }
+
+    private boolean cellIsSpecificRegion(GraphVertex vertex, CellType region){
+        ArrayList<CellType> cellTypes = map.getCellTypes(vertex.getWorldCoordinates().getX(),
+                vertex.getWorldCoordinates().getY());
+        return (cellTypes.contains(region));
+    }
+
     private boolean cellExistAndIsWalkable(WorldCoordinates cellCoordinates){
         return (map.cellExist(cellCoordinates) && cellIsWalkable(cellCoordinates));
     }
@@ -121,15 +166,15 @@ public class GraphMap implements Graph{
     }
 
     public GraphIterator<GraphVertex, DefaultEdge> getWholeMapSearchPath(GraphVertex startPosition){
-        return new DepthFirstIterator<>(graph, startPosition);
+        return new DepthFirstIterator<>(graphCells, startPosition);
     }
 
     public GraphIterator<GraphVertex, DefaultEdge> getRandomWalkPath(GraphVertex startPosition){
-        return new RandomWalkIterator<>(graph, startPosition);
+        return new RandomWalkIterator<>(graphCells, startPosition);
     }
 
     public DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(GraphVertex startPosition, GraphVertex endPosition){
-        return new DijkstraShortestPath<>(graph, startPosition, endPosition);
+        return new DijkstraShortestPath<>(graphCells, startPosition, endPosition);
     }
 
 

@@ -19,5 +19,4 @@ public interface Map {
     int getMapScreenWidth();
     int getMapWorldHeight();
     int getMapWorldWidth();
-
 }
