@@ -27,7 +27,7 @@ public class MapInitialization {
     private void addFloors(){
         for(int x = 0; x < cellMap.getMapWorldWidth(); x++){
             for(int y = 0; y < cellMap.getMapWorldHeight() ; y++){
-                cellMap.setCellToFloor(x, y);
+                cellMap.addTypeToCell(CellType.FLOOR, x, y);
             }
         }
     }
@@ -42,13 +42,13 @@ public class MapInitialization {
 
     private void addWallsInRealCoordinatesX(WorldCoordinates from, WorldCoordinates to){
         for(int x = from.getX() ; x <= to.getX() ; x++){
-            cellMap.setCellToWall(x, from.getY());
+            cellMap.addTypeToCell(CellType.WALL, x, from.getY());
         }
     }
 
     private void addWallsInRealCoordinatesY(WorldCoordinates from, WorldCoordinates to){
         for(int y = from.getY() ; y <= to.getY() ; y++){
-            cellMap.setCellToWall(from.getX(), y);
+            cellMap.addTypeToCell(CellType.WALL,from.getX(), y);
         }
     }
 
@@ -79,30 +79,30 @@ public class MapInitialization {
     }
 
     private void addDoorX(WorldCoordinates coordinates){
-        cellMap.setCellToDoor(coordinates.getX(), coordinates.getY());
+        cellMap.addTypeToCell(CellType.DOOR, coordinates.getX(), coordinates.getY());
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
-        cellMap.setCellToDoor(coordinates.getX()+1, coordinates.getY());
+        cellMap.addTypeToCell(CellType.DOOR,coordinates.getX()+1, coordinates.getY());
         cellMap.addDoor(new WorldCoordinates(coordinates.getX()+1, coordinates.getY()));
     }
 
     private void addDoorY(WorldCoordinates coordinates){
-        cellMap.setCellToDoor(coordinates.getX(), coordinates.getY());
+        cellMap.addTypeToCell(CellType.DOOR,coordinates.getX(), coordinates.getY());
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
-        cellMap.setCellToDoor(coordinates.getX(), coordinates.getY()+1);
+        cellMap.addTypeToCell(CellType.DOOR,coordinates.getX(), coordinates.getY()+1);
         cellMap.addDoor(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 
     private void addEntranceX(WorldCoordinates coordinates){
-        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY());
+        cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY());
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
-        cellMap.setCellToEntrance(coordinates.getX()+1, coordinates.getY());
+        cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX()+1, coordinates.getY());
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX()+1, coordinates.getY()));
     }
 
     private void addEntranceY(WorldCoordinates coordinates){
-        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY());
+        cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY());
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
-        cellMap.setCellToEntrance(coordinates.getX(), coordinates.getY()+1);
+        cellMap.addTypeToCell(CellType.ENTRANCE,coordinates.getX(), coordinates.getY()+1);
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 

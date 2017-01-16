@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public interface Map {
 
     GraphMap createAndGetGraphMap();
-    CellType getCellType(int worldX, int worldY);
+    ArrayList<CellType> getCellTypes(int worldX, int worldY);
     ArrayList<Agent> getAgentsList();
     ArrayList<WorldCoordinates> getDoorsList();
     ArrayList<WorldCoordinates> getEntrancesList();

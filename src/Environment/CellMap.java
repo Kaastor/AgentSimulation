@@ -10,7 +10,7 @@ import lombok.*;
 import java.util.ArrayList;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = "agentsList")
 public class CellMap extends BasicSimEntity implements Map{
 
     private int mapScreenHeight;
@@ -50,22 +50,12 @@ public class CellMap extends BasicSimEntity implements Map{
         cells[worldX][worldY] = new Cell(new WorldCoordinates(worldX, worldY), cellSize);
     }
 
-    public CellType getCellType(int worldX, int worldY){
-        return cells[worldX][worldY].getCellType();
+    public ArrayList<CellType> getCellTypes(int worldX, int worldY){
+        return cells[worldX][worldY].getCellTypeList();
     }
 
-    public void setCellToFloor(int worldX, int worldY){
-        cells[worldX][worldY].setCellType(CellType.FLOOR);
-    }
-
-    public void setCellToDoor(int worldX, int worldY){ cells[worldX][worldY].setCellType(CellType.DOOR); }
-
-    public void setCellToWall(int worldX, int worldY){
-        cells[worldX][worldY].setCellType(CellType.WALL);
-    }
-
-    public void setCellToEntrance(int worldX, int worldY){
-        cells[worldX][worldY].setCellType(CellType.ENTRANCE);
+    public void addTypeToCell(CellType type, int worldX, int worldY){
+        cells[worldX][worldY].addCellTypeToList(type);
     }
 
     public void addAgent(Agent agent){
@@ -74,7 +64,8 @@ public class CellMap extends BasicSimEntity implements Map{
 
     public void addDoor(WorldCoordinates doorCoordinates){ doorsList.add(doorCoordinates);}
 
-    public void addEntrance(WorldCoordinates entranceCoordinates){ entrancesList.add(entranceCoordinates);}
+    public void addEntrance(WorldCoordinates entranceCoordinates){
+        entrancesList.add(entranceCoordinates);}
 
     private Cell getCell(int worldX, int worldY){
         return cells[worldX][worldY];

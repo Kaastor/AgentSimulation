@@ -93,9 +93,12 @@ public class GraphMap implements Graph{
     }
 
     private boolean cellIsWalkable(WorldCoordinates cellCoordinates){
-        return map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.FLOOR)
-                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.DOOR)
-                || map.getCellType(cellCoordinates.getX(), cellCoordinates.getY()) == (CellType.ENTRANCE);
+        return map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()).
+                contains(CellType.DOOR) ||
+                map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()).
+                        contains(CellType.ENTRANCE) ||
+                map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()).
+                        contains(CellType.FLOOR);
     }
 
     private boolean cellExistAndIsWalkable(WorldCoordinates cellCoordinates){

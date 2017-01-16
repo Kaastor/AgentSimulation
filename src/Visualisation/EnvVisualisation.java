@@ -48,22 +48,22 @@ public class EnvVisualisation extends Canvas {
         for(int x = 0; x < mapWorldWidth ; x++){
             for(int y = 0; y< mapWorldHeight  ; y++){
 
-                CellType cellType = map.getCellType(x, y);
+                ArrayList<CellType> cellTypes = map.getCellTypes(x, y);
                 Point2D screenCoordinates = map.getCellScreenCoordinates(x, y);
 
-                if(cellType == CellType.FLOOR) {
+                if(cellTypes.contains(CellType.FLOOR)) {
                     graphicsContext.setFill(Color.WHITE);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
-                if(cellType== CellType.WALL) {
+                if(cellTypes.contains(CellType.WALL)) {
                     graphicsContext.setFill(Color.BLACK);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
-                if(cellType == CellType.DOOR) {
+                if(cellTypes.contains(CellType.DOOR)) {
                     graphicsContext.setFill(Color.GREENYELLOW);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
-                if(cellType == CellType.ENTRANCE) {
+                if(cellTypes.contains(CellType.ENTRANCE)) {
                     graphicsContext.setFill(Color.ORANGERED);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }

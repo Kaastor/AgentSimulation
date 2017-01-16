@@ -9,13 +9,11 @@ import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.traverse.GraphIterator;
 
 import java.util.Iterator;
 
 @Data
-@EqualsAndHashCode(callSuper = false, exclude = "graphMap")
+@EqualsAndHashCode(callSuper = false)
 public class Agent extends BasicSimEntity {
 
     private int id;
@@ -28,25 +26,28 @@ public class Agent extends BasicSimEntity {
 
     private AgentState agentState;
     private int KnowledgeOfArea;
-    private GraphMap graphMap;
+    private Graph graphMap;
     Iterator<GraphVertex> path;
 
     private WalkProcess walkProcess;
 
     @SneakyThrows
-    public Agent(GraphMap graphMap, WorldCoordinates startPosition, int id){
+    public Agent(Graph graphMap, WorldCoordinates startPosition, int id){
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.graphMap = graphMap;
         this.agentState = AgentState.NOP;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.agentSpeed = RandomGenerator.getInstance().exponential(0.18);
         this.previousPosition = graphMap.getVertex(startPosition);
+
         this.position = graphMap.getVertex(startPosition);
-
+        System.out.println(position);
         this.endPosition = graphMap.getVertex(new WorldCoordinates(6, 30));
+        System.out.println(endPosition);
 
-        createPathForRandomWalk(position);
-//        createPathForWholeAreaSearch(position);
+//        createPathForRandomWalk(position);
+        createPathForWholeAreaSearch(position);
+
 //        createShortestPath(position, endPosition);
 
 //        System.out.println(graphMap.getVertex(new WorldCoordinates(6, 25)));
