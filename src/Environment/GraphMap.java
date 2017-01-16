@@ -20,7 +20,7 @@ import java.util.List;
 public class GraphMap implements Graph{
 
     private UndirectedGraph<GraphVertex, DefaultEdge> graph;
-//    private UndirectedGraph<GraphVertex, DefaultEdge> topLevelGraph;
+//    private UndirectedGraph<GraphVertex, DefaultEdge> graphTop;
     private ArrayList<GraphVertex> vertices;
     private Map map;
 

@@ -37,8 +37,8 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
     }
 
     private void setNextPositionOnMap(){
-        if(parentAgent.getPlannedPath().hasNext()) {
-            GraphVertex next = parentAgent.getPlannedPath().next();
+        if(parentAgent.getPath().hasNext()) {
+            GraphVertex next = parentAgent.getPath().next();
             parentAgent.setNextPosition(next);
         }
     }

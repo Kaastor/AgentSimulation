@@ -29,8 +29,7 @@ public class Agent extends BasicSimEntity {
     private AgentState agentState;
     private int KnowledgeOfArea;
     private GraphMap graphMap;
-    Iterator<GraphVertex> plannedPath;
-    GraphIterator<GraphVertex, DefaultEdge> notPlannedPath;
+    Iterator<GraphVertex> path;
 
     private WalkProcess walkProcess;
 
@@ -46,20 +45,25 @@ public class Agent extends BasicSimEntity {
 
         this.endPosition = graphMap.getVertex(new WorldCoordinates(6, 30));
 
-//        createPathForRandomWalk(position);
+        createPathForRandomWalk(position);
 //        createPathForWholeAreaSearch(position);
-        createShortestPath(position, endPosition);
+//        createShortestPath(position, endPosition);
 
 //        System.out.println(graphMap.getVertex(new WorldCoordinates(6, 25)));
 //          createShortestPath(position, new GraphVertex(new WorldCoordinates(15, 10)));
-//        this.nextPosition = notPlannedPath.next();
-        this.nextPosition = plannedPath.next();
+        this.nextPosition = path.next();
+//        this.nextPosition = plannedPath.next();
 
         this.walkProcess = new WalkProcess(this);
         walkProcess.start();
     }
 
-    public void collisionCheck(){}
+    public void moveStraight(){}
+    public void moveRight(){}
+    public void moveLeft(){}
+    public void moveBack(){}
+
+    public void lookForCollision(){}
 
     public void moveToNextPosition(){
         setPosition(getNextPosition());
@@ -73,15 +77,17 @@ public class Agent extends BasicSimEntity {
     }
 
     private void createPathForWholeAreaSearch(GraphVertex startPosition) {
-        notPlannedPath = graphMap.getWholeMapSearchPath(startPosition);
+        path = graphMap.getWholeMapSearchPath(startPosition);
     }
 
     private void createPathForRandomWalk(GraphVertex startPosition) {
-        notPlannedPath = graphMap.getRandomWalkPath(startPosition);
+        path = graphMap.getRandomWalkPath(startPosition);
     }
 
     private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
-        plannedPath = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
+        path = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
     }
+
+
 
 }
