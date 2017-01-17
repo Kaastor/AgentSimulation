@@ -63,25 +63,25 @@ public class MapInitialization {
         //entrance
         addWallsInWorldCoordinatesY(new WorldCoordinates(47, 0), new WorldCoordinates(47, 13));
         addWallsInWorldCoordinatesY(new WorldCoordinates(47, 16), new WorldCoordinates(47, 31));
-        //sklep 1.&2.
+        //sklep 0.&1.
         addWallsInWorldCoordinatesX(new WorldCoordinates(1, 10), new WorldCoordinates(1, 10));
         addWallsInWorldCoordinatesX(new WorldCoordinates(4, 10), new WorldCoordinates(9, 10));
         addWallsInWorldCoordinatesX(new WorldCoordinates(12, 10), new WorldCoordinates(16, 10));
         addWallsInWorldCoordinatesY(new WorldCoordinates(16, 1), new WorldCoordinates(16, 10));
         addWallsInWorldCoordinatesY(new WorldCoordinates(6, 1), new WorldCoordinates(6, 10));
-        //sklep 3.&4.
+        //sklep 2.&3.
         addWallsInWorldCoordinatesX(new WorldCoordinates(27, 10), new WorldCoordinates(40, 10));
         addWallsInWorldCoordinatesX(new WorldCoordinates(43, 10), new WorldCoordinates(47, 10));
         addWallsInWorldCoordinatesY(new WorldCoordinates(27, 1), new WorldCoordinates(27, 5));
         addWallsInWorldCoordinatesY(new WorldCoordinates(27, 8), new WorldCoordinates(27, 10));
         addWallsInWorldCoordinatesY(new WorldCoordinates(37, 1), new WorldCoordinates(37, 10));
-        //sklep 5. - przed regionem
+        //sklep 4. - przed regionem
         addWallsInWorldCoordinatesX(new WorldCoordinates(1, 19), new WorldCoordinates(5, 19));
         addWallsInWorldCoordinatesX(new WorldCoordinates(8, 19), new WorldCoordinates(47, 19));
         addWallsInWorldCoordinatesY(new WorldCoordinates(16, 20), new WorldCoordinates(16, 20));
         addWallsInWorldCoordinatesY(new WorldCoordinates(16, 23), new WorldCoordinates(16, 31));
         addWallsInWorldCoordinatesX(new WorldCoordinates(3, 24), new WorldCoordinates(15, 24));
-        //sklep 6. - na koncu regionu 2.
+        //sklep 5. - na koncu regionu 2.
         addWallsInWorldCoordinatesY(new WorldCoordinates(37, 20), new WorldCoordinates(37, 23));
         addWallsInWorldCoordinatesY(new WorldCoordinates(37, 26), new WorldCoordinates(37, 31));
         //fontanna
@@ -127,14 +127,14 @@ public class MapInitialization {
     }
 
     private void addDoors(){
-        addDoorX(new WorldCoordinates(2, 10), CellType.REGION_1, CellType.SHOP_1); //1.
-        addDoorX(new WorldCoordinates(10, 10), CellType.REGION_1, CellType.SHOP_2); //2.
-        addDoorX(new WorldCoordinates(41, 10), CellType.REGION_1, CellType.SHOP_4); //4.
+        addDoorX(new WorldCoordinates(2, 10), CellType.REGION_1, CellType.SHOP_0); //1.
+        addDoorX(new WorldCoordinates(10, 10), CellType.REGION_1, CellType.SHOP_1); //2.
+        addDoorX(new WorldCoordinates(41, 10), CellType.REGION_1, CellType.SHOP_3); //4.
         addDoorX(new WorldCoordinates(6, 19), CellType.REGION_1, CellType.REGION_2); //przed-region
-        addDoorX(new WorldCoordinates(1, 24), CellType.REGION_2, CellType.SHOP_5); //5.
-        addDoorY(new WorldCoordinates(27, 6), CellType.REGION_1, CellType.SHOP_3); //3.
+        addDoorX(new WorldCoordinates(1, 24), CellType.REGION_2, CellType.SHOP_4); //5.
+        addDoorY(new WorldCoordinates(27, 6), CellType.REGION_1, CellType.SHOP_2); //3.
         addDoorY(new WorldCoordinates(16, 21), CellType.REGION_2, CellType.REGION_3); //region
-        addDoorY(new WorldCoordinates(37, 24), CellType.REGION_3, CellType.SHOP_6); //6.
+        addDoorY(new WorldCoordinates(37, 24), CellType.REGION_3, CellType.SHOP_5); //6.
         addEntranceY(new WorldCoordinates(0, 14), CellType.REGION_1); //wejscie lewe
         addEntranceY(new WorldCoordinates(47, 14), CellType.REGION_1); //wejscie prawe
         addEntranceX(new WorldCoordinates(21, 0), CellType.REGION_1); //wejscie gorne

@@ -5,6 +5,7 @@ import Agent.Agent;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class GraphVertex {
@@ -13,7 +14,7 @@ public class GraphVertex {
     private WorldCoordinates worldCoordinates;
     private boolean hasAgent;
     private boolean isReserved;
-    private ArrayList<CellType> types;
+    private List<CellType> types;
     private Agent agent;
 
     GraphVertex(int id, WorldCoordinates worldCoordinates){

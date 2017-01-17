@@ -23,8 +23,10 @@ public class WalkProcess extends BasicSimProcess<Agent, Object>{
     @Override
     public double controlStateTransitions() {
         parentAgent.setAgentState(AgentState.WALK);
-        walkToNextPositionIfSet();
-        setNextPositionOnMap();
+
+        parentAgent.moveBack();
+//        walkToNextPositionIfSet();
+//        setNextPositionOnMap();
         return parentAgent.getAgentSpeed();
     }
 

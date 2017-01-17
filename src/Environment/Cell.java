@@ -4,12 +4,13 @@ import javafx.geometry.Point2D;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 class Cell {
     private WorldCoordinates worldCoordinates;
     private Point2D screenCoordinates;
-    private ArrayList<CellType> cellTypeList;
+    private List<CellType> cellTypeList;
     private int cellSize;
 
     Cell(WorldCoordinates worldCoordinates, int cellSize){

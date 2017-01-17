@@ -10,22 +10,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 
+import java.awt.*;
 import java.util.Iterator;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Agent extends BasicSimEntity {
 
-    private int id;
     private Beliefs beliefs;
+
+    private int id;
     private double agentSpeed;
+    private Point movingDirection;
     private GraphVertex previousPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
     private GraphVertex endPosition;
     private AgentState agentState;
-
-
+    private Graph graphMap;
     Iterator<GraphVertex> path;
 
     private WalkProcess walkProcess;
@@ -34,34 +36,68 @@ public class Agent extends BasicSimEntity {
     public Agent(Graph graphMap, WorldCoordinates startPosition, int id){
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
+        this.graphMap = graphMap;
         this.beliefs = new Beliefs(graphMap);
         this.agentState = AgentState.NOP;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(0.3);
-        this.previousPosition = graphMap.getVertex(startPosition);
+        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.movingDirection = new Point(-1,-1);
+        this.position = graphMap.getVertex(new WorldCoordinates(20, 15));
+        this.previousPosition = graphMap.getVertex(new WorldCoordinates(20, 15));
+//        this.position = graphMap.getVertex(startPosition);
 
-        this.position = graphMap.getVertex(startPosition);
         this.endPosition = graphMap.getVertex(new WorldCoordinates(37, 24));
-
-//        createPathForRandomWalk(position);
-//        createPathForWholeAreaSearch(position);
-
-//        createShortestPath(position, endPosition);
-
-//        System.out.println(graphMap.getVertex(new WorldCoordinates(6, 25)));
-//          createShortestPath(position, endPosition);
-//        this.nextPosition = path.next();
-//        this.nextPosition = plannedPath.next();
 
         this.walkProcess = new WalkProcess(this);
         walkProcess.start();
     }
 
-    public void moveStraight(){}
-    public void moveRight(){}
-    public void moveLeft(){}
-    public void moveBack(){}
 
-    public void lookForCollision(){}
+    public void observeTheEnvironment(){
+        lookForCollision();
+        lookAround();
+        updateDirection();
+    }
+
+
+    private void lookForCollision(){}
+    private void lookAround(){}
+    private void updateDirection(){}
+
+    public void moveForward(){
+        setPreviousPosition(position);
+        GraphVertex forwardVertex = graphMap.getVertex(position.getWorldCoordinates().getForwardPointCoordinates(movingDirection));
+        if(forwardVertex != null)
+            position = forwardVertex;
+        else
+            waitInPlace();
+    }
+    public void moveRight(){
+        setPreviousPosition(position);
+        GraphVertex rightVertex = graphMap.getVertex(position.getWorldCoordinates().getRightPointCoordinates(movingDirection));
+        if(rightVertex != null)
+            position = rightVertex;
+        else
+            waitInPlace();
+    }
+    public void moveLeft(){
+        setPreviousPosition(position);
+        GraphVertex leftVertex = graphMap.getVertex(position.getWorldCoordinates().getLeftPointCoordinates(movingDirection));
+        if(leftVertex != null)
+            position = leftVertex;
+        else
+            waitInPlace();
+    }
+    public void moveBack(){
+        setPreviousPosition(position);
+        GraphVertex backVertex = graphMap.getVertex(position.getWorldCoordinates().getBackPointCoordinates(movingDirection));
+        if(backVertex != null)
+            position = backVertex;
+        else
+            waitInPlace();
+    }
+    public void waitInPlace(){
+
+    }
 
     public void moveToNextPosition(){
         setPosition(getNextPosition());
@@ -73,19 +109,5 @@ public class Agent extends BasicSimEntity {
 
     public void reservePosition(GraphVertex nextPosition){
     }
-
-//    private void createPathForWholeAreaSearch(GraphVertex startPosition) {
-//        path = graphMap.getWholeMapSearchPath(startPosition);
-//    }
-//
-//    private void createPathForRandomWalk(GraphVertex startPosition) {
-//        path = graphMap.getRandomWalkPath(startPosition);
-//    }
-//
-//    private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
-//        path = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
-//    }
-
-
 
 }

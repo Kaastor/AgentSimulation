@@ -11,16 +11,22 @@ import org.jgrapht.traverse.GraphIterator;
 import org.jgrapht.traverse.RandomWalkIterator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Data
 public class GraphMap implements Graph{
 
-    private final String REGION = "REGION";
+    private final int shopsNumber = 6;
+    private final String EMPTY = "";
+    private final String REGION = "REGION_";
+    private final String SHOP = "SHOP_";
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
     private ArrayList<GraphVertex> cellVertices;
     private ArrayList<GraphVertex> regionsVertices;
+    private ArrayList<GraphVertex> shopsVertices;
     private Map map;
 
 
@@ -31,16 +37,23 @@ public class GraphMap implements Graph{
         this.cellVertices = new ArrayList<>();
         this.regionsVertices = new ArrayList<>();
         createGraphFromMap();
-
-//        for(GraphVertex vertex : regionsVertices){
-//            System.out.println(vertex);
-//        }
+        this.shopsVertices = createShopList();
     }
 
     private void createGraphFromMap(){
         addVerticesToGraphs();
         addEdgesToCellsGraph();
         addEdgesToRegionsGraph();
+    }
+
+    private ArrayList<GraphVertex> createShopList(){
+        ArrayList<GraphVertex> shops = new ArrayList<>();
+        for(GraphVertex vertex : regionsVertices){
+            if(vertex.getTypes().toString().contains(SHOP)) {
+                shops.add(vertex);
+            }
+        }
+        return shops;
     }
 
     private void addVerticesToGraphs() {
@@ -65,7 +78,6 @@ public class GraphMap implements Graph{
     private void addVertexToRegionsGraph(WorldCoordinates cellCoordinates, GraphVertex vertex){
         if(cellIsRegion(cellCoordinates)){
             vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
-            System.out.println(vertex);/////
             graphRegions.addVertex(vertex);
             regionsVertices.add(vertex);
         }
@@ -73,7 +85,7 @@ public class GraphMap implements Graph{
 
     private void addEdgesToRegionsGraph(){
         for(GraphVertex checkedVertex : graphCells.vertexSet()){
-            ArrayList<CellType> regionTypes = getVertexRegions(checkedVertex);
+            List<CellType> regionTypes = getVertexRegions(checkedVertex);
             for(CellType type : regionTypes) {
                 Set<GraphVertex> vertexSet = graphCells.vertexSet();
                 for (GraphVertex matchedVertex : vertexSet) {
@@ -85,10 +97,10 @@ public class GraphMap implements Graph{
         }
     }
 
-    private ArrayList<CellType> getVertexRegions(GraphVertex vertex){
-        ArrayList<CellType> types = map.getCellTypes(vertex.getWorldCoordinates().getX(),
+    private List<CellType> getVertexRegions(GraphVertex vertex){
+        List<CellType> types = map.getCellTypes(vertex.getWorldCoordinates().getX(),
                 vertex.getWorldCoordinates().getY());
-        ArrayList<CellType> regionTypes = new ArrayList<>();
+        List<CellType> regionTypes = new ArrayList<>();
         for(CellType cellType : types){
             if(cellType.toString().contains(REGION))
                 regionTypes.add(cellType);
@@ -137,6 +149,19 @@ public class GraphMap implements Graph{
         return searchedVertex;
     }
 
+    public GraphVertex getRegionVertex(WorldCoordinates vertexCoordinates){
+        return searchForRegionVertex(vertexCoordinates);
+    }
+
+    private GraphVertex searchForRegionVertex(WorldCoordinates vertexCoordinates){
+        GraphVertex searchedVertex = null;
+        for (GraphVertex vertex : regionsVertices){
+            if(vertex.equals(new GraphVertex(vertexCoordinates)))
+                searchedVertex = vertex;
+        }
+        return searchedVertex;
+    }
+
     private boolean cellIsWalkable(WorldCoordinates cellCoordinates){
         return map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()).
                 contains(CellType.DOOR) ||
@@ -147,12 +172,12 @@ public class GraphMap implements Graph{
     }
 
     private boolean cellIsRegion(WorldCoordinates cellCoordinates){
-        ArrayList<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
+        List<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
         return (cellTypes.toString().contains(REGION));
     }
 
     private boolean cellIsSpecificRegion(GraphVertex vertex, CellType region){
-        ArrayList<CellType> cellTypes = map.getCellTypes(vertex.getWorldCoordinates().getX(),
+        List<CellType> cellTypes = map.getCellTypes(vertex.getWorldCoordinates().getX(),
                 vertex.getWorldCoordinates().getY());
         return (cellTypes.contains(region));
     }
@@ -185,7 +210,7 @@ public class GraphMap implements Graph{
     }
 
     public DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(GraphVertex startPosition, GraphVertex endPosition){
-        return new DijkstraShortestPath<>(graphCells, startPosition, endPosition);
+        return new DijkstraShortestPath<>(graphRegions, startPosition, endPosition);
     }
 
 

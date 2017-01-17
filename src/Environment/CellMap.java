@@ -8,21 +8,21 @@ import javafx.geometry.Point2D;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = "agentsList")
 public class CellMap extends BasicSimEntity implements Map{
 
-    public final int regionsNumber = 3;
     private int mapScreenHeight;
     private int mapScreenWidth;
     private int mapWorldHeight;
     private int mapWorldWidth;
     private int cellSize;
     @Setter(AccessLevel.PRIVATE)@Getter(AccessLevel.PROTECTED) private Cell[][] cells;
-    private ArrayList<Agent> agentsList;
-    private ArrayList<WorldCoordinates> doorsList;
-    private ArrayList<WorldCoordinates> entrancesList;
+    private List<Agent> agentsList;
+    private List<WorldCoordinates> doorsList;
+    private List<WorldCoordinates> entrancesList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
         super(SimModel.getInstance().getCommonSimContext());
@@ -51,7 +51,7 @@ public class CellMap extends BasicSimEntity implements Map{
         cells[worldX][worldY] = new Cell(new WorldCoordinates(worldX, worldY), cellSize);
     }
 
-    public ArrayList<CellType> getCellTypes(int worldX, int worldY){
+    public List<CellType> getCellTypes(int worldX, int worldY){
         return cells[worldX][worldY].getCellTypeList();
     }
 

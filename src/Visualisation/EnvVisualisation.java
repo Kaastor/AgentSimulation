@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,9 +26,9 @@ public class EnvVisualisation extends Canvas {
     private int mapScreenWidth;
     private int mapWorldHeight;
     private int mapWorldWidth;
-    private ArrayList<Agent> agentsArrayList;
-    private ArrayList<WorldCoordinates> doorsArrayList;
-    private ArrayList<WorldCoordinates> entrancesArrayList;
+    private List<Agent> agentsArrayList;
+    private List<WorldCoordinates> doorsArrayList;
+    private List<WorldCoordinates> entrancesArrayList;
 
     public EnvVisualisation(Map map, int width, int height){
         super(width, height);
@@ -48,13 +49,12 @@ public class EnvVisualisation extends Canvas {
         for(int x = 0; x < mapWorldWidth ; x++){
             for(int y = 0; y< mapWorldHeight  ; y++){
 
-                ArrayList<CellType> cellTypes = map.getCellTypes(x, y);
+                List<CellType> cellTypes = map.getCellTypes(x, y);
                 Point2D screenCoordinates = map.getCellScreenCoordinates(x, y);
 
                 if(cellTypes.contains(CellType.FLOOR)) {
                     graphicsContext.setFill(Color.WHITE);
-                    graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
-                    //fillRect
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
                 if(cellTypes.contains(CellType.DOOR)) {
                     graphicsContext.setFill(Color.GREENYELLOW);
@@ -73,10 +73,10 @@ public class EnvVisualisation extends Canvas {
     }
 
     void renderMap(){
-//        clearAgentsOnScreen();
-//        drawDoorsOnScreen();
-//        drawEntrancesOnScreen();
-//        drawAgentsOnScreen();
+        clearAgentsOnScreen();
+        drawDoorsOnScreen();
+        drawEntrancesOnScreen();
+        drawAgentsOnScreen();
     }
 
     private void drawAgentsOnScreen(){
