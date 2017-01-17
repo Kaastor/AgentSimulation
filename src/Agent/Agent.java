@@ -17,16 +17,15 @@ import java.util.Iterator;
 public class Agent extends BasicSimEntity {
 
     private int id;
+    private Beliefs beliefs;
     private double agentSpeed;
     private GraphVertex previousPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
-
     private GraphVertex endPosition;
-
     private AgentState agentState;
-    private int KnowledgeOfArea;
-    private Graph graphMap;
+
+
     Iterator<GraphVertex> path;
 
     private WalkProcess walkProcess;
@@ -35,22 +34,22 @@ public class Agent extends BasicSimEntity {
     public Agent(Graph graphMap, WorldCoordinates startPosition, int id){
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
-        this.graphMap = graphMap;
+        this.beliefs = new Beliefs(graphMap);
         this.agentState = AgentState.NOP;
         this.agentSpeed = RandomGenerator.getInstance().exponential(0.3);
         this.previousPosition = graphMap.getVertex(startPosition);
 
         this.position = graphMap.getVertex(startPosition);
-        this.endPosition = graphMap.getVertex(new WorldCoordinates(6, 30));
+        this.endPosition = graphMap.getVertex(new WorldCoordinates(37, 24));
 
 //        createPathForRandomWalk(position);
-        createPathForWholeAreaSearch(position);
+//        createPathForWholeAreaSearch(position);
 
 //        createShortestPath(position, endPosition);
 
 //        System.out.println(graphMap.getVertex(new WorldCoordinates(6, 25)));
-//          createShortestPath(position, new GraphVertex(new WorldCoordinates(15, 10)));
-        this.nextPosition = path.next();
+//          createShortestPath(position, endPosition);
+//        this.nextPosition = path.next();
 //        this.nextPosition = plannedPath.next();
 
         this.walkProcess = new WalkProcess(this);
@@ -75,17 +74,17 @@ public class Agent extends BasicSimEntity {
     public void reservePosition(GraphVertex nextPosition){
     }
 
-    private void createPathForWholeAreaSearch(GraphVertex startPosition) {
-        path = graphMap.getWholeMapSearchPath(startPosition);
-    }
-
-    private void createPathForRandomWalk(GraphVertex startPosition) {
-        path = graphMap.getRandomWalkPath(startPosition);
-    }
-
-    private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
-        path = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
-    }
+//    private void createPathForWholeAreaSearch(GraphVertex startPosition) {
+//        path = graphMap.getWholeMapSearchPath(startPosition);
+//    }
+//
+//    private void createPathForRandomWalk(GraphVertex startPosition) {
+//        path = graphMap.getRandomWalkPath(startPosition);
+//    }
+//
+//    private void createShortestPath(GraphVertex startPosition, GraphVertex endPosition) {
+//        path = graphMap.getShortestPath(startPosition, endPosition).getPath().getVertexList().iterator();
+//    }
 
 
 

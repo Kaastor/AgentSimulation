@@ -4,6 +4,8 @@ package Environment;
 import Agent.Agent;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
 public class GraphVertex {
 
@@ -11,14 +13,16 @@ public class GraphVertex {
     private WorldCoordinates worldCoordinates;
     private boolean hasAgent;
     private boolean isReserved;
+    private ArrayList<CellType> types;
     private Agent agent;
 
     GraphVertex(int id, WorldCoordinates worldCoordinates){
-        this.id = id;
+        //this.id = id; //do usunięcia?
+        this.types = new ArrayList<>();
         this.worldCoordinates = worldCoordinates;
     }
 
-    public GraphVertex(WorldCoordinates worldCoordinates){
+    GraphVertex(WorldCoordinates worldCoordinates){
         this.worldCoordinates = worldCoordinates;
     }
 

@@ -53,11 +53,8 @@ public class EnvVisualisation extends Canvas {
 
                 if(cellTypes.contains(CellType.FLOOR)) {
                     graphicsContext.setFill(Color.WHITE);
-                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
-                }
-                if(cellTypes.contains(CellType.WALL)) {
-                    graphicsContext.setFill(Color.BLACK);
-                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
+                    graphicsContext.strokeRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
+                    //fillRect
                 }
                 if(cellTypes.contains(CellType.DOOR)) {
                     graphicsContext.setFill(Color.GREENYELLOW);
@@ -67,15 +64,19 @@ public class EnvVisualisation extends Canvas {
                     graphicsContext.setFill(Color.ORANGERED);
                     graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
                 }
+                if(cellTypes.contains(CellType.WALL)) {
+                    graphicsContext.setFill(Color.BLACK);
+                    graphicsContext.fillRect(screenCoordinates.getX(), screenCoordinates.getY(), cellSize, cellSize);
+                }
             }
         }
     }
 
     void renderMap(){
-        clearAgentsOnScreen();
-        drawDoorsOnScreen();
-        drawEntrancesOnScreen();
-        drawAgentsOnScreen();
+//        clearAgentsOnScreen();
+//        drawDoorsOnScreen();
+//        drawEntrancesOnScreen();
+//        drawAgentsOnScreen();
     }
 
     private void drawAgentsOnScreen(){

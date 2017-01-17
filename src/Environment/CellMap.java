@@ -59,6 +59,12 @@ public class CellMap extends BasicSimEntity implements Map{
         cells[worldX][worldY].addCellTypeToList(type);
     }
 
+    public void addTypesToCell(int worldX, int worldY, CellType... types){
+        for(CellType type : types){
+            addTypeToCell(type, worldX, worldY);
+        }
+    }
+
     public void addAgent(Agent agent){
         agentsList.add(agent);
     }

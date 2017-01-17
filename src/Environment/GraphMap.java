@@ -16,9 +16,11 @@ import java.util.Set;
 @Data
 public class GraphMap implements Graph{
 
+    private final String REGION = "REGION";
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
-    private ArrayList<GraphVertex> vertices;
+    private ArrayList<GraphVertex> cellVertices;
+    private ArrayList<GraphVertex> regionsVertices;
     private Map map;
 
 
@@ -26,8 +28,13 @@ public class GraphMap implements Graph{
         this.map = map;
         this.graphCells = new SimpleGraph<>(DefaultEdge.class);
         this.graphRegions = new SimpleGraph<>(DefaultEdge.class);
-        vertices = new ArrayList<>();
+        this.cellVertices = new ArrayList<>();
+        this.regionsVertices = new ArrayList<>();
         createGraphFromMap();
+
+//        for(GraphVertex vertex : regionsVertices){
+//            System.out.println(vertex);
+//        }
     }
 
     private void createGraphFromMap(){
@@ -44,7 +51,6 @@ public class GraphMap implements Graph{
                     GraphVertex vertex = new GraphVertex(count, new WorldCoordinates(x, y));
                     addVertexToRegionsGraph(new WorldCoordinates(x,y), vertex);
                     addVertexToCellGraph(vertex);
-                    vertices.add(vertex);
                     count++;
                 }
             }
@@ -53,11 +59,16 @@ public class GraphMap implements Graph{
 
     private void addVertexToCellGraph(GraphVertex vertex){
         graphCells.addVertex(vertex);
+        cellVertices.add(vertex);
     }
 
     private void addVertexToRegionsGraph(WorldCoordinates cellCoordinates, GraphVertex vertex){
-        if(cellIsRegion(cellCoordinates))
+        if(cellIsRegion(cellCoordinates)){
+            vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
+            System.out.println(vertex);/////
             graphRegions.addVertex(vertex);
+            regionsVertices.add(vertex);
+        }
     }
 
     private void addEdgesToRegionsGraph(){
@@ -79,14 +90,14 @@ public class GraphMap implements Graph{
                 vertex.getWorldCoordinates().getY());
         ArrayList<CellType> regionTypes = new ArrayList<>();
         for(CellType cellType : types){
-            if(cellType.toString().contains("REGION"))
+            if(cellType.toString().contains(REGION))
                 regionTypes.add(cellType);
         }
         return regionTypes;
     }
 
     private void addEdgesToCellsGraph(){
-        for (GraphVertex vertex : vertices){
+        for (GraphVertex vertex : cellVertices){
             addEdgesToVertex(vertex);
         }
     }
@@ -119,7 +130,7 @@ public class GraphMap implements Graph{
 
     private GraphVertex searchForVertex(WorldCoordinates vertexCoordinates){
         GraphVertex searchedVertex = null;
-        for (GraphVertex vertex : vertices){
+        for (GraphVertex vertex : cellVertices){
             if(vertex.equals(new GraphVertex(vertexCoordinates)))
                 searchedVertex = vertex;
         }
@@ -137,7 +148,7 @@ public class GraphMap implements Graph{
 
     private boolean cellIsRegion(WorldCoordinates cellCoordinates){
         ArrayList<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
-        return (cellTypes.toString().contains("REGION"));
+        return (cellTypes.toString().contains(REGION));
     }
 
     private boolean cellIsSpecificRegion(GraphVertex vertex, CellType region){
