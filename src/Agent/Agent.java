@@ -21,7 +21,7 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
-    private Point movingDirection;
+    private Vector movingDirection;
     private GraphVertex previousPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
@@ -40,7 +40,7 @@ public class Agent extends BasicSimEntity {
         this.beliefs = new Beliefs(graphMap);
         this.agentState = AgentState.NOP;
         this.agentSpeed = RandomGenerator.getInstance().exponential(1);
-        this.movingDirection = new Point(-1,-1);
+        this.movingDirection = new Vector(0,-1);
         this.position = graphMap.getVertex(new WorldCoordinates(20, 15));
         this.previousPosition = graphMap.getVertex(new WorldCoordinates(20, 15));
 //        this.position = graphMap.getVertex(startPosition);
@@ -64,37 +64,49 @@ public class Agent extends BasicSimEntity {
     private void updateDirection(){}
 
     public void moveForward(){
-        setPreviousPosition(position);
+        previousPosition = position;
         GraphVertex forwardVertex = graphMap.getVertex(position.getWorldCoordinates().getForwardPointCoordinates(movingDirection));
         if(forwardVertex != null)
             position = forwardVertex;
         else
             waitInPlace();
     }
+
     public void moveRight(){
-        setPreviousPosition(position);
-        GraphVertex rightVertex = graphMap.getVertex(position.getWorldCoordinates().getRightPointCoordinates(movingDirection));
-        if(rightVertex != null)
-            position = rightVertex;
-        else
-            waitInPlace();
+        movingDirection.rotateRight();
+        moveForward();
     }
+
+    public void moveForwardRight(){
+        movingDirection.rotateForwardRight();
+        moveForward();
+    }
+
+    public void moveForwardLeft(){
+        movingDirection.rotateForwardLeft();
+        moveForward();
+    }
+
     public void moveLeft(){
-        setPreviousPosition(position);
-        GraphVertex leftVertex = graphMap.getVertex(position.getWorldCoordinates().getLeftPointCoordinates(movingDirection));
-        if(leftVertex != null)
-            position = leftVertex;
-        else
-            waitInPlace();
+        movingDirection.rotateLeft();
+        moveForward();
     }
+
+    public void moveBackLeft(){
+        movingDirection.rotateBackLeft();
+        moveForward();
+    }
+
+    public void moveBackRight(){
+        movingDirection.rotateBackRight();
+        moveForward();
+    }
+
     public void moveBack(){
-        setPreviousPosition(position);
-        GraphVertex backVertex = graphMap.getVertex(position.getWorldCoordinates().getBackPointCoordinates(movingDirection));
-        if(backVertex != null)
-            position = backVertex;
-        else
-            waitInPlace();
+        movingDirection.rotateBack();
+        moveForward();
     }
+
     public void waitInPlace(){
 
     }
@@ -109,5 +121,4 @@ public class Agent extends BasicSimEntity {
 
     public void reservePosition(GraphVertex nextPosition){
     }
-
 }
