@@ -26,7 +26,7 @@ public class DesireModule {
         List<Integer> shops =  parentAgent.getBeliefs().getShopsToVisit();
         for(Integer shop : shops){
             desires.add(new VisitShop(parentAgent, shop));
-            parentAgent.getBeliefs().getShopsToVisit().remove(shop);
         }
+        parentAgent.getBeliefs().getShopsToVisit().clear();
     }
 }
