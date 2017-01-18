@@ -2,7 +2,7 @@ package Agent;
 
 
 import AgentDesires.Desire;
-import AgentEvents.WalkProcess;
+import AgentEvents.WalkEvent;
 import Environment.*;
 
 import dissim.simspace.core.BasicSimEntity;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = "beliefs")
 public class Agent extends BasicSimEntity {
 
     private Beliefs beliefs;
@@ -35,13 +35,13 @@ public class Agent extends BasicSimEntity {
     private AgentState agentState;
     Iterator<GraphVertex> path;
 
-    private WalkProcess walkProcess;
+    private WalkEvent walkEvent;
 
     @SneakyThrows
     public Agent(Graph graphMap, WorldCoordinates startPosition, int id){
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
-        this.beliefs = new Beliefs(graphMap);
+        this.beliefs = new Beliefs(this, graphMap);
         this.agentState = AgentState.NOP;
         this.agentSpeed = RandomGenerator.getInstance().exponential(1);
         this.movingDirection = new Vector(0,-1);//na pocz ma ustalony juz sciezke wiec moze to ustawic
@@ -54,24 +54,24 @@ public class Agent extends BasicSimEntity {
         this.nextPosition = path.next(); //if has..
 //        this.nextPosition = graphMap.getVertex(new WorldCoordinates(21, 16));
 
+        this.walkEvent = new WalkEvent(this);
 
-
-
-
-        this.walkProcess = new WalkProcess(this);
-        walkProcess.start();
         observeTheEnvironment();
     }
 
     public void observeTheEnvironment(){
+        updateDirection();
         lookForCollision();
         lookAround();
-        updateDirection();
+
+        beliefs.perceptualProcessor();
     }
 
     private void lookForCollision(){
         if(nextPosition.isOccupied() || nextPosition.isReserved()){
             beliefs.setCollision(true);
+            agentState = AgentState.COLLISION;
+            //tu unik kolizji, ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
         }
     }
 
@@ -85,14 +85,9 @@ public class Agent extends BasicSimEntity {
         verticesAround = verticesAround.parallelStream()
                 .distinct()
                 .collect(Collectors.toList());
-
-        for(GraphVertex graphVertex : verticesAround){
-            System.out.println(graphVertex);
-        }
-
-
         beliefs.setVerticesAround(verticesAround);
     }
+
     private void updateDirection(){
         if(agentState == AgentState.WALK)
             movingDirection.update(position, nextPosition);

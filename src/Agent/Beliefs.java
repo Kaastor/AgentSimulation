@@ -16,6 +16,7 @@ import java.util.Stack;
 @Data
 public class Beliefs {
 
+    private Agent parentAgent;
     private int KnowledgeOfArea;
     private Graph graphMap;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
@@ -24,7 +25,8 @@ public class Beliefs {
     private boolean collision;
     private Stack<Integer> shopsToVisit;
 
-    Beliefs(Graph graphMap){
+    Beliefs(Agent parentAgent, Graph graphMap){
+        this.parentAgent = parentAgent;
         this.graphMap = graphMap;
         this.graphCells = graphMap.getGraphCells();
         this.graphRegions = graphMap.getGraphRegions();
@@ -49,7 +51,9 @@ public class Beliefs {
     }
 
     public void perceptualProcessor(){
+        if(collision){
 
+        }
     }
 
     public void cognitiveProcessor(){

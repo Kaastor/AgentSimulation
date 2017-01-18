@@ -43,6 +43,10 @@ public class GraphVertex {
         this.occupied = false;
     }
 
+    public boolean isFree(){
+        return occupied && reserved;
+    }
+
     public void reserve(){
         this.reserved = true;
     }

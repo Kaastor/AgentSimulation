@@ -9,7 +9,7 @@ import org.jgrapht.graph.DefaultEdge;
 import java.util.Iterator;
 
 @Data
-class Plan {
+public class Plan {
 
     private Desire parentDesire;
     private Iterator<GraphVertex> regionPath;
@@ -30,12 +30,10 @@ class Plan {
         setEndRegionVertex(endRegionVertex);
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
-        createPath();
     }
 
     public void createSearchTopPath(){
         regionPath = graphMap.getRegionSearchPath(startRegionVertex);
-        createPath();
     }
 
     public void createPath(){
@@ -56,7 +54,7 @@ class Plan {
         }
     }
 
-    public boolean nextRegionPosition(){
+    private boolean nextRegionPosition(){
         if(regionPath.hasNext()){
             nextRegionVertex = regionPath.next();
             return true;
