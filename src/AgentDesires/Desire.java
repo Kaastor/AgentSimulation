@@ -1,13 +1,14 @@
 package AgentDesires;
 
 import Agent.Agent;
+import Environment.RandomGenerator;
 import lombok.Data;
 
 @Data
 public abstract class Desire {
 
     private Agent parentAgent;
-    private int priority;
+    private final int priority = RandomGenerator.getInstance().uniformInt(0, 5);
     private Plan plan;
     private boolean aborted;
 
@@ -20,6 +21,8 @@ public abstract class Desire {
     public abstract void finalAction();
 
     public void terminate(){
-        this.aborted = true;
+        parentAgent.getDesireModule().getDesires().remove(this);
+        parentAgent.getDecisionModule().setIntention(null);
+        this.aborted = true;//TODO??
     }
 }

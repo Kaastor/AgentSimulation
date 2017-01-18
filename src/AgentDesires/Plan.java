@@ -23,7 +23,6 @@ public class Plan {
         this.parentDesire = parentDesire;
         this.graphMap = parentDesire.getParentAgent().getBeliefs().getGraphMap();
         this.startRegionVertex = startVertex;
-        this.nextRegionVertex = regionPath.next();
     }
 
     public void createShortestTopPath(GraphVertex endRegionVertex){

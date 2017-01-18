@@ -4,8 +4,10 @@ import Agent.Agent;
 import Agent.Beliefs;
 import Environment.GraphVertex;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(exclude = "agentBeliefs")
 public class VisitShop extends Desire {
 
     private Beliefs agentBeliefs;
@@ -34,7 +36,7 @@ public class VisitShop extends Desire {
 
     @Override
     public void finalAction() {
-        //new process - blakanie po sklepi x - dopoki random  path nie natrafi na drzwi
+        //TODO new process - blakanie po sklepi x - dopoki random  path nie natrafi na drzwi
         this.terminate();
     }
 }
