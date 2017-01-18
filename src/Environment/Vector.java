@@ -65,10 +65,15 @@ public class Vector extends WorldCoordinates{
         this.setY(this.getY() + vector.getY());
     }
 
-    void normalize(){
+    private void normalize(){
         double vectorLength = Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2) );
         this.setX(getX()/(int)vectorLength);
         this.setY(getY()/(int)vectorLength);
+    }
+
+    public void update(GraphVertex position, GraphVertex nextPosition){
+        this.setX(nextPosition.getWorldCoordinates().getX() - position.getWorldCoordinates().getX());
+        this.setY(nextPosition.getWorldCoordinates().getY() - position.getWorldCoordinates().getY());
     }
 
 

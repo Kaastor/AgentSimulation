@@ -57,14 +57,12 @@ public class GraphMap implements Graph{
     }
 
     private void addVerticesToGraphs() {
-        int count = 0;
         for (int y = 0; y < map.getMapWorldHeight(); y++) {
             for (int x = 0; x < map.getMapWorldWidth(); x++) {
                 if (cellIsWalkable(new WorldCoordinates(x,y))) {
-                    GraphVertex vertex = new GraphVertex(count, new WorldCoordinates(x, y));
+                    GraphVertex vertex = new GraphVertex(new WorldCoordinates(x, y));
                     addVertexToRegionsGraph(new WorldCoordinates(x,y), vertex);
                     addVertexToCellGraph(vertex);
-                    count++;
                 }
             }
         }
@@ -115,25 +113,40 @@ public class GraphMap implements Graph{
     }
 
     private void addEdgesToVertex(GraphVertex vertexFrom) {
-        boolean cellsAroundExist = true;
+        boolean cellUpExist = true;
+        boolean cellRightExist = true;
         if(cellExistAndIsWalkable(getVertexUpCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexUpCoordinates(vertexFrom));
             graphCells.addEdge(vertexFrom, graphVertexTo);
         }
         else{
-            cellsAroundExist = false;
+            cellUpExist = false;
         }
         if(cellExistAndIsWalkable(getVertexRightCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexRightCoordinates(vertexFrom));
             graphCells.addEdge(vertexFrom, graphVertexTo);
         }
         else{
-            cellsAroundExist = false;
+            cellRightExist = false;
         }
-        if(cellsAroundExist && cellExistAndIsWalkable(getVertexUpRightCoordinates(vertexFrom))){
+        if(cellUpExist && cellExistAndIsWalkable(getVertexUpRightCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexUpRightCoordinates(vertexFrom));
             graphCells.addEdge(vertexFrom, graphVertexTo);
         }
+
+        if(cellRightExist && cellExistAndIsWalkable(getVertexDownRightCoordinates(vertexFrom))){
+            GraphVertex graphVertexTo = getVertex(getVertexDownRightCoordinates(vertexFrom));
+            graphCells.addEdge(vertexFrom, graphVertexTo);
+        }
+    }
+
+    private boolean cellsDownAroundExist(GraphVertex vertexFrom){
+//        cellExistAndIsWalkable(getvertex)
+        return false;
+    }
+
+    public GraphVertex getVertex(GraphVertex vertex){
+        return searchForVertex(vertex.getWorldCoordinates());
     }
 
     public GraphVertex getVertex(WorldCoordinates vertexCoordinates){
@@ -196,22 +209,45 @@ public class GraphMap implements Graph{
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY() );
     }
 
+    private WorldCoordinates getVertexLeftCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX()-1, vertexCoordinates.getY() );
+    }
+
+    private WorldCoordinates getVertexUpLeftCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX()-1, vertexCoordinates.getY()-1 );
+    }
+
     private WorldCoordinates getVertexUpRightCoordinates(GraphVertex vertex) {
         WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()-1 );
     }
 
-    public GraphIterator<GraphVertex, DefaultEdge> getWholeMapSearchPath(GraphVertex startPosition){
-        return new DepthFirstIterator<>(graphCells, startPosition);
+    private WorldCoordinates getVertexDownRightCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY()+1 );
+    }
+
+    public GraphIterator<GraphVertex, DefaultEdge> getRegionSearchPath(GraphVertex startPosition){
+        return new DepthFirstIterator<>(graphRegions, startPosition);
     }
 
     public GraphIterator<GraphVertex, DefaultEdge> getRandomWalkPath(GraphVertex startPosition){
         return new RandomWalkIterator<>(graphCells, startPosition);
     }
 
-    public DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(GraphVertex startPosition, GraphVertex endPosition){
-        return new DijkstraShortestPath<>(graphRegions, startPosition, endPosition);
+    public DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath
+            (UndirectedGraph<GraphVertex, DefaultEdge> graph, GraphVertex startPosition, GraphVertex endPosition){
+        return new DijkstraShortestPath<>(graph, startPosition, endPosition);
     }
 
-
+    public GraphVertex getShopPosition(int shopNumber){
+        GraphVertex shopPosition = null;
+        for(GraphVertex shop : shopsVertices){
+            if(shop.getTypes().contains(shopNumber))
+                shopPosition = shop;
+        }
+        return shopPosition;
+    }
 }

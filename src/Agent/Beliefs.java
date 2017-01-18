@@ -10,21 +10,25 @@ import org.jgrapht.graph.DefaultEdge;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 @Data
-class Beliefs {
+public class Beliefs {
+
     private int KnowledgeOfArea;
+    private Graph graphMap;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
-    private List<GraphVertex> aroundVertices;
+    private List<GraphVertex> verticesAround;
     private boolean collision;
-    private List<Integer> shopsToVisit;
+    private Stack<Integer> shopsToVisit;
 
     Beliefs(Graph graphMap){
+        this.graphMap = graphMap;
         this.graphCells = graphMap.getGraphCells();
         this.graphRegions = graphMap.getGraphRegions();
-        this.aroundVertices = new ArrayList<>();
+        this.verticesAround = new ArrayList<>();
         this.KnowledgeOfArea = 1;
         this.collision = false;
         initializeBeliefs(graphMap);
@@ -34,8 +38,8 @@ class Beliefs {
         this.shopsToVisit = initializeShopsToVisit(graphMap.getShopsNumber());
     }
     
-    private List<Integer> initializeShopsToVisit(int shopNumber){
-        List<Integer> shopsToVisit = new ArrayList<>();
+    private Stack<Integer> initializeShopsToVisit(int shopNumber){
+        Stack<Integer> shopsToVisit = new Stack<>();
         int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
             int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
@@ -45,6 +49,10 @@ class Beliefs {
     }
 
     public void perceptualProcessor(){
+
+    }
+
+    public void cognitiveProcessor(){
 
     }
 

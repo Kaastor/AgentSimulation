@@ -8,11 +8,14 @@ import org.jgrapht.traverse.GraphIterator;
 public interface Graph {
 
     GraphVertex getVertex(WorldCoordinates vertexCoordinates);
+    GraphVertex getVertex(GraphVertex vertex);
     GraphVertex getRegionVertex(WorldCoordinates vertexCoordinates);
+    GraphVertex getShopPosition(int shopNumber);
     int getShopsNumber();
     UndirectedGraph<GraphVertex, DefaultEdge> getGraphCells();
     UndirectedGraph<GraphVertex, DefaultEdge> getGraphRegions();
-    GraphIterator<GraphVertex, DefaultEdge> getWholeMapSearchPath(GraphVertex startPosition);
+    GraphIterator<GraphVertex, DefaultEdge> getRegionSearchPath(GraphVertex startPosition);
     GraphIterator<GraphVertex, DefaultEdge> getRandomWalkPath(GraphVertex startPosition);
-    DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(GraphVertex startPosition, GraphVertex endPosition);
+    DijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPath(
+            UndirectedGraph<GraphVertex, DefaultEdge> graph, GraphVertex startPosition, GraphVertex endPosition);
 }
