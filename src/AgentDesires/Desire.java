@@ -21,7 +21,6 @@ public abstract class Desire {
     public abstract void finalAction();
 
     public void terminate(){
-        parentAgent.getDesireModule().getDesires().remove(this);
         parentAgent.getDecisionModule().setIntention(null);
         this.aborted = true;//TODO??
     }

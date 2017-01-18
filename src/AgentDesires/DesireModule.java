@@ -20,6 +20,8 @@ public class DesireModule {
 
     public void cognitiveProcessor(){
         addVisitShopDesires();
+
+        parentAgent.getDecisionModule().deliberate();
     }
 
     private void addVisitShopDesires(){
