@@ -72,18 +72,9 @@ public class Beliefs {
         int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
             int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber-1);
-            if(!shopIsRedundant(shopToVisit))
+            if(!shopsToVisit.contains(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }
         return shopsToVisit;
     }
-
-    private boolean shopIsRedundant(int shopToVisit){
-        return shopsToVisit.contains(shopToVisit);
-    }
-
-    public boolean shopsExist(){
-        return shopsToVisit.size() > 0;
-    }
-
 }

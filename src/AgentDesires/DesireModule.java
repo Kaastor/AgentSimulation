@@ -19,22 +19,27 @@ public class DesireModule {
     }
 
     public void cognitiveProcessor() {
-        addVisitShopDesires();
+        updateDesiresList();
+
         System.out.println("DesireModule: desires: ");
         for (Desire desire : desires) {
             System.out.println(desire);
         }
-        if (!desiresExist()) {
+        if (desires.isEmpty()) {
             System.out.println("Leave CH");
             //TODO lista pusta -> new desire - opusc sklep (w opusc sklep jesli koa = 0 to wychodzi tymi co wszedl,
-            //dla koa= 1 szuka najblizszego?
+            //TODO dla koa= 1 szuka najblizszego?
         }
 
         parentAgent.getDecisionModule().deliberate();
     }
 
-    private void addVisitShopDesires(){
-        if(parentAgent.getBeliefs().shopsExist()) {
+    private void updateDesiresList(){
+        updateVisitShopDesires();
+    }
+
+    private void updateVisitShopDesires(){
+        if(!parentAgent.getBeliefs().getShopsToVisit().isEmpty()) {
             List<Integer> shops = parentAgent.getBeliefs().getShopsToVisit();
             for (Integer shop : shops) {
                 desires.add(new VisitShop(parentAgent, shop));
@@ -43,7 +48,7 @@ public class DesireModule {
         }
     }
 
-    public boolean desiresExist(){
-        return desires.size() > 0;
+    public void addDesire(Desire desire){
+        desires.add(desire);
     }
 }

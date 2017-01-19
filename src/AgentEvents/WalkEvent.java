@@ -2,10 +2,8 @@ package AgentEvents;
 
 import Agent.Agent;
 import Agent.AgentState;
-import Environment.GraphVertex;
 import dissim.simspace.core.BasicSimStateChange;
 import dissim.simspace.core.SimControlException;
-import dissim.simspace.process.BasicSimProcess;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,12 +21,8 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
     @Override
     public void transition() {
         parentAgent.setAgentState(AgentState.WALK);
-
         walkToNextPositionIfSet();
         setNextPositionOnMap();
-//        System.out.println("WALKING TO..position NOW" + parentAgent.getPosition());
-//        System.out.println("WALKING TO..position NEXT" + parentAgent.getNextPosition());
-
         parentAgent.getBeliefs().perceptualProcessor();
     }
 
