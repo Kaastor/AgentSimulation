@@ -53,6 +53,7 @@ public class Beliefs {
         parentAgent.observeEnvironment();
 
         if(decisionModule.getIntention() == null){
+            System.out.println("Beliefs: Intention == null" );
             desireModule.cognitiveProcessor();
         }
         else if(parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
@@ -68,10 +69,9 @@ public class Beliefs {
 
     private List<Integer> initializeShopsToVisit(int shopNumber){
         shopsToVisit = new ArrayList<>();
-        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, 2);
+        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
-//            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
-            int shopToVisit = 5;
+            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber-1);
             if(!shopIsRedundant(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }
@@ -80,6 +80,10 @@ public class Beliefs {
 
     private boolean shopIsRedundant(int shopToVisit){
         return shopsToVisit.contains(shopToVisit);
+    }
+
+    public boolean shopsExist(){
+        return shopsToVisit.size() > 0;
     }
 
 }

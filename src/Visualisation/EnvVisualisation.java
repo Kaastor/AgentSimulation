@@ -81,14 +81,27 @@ public class EnvVisualisation extends Canvas {
 
     private void drawAgentsOnScreen(){
         for(Agent agent : agentsArrayList){
-            if(agent.getPosition() != null)
+            if(agent.getPosition() != null){
                 drawAgent(agent.getPosition().getWorldCoordinates());
+                drawMovingVector(agent, agent.getPosition().getWorldCoordinates());
+            }
         }
     }
 
     private void drawAgent(WorldCoordinates agentWorldCoordinates){
         Point2D agentScreenPosition = map.getCellScreenCoordinates(agentWorldCoordinates.getX(), agentWorldCoordinates.getY());
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
+
+
+    }
+
+    private void drawMovingVector(Agent agent, WorldCoordinates agentWorldCoordinates){
+        Point2D agentScreenPosition = map.getCellScreenCoordinates(agentWorldCoordinates.getX(), agentWorldCoordinates.getY());
+        graphicsContext.setLineWidth(3);
+        graphicsContext.strokeLine(agentScreenPosition.getX(),
+                agentScreenPosition.getY(),
+                agentScreenPosition.getX()+agent.getMovingDirection().getX()*20,
+                agentScreenPosition.getY()+agent.getMovingDirection().getY()*20);
     }
 
     private void drawDoorsOnScreen(){

@@ -37,13 +37,13 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
             parentAgent.setPreviousPosition(parentAgent.getPosition());
             parentAgent.moveToNextPosition();
         }
-        if(noNextPosition()){
-            parentAgent.setAgentState(AgentState.STANDING);
-        }
     }
 
     private void setNextPositionOnMap() {
         parentAgent.setNextPosition(parentAgent.getDecisionModule().getIntention().getPlan().getNextPosition());
+        if(noNextPosition()){
+            parentAgent.setAgentState(AgentState.STANDING);
+        }
     }
 
     private boolean noNextPosition(){

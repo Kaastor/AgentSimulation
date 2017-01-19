@@ -22,24 +22,17 @@ public class DecisionModule {
     }
 
     public void deliberate(){
-        if(parentAgent.getDesireModule().desiresExist()) {
-            System.out.println("Decision : desires exist: ");
-            List<Desire> desires = parentAgent.getDesireModule().getDesires();
+            System.out.println("DecisionModule - deliberation : desires exist: ");
+            List<Desire> desires = parentAgent.getDesireModule().getDesires();//spr czy lista pusta
             List<Desire> sortedDesires = sortDesiresByPriority(desires);
             intention = getFirstDesire(sortedDesires);
-
+            System.out.println("DecisionModule - deliberation : choosed intention: " + intention);
             plan();
-        }
-        else{
-            //TODO lista pusta -> new desire - opusc sklep (w opusc sklep jesli koa = 0 to wychodzi tymi co wszedl,
-            //dla koa= 1 szuka najblizszego?
-        }
     }
 
     public void plan(){
         System.out.println("Planning..");
         intention.scenario();
-        System.out.println("Decision: Intention: "+ intention);
         realTimePlanning();
     }
 
