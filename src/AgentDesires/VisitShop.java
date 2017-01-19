@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString(exclude = "agentBeliefs")
+@ToString(callSuper = true, exclude = "agentBeliefs")
 public class VisitShop extends Desire {
 
     private Beliefs agentBeliefs;
@@ -18,12 +18,12 @@ public class VisitShop extends Desire {
         super(agent);
         this.agentBeliefs = agent.getBeliefs();
         this.shopNumber = shopNumber;
-        scenario();
     }
 
     @Override
     public void scenario() {
         if(agentBeliefs.getKnowledgeOfArea() == 1){
+            System.out.print("scenario: ");
             setPlan(new Plan(this, getParentAgent().getPosition()));
             this.shopPosition = agentBeliefs.getGraphMap().getShopPosition(shopNumber);
             getPlan().createShortestTopPath(shopPosition);
@@ -36,6 +36,7 @@ public class VisitShop extends Desire {
 
     @Override
     public void finalAction() {
+        System.out.println("VisitShop final action.");
         //TODO new process - blakanie po sklepi x - dopoki random  path nie natrafi na drzwi
         this.terminate();
     }

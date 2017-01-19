@@ -15,16 +15,19 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
 
     private Agent parentAgent;
 
-    public WalkEvent(Agent parentAgent) throws SimControlException {
-        super(parentAgent);
+    public WalkEvent(Agent parentAgent, double agentSpeed) throws SimControlException {
+        super(parentAgent, agentSpeed);
         this.parentAgent = getSimEntity();
     }
 
     @Override
     public void transition() {
         parentAgent.setAgentState(AgentState.WALK);
+
         walkToNextPositionIfSet();
         setNextPositionOnMap();
+//        System.out.println("WALKING TO..position NOW" + parentAgent.getPosition());
+//        System.out.println("WALKING TO..position NEXT" + parentAgent.getNextPosition());
 
         parentAgent.getBeliefs().perceptualProcessor();
     }

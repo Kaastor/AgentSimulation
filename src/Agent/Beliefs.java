@@ -39,7 +39,8 @@ public class Beliefs {
         this.graphCells = graphMap.getGraphCells();
         this.graphRegions = graphMap.getGraphRegions();
         this.verticesAround = new ArrayList<>();
-        this.KnowledgeOfArea = RandomGenerator.getInstance().uniformInt(0, 1);
+        this.KnowledgeOfArea = 1;
+//        this.KnowledgeOfArea = RandomGenerator.getInstance().uniformInt(0, 1);
         this.collision = false;
         initializeBeliefs(graphMap);
     }
@@ -49,55 +50,36 @@ public class Beliefs {
     }
 
     public void perceptualProcessor(){
-        updateDirection();
-        lookAround();
-        lookForCollision();
+        parentAgent.observeEnvironment();
 
         if(decisionModule.getIntention() == null){
             desireModule.cognitiveProcessor();
         }
-        else if(collision){
+        else if(parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
+            setCollision(true);
+            parentAgent.setAgentState(AgentState.COLLISION);
             //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
+
         }
         else{
             decisionModule.executePlan();
         }
     }
 
-    private void lookForCollision(){
-        if(parentAgent.getAgentState() == AgentState.WALK) {
-            if (parentAgent.getNextPosition().isOccupied() || parentAgent.getNextPosition().isReserved()) {
-                setCollision(true);
-                parentAgent.setAgentState(AgentState.COLLISION);
-            }
-        }
-    }
-
-    private void lookAround(){
-        List<GraphVertex> verticesAround = new ArrayList<>();
-        Set<DefaultEdge> aroundEdges = getGraphCells().edgesOf(getGraphMap().getVertex(parentAgent.getPosition()));
-        for(DefaultEdge edge : aroundEdges){
-            verticesAround.add(getGraphCells().getEdgeSource(edge));
-            verticesAround.add(getGraphCells().getEdgeTarget(edge));
-        }
-        verticesAround = verticesAround.parallelStream()
-                .distinct()
-                .collect(Collectors.toList());
-        setVerticesAround(verticesAround);
-    }
-
-    private void updateDirection(){
-        if(parentAgent.getAgentState() == AgentState.WALK)
-            parentAgent.getMovingDirection().update(parentAgent.getPosition(), parentAgent.getNextPosition());
-    }
-
     private List<Integer> initializeShopsToVisit(int shopNumber){
-        List<Integer> shopsToVisit = new ArrayList<>();
-        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
+        shopsToVisit = new ArrayList<>();
+        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, 2);
         for(int i = 0; i < numberShopsToVisit; i++){
-            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
-            shopsToVisit.add(shopToVisit);
+//            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
+            int shopToVisit = 5;
+            if(!shopIsRedundant(shopToVisit))
+                shopsToVisit.add(shopToVisit);
         }
         return shopsToVisit;
     }
+
+    private boolean shopIsRedundant(int shopToVisit){
+        return shopsToVisit.contains(shopToVisit);
+    }
+
 }

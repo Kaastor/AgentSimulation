@@ -3,8 +3,10 @@ package AgentDesires;
 import Agent.Agent;
 import Environment.RandomGenerator;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(exclude = {"parentAgent", "plan"})
 public abstract class Desire {
 
     private Agent parentAgent;
@@ -22,6 +24,11 @@ public abstract class Desire {
 
     public void terminate(){
         parentAgent.getDecisionModule().setIntention(null);
+        parentAgent.getDesireModule().getDesires().remove(this);
         this.aborted = true;//TODO??
+    }
+
+    public void interrupt(){
+        parentAgent.getDecisionModule().setIntention(null);
     }
 }

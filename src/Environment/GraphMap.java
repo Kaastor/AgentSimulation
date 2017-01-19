@@ -3,6 +3,8 @@ package Environment;
 
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.BellmanFordShortestPath;
+import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class GraphMap implements Graph{
@@ -38,6 +41,23 @@ public class GraphMap implements Graph{
         this.regionsVertices = new ArrayList<>();
         createGraphFromMap();
         this.shopsVertices = createShopList();
+
+
+
+        List<GraphVertex> verticesAround = new ArrayList<>();
+        Set<DefaultEdge> aroundEdges =  getGraphCells().edgesOf( getVertex(new WorldCoordinates(17, 8)));
+        for(DefaultEdge edge : aroundEdges){
+            verticesAround.add( getGraphCells().getEdgeSource(edge));
+            verticesAround.add( getGraphCells().getEdgeTarget(edge));
+        }
+        verticesAround = verticesAround.parallelStream()
+                .distinct()
+                .collect(Collectors.toList());
+
+//        for(GraphVertex vertex : verticesAround){
+//            System.out.println(vertex);
+//        }
+
     }
 
     private void createGraphFromMap(){
@@ -134,15 +154,10 @@ public class GraphMap implements Graph{
             graphCells.addEdge(vertexFrom, graphVertexTo);
         }
 
-        if(cellRightExist && cellExistAndIsWalkable(getVertexDownRightCoordinates(vertexFrom))){
+        if(cellRightExist && cellDownExist(vertexFrom) && cellExistAndIsWalkable(getVertexDownRightCoordinates(vertexFrom))){
             GraphVertex graphVertexTo = getVertex(getVertexDownRightCoordinates(vertexFrom));
             graphCells.addEdge(vertexFrom, graphVertexTo);
         }
-    }
-
-    private boolean cellsDownAroundExist(GraphVertex vertexFrom){
-//        cellExistAndIsWalkable(getvertex)
-        return false;
     }
 
     public GraphVertex getVertex(GraphVertex vertex){
@@ -199,6 +214,15 @@ public class GraphMap implements Graph{
         return (map.cellExist(cellCoordinates) && cellIsWalkable(cellCoordinates));
     }
 
+    private boolean cellDownExist(GraphVertex vertex){
+      return  cellExistAndIsWalkable(getVertexDownCoordinates(vertex));
+    }
+
+    private WorldCoordinates getVertexDownCoordinates(GraphVertex vertex) {
+        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
+        return new WorldCoordinates(vertexCoordinates.getX(), vertexCoordinates.getY()+1 );
+    }
+
     private WorldCoordinates getVertexUpCoordinates(GraphVertex vertex) {
         WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
         return new WorldCoordinates(vertexCoordinates.getX(), vertexCoordinates.getY()-1 );
@@ -207,16 +231,6 @@ public class GraphMap implements Graph{
     private WorldCoordinates getVertexRightCoordinates(GraphVertex vertex) {
         WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
         return new WorldCoordinates(vertexCoordinates.getX()+1, vertexCoordinates.getY() );
-    }
-
-    private WorldCoordinates getVertexLeftCoordinates(GraphVertex vertex) {
-        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
-        return new WorldCoordinates(vertexCoordinates.getX()-1, vertexCoordinates.getY() );
-    }
-
-    private WorldCoordinates getVertexUpLeftCoordinates(GraphVertex vertex) {
-        WorldCoordinates vertexCoordinates = vertex.getWorldCoordinates();
-        return new WorldCoordinates(vertexCoordinates.getX()-1, vertexCoordinates.getY()-1 );
     }
 
     private WorldCoordinates getVertexUpRightCoordinates(GraphVertex vertex) {
@@ -242,12 +256,20 @@ public class GraphMap implements Graph{
         return new DijkstraShortestPath<>(graph, startPosition, endPosition);
     }
 
+    public BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> getShortestPathBi
+            (UndirectedGraph<GraphVertex, DefaultEdge> graph, GraphVertex startPosition, GraphVertex endPosition){
+        return new BidirectionalDijkstraShortestPath<>(graph, startPosition, endPosition);
+    }
+
     public GraphVertex getShopPosition(int shopNumber){
         GraphVertex shopPosition = null;
         for(GraphVertex shop : shopsVertices){
-            if(shop.getTypes().contains(shopNumber))
+            if(shop.getTypes().toString().contains(SHOP+shopNumber)){
                 shopPosition = shop;
+                break;
+            }
+
         }
-        return shopPosition;
+        return searchForVertex(shopPosition.getWorldCoordinates());
     }
 }

@@ -10,6 +10,12 @@ import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import org.jgrapht.graph.DefaultEdge;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = {"beliefs", "desireModule", "decisionModule"})
@@ -43,6 +49,33 @@ public class Agent extends BasicSimEntity {
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
         beliefs.perceptualProcessor();
+    }
+
+    public void observeEnvironment(){
+        lookAround();
+        updateDirection();
+    }
+
+    private void lookAround(){
+        List<GraphVertex> verticesAround = new ArrayList<>();
+        Set<DefaultEdge> aroundEdges =  beliefs.getGraphCells().edgesOf( beliefs.getGraphMap().getVertex(getPosition()));
+        for(DefaultEdge edge : aroundEdges){
+            verticesAround.add( beliefs.getGraphCells().getEdgeSource(edge));
+            verticesAround.add( beliefs.getGraphCells().getEdgeTarget(edge));
+        }
+        verticesAround = verticesAround.parallelStream()
+                .distinct()
+                .collect(Collectors.toList());
+        beliefs.setVerticesAround(verticesAround);
+    }
+
+    private void updateDirection(){
+        if(getAgentState() == AgentState.WALK)
+            getMovingDirection().update(getPosition(), getNextPosition());
+    }
+
+    public boolean lookForCollision() {
+        return (getNextPosition().isOccupied() || getNextPosition().isReserved());
     }
 
     public void moveForward(){
@@ -109,7 +142,6 @@ public class Agent extends BasicSimEntity {
     private void setPosition(GraphVertex position){
         position.occupy(this);
         this.position = position;
-//        System.out.println(position);
     }
 
 }

@@ -20,6 +20,10 @@ public class DesireModule {
 
     public void cognitiveProcessor(){
         addVisitShopDesires();
+        System.out.println("DESIREMOD: desires: ");
+        for(Desire desire : desires){
+            System.out.println(desire);
+        }
 
         parentAgent.getDecisionModule().deliberate();
     }
@@ -30,5 +34,9 @@ public class DesireModule {
             desires.add(new VisitShop(parentAgent, shop));
         }
         parentAgent.getBeliefs().getShopsToVisit().clear();
+    }
+
+    public boolean desiresExist(){
+        return desires.size() > 0;
     }
 }

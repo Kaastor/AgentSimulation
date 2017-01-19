@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -21,11 +22,13 @@ public class DecisionModule {
     }
 
     public void deliberate(){
-        List<Desire> desires = parentAgent.getDesireModule().getDesires();
-        List<Desire> sortedDesires = sortDesiresByPriority(desires);
-        if(sortedDesires != null){
-            intention = sortedDesires.get(0);
-            parentAgent.getDesireModule().getDesires().remove(intention);
+        if(parentAgent.getDesireModule().desiresExist()) {
+            System.out.println("Decision : desires exist: ");
+            List<Desire> desires = parentAgent.getDesireModule().getDesires();
+            List<Desire> sortedDesires = sortDesiresByPriority(desires);
+            intention = getFirstDesire(sortedDesires);
+
+            plan();
         }
         else{
             //TODO lista pusta -> new desire - opusc sklep (w opusc sklep jesli koa = 0 to wychodzi tymi co wszedl,
@@ -34,22 +37,32 @@ public class DecisionModule {
     }
 
     public void plan(){
+        System.out.println("Planning..");
         intention.scenario();
+        System.out.println("Decision: Intention: "+ intention);
+        realTimePlanning();
     }
 
     public void realTimePlanning(){
+        System.out.println("Planning realtime..");
         intention.getPlan().createPath();
         executePlan();
     }
 
     @SneakyThrows
     public void executePlan(){
-        parentAgent.setWalkEvent(new WalkEvent(parentAgent));
+        System.out.println("Exec..");
+        parentAgent.setWalkEvent(new WalkEvent(parentAgent, parentAgent.getAgentSpeed()));
     }
 
+
     private List<Desire> sortDesiresByPriority(List<Desire> desires){
-        List<Desire> sortedDesires = null;
-        //TODO sortowanie
+        desires.sort(Comparator.comparing((Desire::getPriority)));
+        List<Desire>  sortedDesires = desires;
         return sortedDesires;
+    }
+
+    private Desire getFirstDesire(List<Desire> sortedDesires){
+        return sortedDesires.get(0);
     }
 }

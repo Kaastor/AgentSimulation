@@ -3,6 +3,7 @@ package AgentDesires;
 import Environment.Graph;
 import Environment.GraphVertex;
 import lombok.Data;
+import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -15,7 +16,6 @@ public class Plan {
     private Iterator<GraphVertex> regionPath;
     private Iterator<GraphVertex> localPath;
     private Graph graphMap;
-    private GraphVertex endRegionVertex;
     private GraphVertex nextRegionVertex;
     private GraphVertex startRegionVertex;
 
@@ -26,9 +26,9 @@ public class Plan {
     }
 
     public void createShortestTopPath(GraphVertex endRegionVertex){
-        setEndRegionVertex(endRegionVertex);
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
+        setInitialNextPosition();
     }
 
     public void createSearchTopPath(){
@@ -36,8 +36,10 @@ public class Plan {
     }
 
     public void createPath(){
-        DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphCells(), startRegionVertex, nextRegionVertex);
+        BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startRegionVertex, nextRegionVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
+        getNextPosition(); //pierwsza jest aktualna poz agenta.
+        System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
     public GraphVertex getNextPosition(){
@@ -55,6 +57,7 @@ public class Plan {
 
     private boolean nextRegionPosition(){
         if(regionPath.hasNext()){
+            startRegionVertex = nextRegionVertex;
             nextRegionVertex = regionPath.next();
             return true;
         }
@@ -62,6 +65,11 @@ public class Plan {
             parentDesire.finalAction();
             return false;
         }
+    }
+
+    private void setInitialNextPosition(){
+        nextRegionPosition();
+        nextRegionPosition();
     }
 
     public void dropPlan(){
