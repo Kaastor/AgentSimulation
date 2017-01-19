@@ -12,9 +12,10 @@ import lombok.ToString;
 public abstract class Desire {
 
     private final int maxPriority = 5;
+    private final int highPriority = 0;
     private Agent parentAgent;
     private Beliefs agentBeliefs;
-    private int priority = RandomGenerator.getInstance().uniformInt(0, maxPriority);
+    private int priority = RandomGenerator.getInstance().uniformInt(1, maxPriority);
     private Plan plan;
     private GraphVertex finalPosition;
     private boolean aborted;
@@ -24,11 +25,11 @@ public abstract class Desire {
         this.agentBeliefs = agent.getBeliefs();
     }
 
-    Desire(Agent agent, boolean highPriority){
+    Desire(Agent agent, boolean highPriorityIndicator){
         this.parentAgent = agent;
         this.agentBeliefs = agent.getBeliefs();
-        if(highPriority)
-            this.priority = maxPriority+1;
+        if(highPriorityIndicator)
+            this.priority = this.highPriority;
     }
 
     public abstract void scenario();

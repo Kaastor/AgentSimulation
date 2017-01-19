@@ -49,24 +49,13 @@ public class Plan {
         System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
-    public GraphVertex getNextWanderPosition(){
-        if(parentDesire.getAgentBeliefs().getVerticesAround().contains(parentDesire.getFinalPosition())){
-            return null;
-        }
-        else if(localPath.hasNext()){
-            return localPath.next();
-        }
-        else
-            return null;
-    }
-
     public GraphVertex getNextPosition(){
-        //if(regionPath == null) {
+        if(regionPath != null) {
             return getNextPlannedPosition();
-        //}
-        //else{
-        //    return getNextWanderPosition();
-        //}
+        }
+        else{
+            return getNextWanderPosition();
+        }
     }
 
     private GraphVertex getNextPlannedPosition(){
@@ -77,8 +66,21 @@ public class Plan {
                 createPath();
                 return getNextPosition();
             }
+            else
+                return null;
+        }
+    }
+
+    private GraphVertex getNextWanderPosition(){
+        if(parentDesire.getAgentBeliefs().getVerticesAround().contains(parentDesire.getFinalPosition())){
+            parentDesire.finalAction();
             return null;
         }
+        else if(localPath.hasNext()){
+            return localPath.next();
+        }
+        else
+            return null;
     }
 
     private boolean nextPlannedRegionPosition(){
@@ -88,7 +90,7 @@ public class Plan {
             return true;
         }
         else{
-            parentDesire.finalAction();
+            parentDesire.finalAction();///WARUNEK STOPU DESIRE
             return false;
         }
     }

@@ -21,13 +21,19 @@ public class DecisionModule {
         this.intention = null;
     }
 
-    public void deliberate(){
-            System.out.println("DecisionModule - deliberation : desires exist: ");
-            List<Desire> desires = parentAgent.getDesireModule().getDesires();
-            List<Desire> sortedDesires = sortDesiresByPriority(desires);
-            intention = getDesireWithHighestPriority(sortedDesires);
-            System.out.println("DecisionModule - deliberation : choosed intention: " + intention);
-            plan();
+    public void deliberate() {
+        System.out.println("DecisionModule - deliberation : desires exist: ");
+        List<Desire> desires = parentAgent.getDesireModule().getDesires();
+        List<Desire> sortedDesires = sortDesiresByPriority(desires);
+
+        System.out.println("DecisionModule: sortedDesires: ");
+        for (Desire desire : desires) {
+            System.out.println(desire);
+        }
+
+        intention = getDesireWithHighestPriority(sortedDesires);
+        System.out.println("DecisionModule - deliberation : choosed intention: " + intention);
+        plan();
     }
 
     private void plan(){
@@ -47,7 +53,6 @@ public class DecisionModule {
         System.out.println("Exec..");
         parentAgent.setWalkEvent(new WalkEvent(parentAgent, parentAgent.getAgentSpeed()));
     }
-
 
     private List<Desire> sortDesiresByPriority(List<Desire> desires){
         desires.sort(Comparator.comparing((Desire::getPriority)));

@@ -81,7 +81,7 @@ public class Agent extends BasicSimEntity {
     public void moveForward(){
         previousPosition = position;
         GraphVertex forwardVertex = beliefs.getGraphMap().getVertex(position.getWorldCoordinates().getForwardPointCoordinates(movingDirection));
-        if(forwardVertex != null)
+        if(forwardVertex != null && forwardVertex.isFree())
             position = forwardVertex;
         else
             waitInPlace();

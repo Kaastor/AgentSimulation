@@ -39,8 +39,7 @@ class VisitShop extends Desire {
 
     @Override
     public void finalAction() {
-        System.out.println("VisitShop final action. - DoShopping");
         this.terminate();
-        //getParentAgent().getDesireModule().addDesire(new DoShopping(getParentAgent(), this));
+        getParentAgent().getDesireModule().addDesire(new DoShopping(getParentAgent(), this));
     }
 }

@@ -21,15 +21,12 @@ import java.util.stream.Collectors;
 @Data
 public class GraphMap implements Graph{
 
-    private final int shopsNumber = 6;
-    private final String EMPTY = "";
-    private final String REGION = "REGION_";
-    private final String SHOP = "SHOP_";
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
-    private ArrayList<GraphVertex> cellVertices;
-    private ArrayList<GraphVertex> regionsVertices;
-    private ArrayList<GraphVertex> shopsVertices;
+    private List<GraphVertex> cellVertices;
+    private List<GraphVertex> regionsVertices;
+    private List<GraphVertex> shopsVertices;
+    private List<GraphVertex> shopCentersVertices;
     private Map map;
 
 
@@ -39,6 +36,7 @@ public class GraphMap implements Graph{
         this.graphRegions = new SimpleGraph<>(DefaultEdge.class);
         this.cellVertices = new ArrayList<>();
         this.regionsVertices = new ArrayList<>();
+        this.shopCentersVertices = new ArrayList<>();
         createGraphFromMap();
         this.shopsVertices = createShopList();
 
@@ -53,10 +51,10 @@ public class GraphMap implements Graph{
         verticesAround = verticesAround.parallelStream()
                 .distinct()
                 .collect(Collectors.toList());
-
-//        for(GraphVertex vertex : verticesAround){
-//            System.out.println(vertex);
-//        }
+        System.out.println("gowno" + shopCentersVertices.size());
+        for(GraphVertex vertex : shopCentersVertices){
+            System.out.println(vertex);
+        }
 
     }
 
@@ -66,8 +64,8 @@ public class GraphMap implements Graph{
         addEdgesToRegionsGraph();
     }
 
-    private ArrayList<GraphVertex> createShopList(){
-        ArrayList<GraphVertex> shops = new ArrayList<>();
+    private List<GraphVertex> createShopList(){
+        List<GraphVertex> shops = new ArrayList<>();
         for(GraphVertex vertex : regionsVertices){
             if(vertex.getTypes().toString().contains(SHOP)) {
                 shops.add(vertex);
@@ -82,6 +80,7 @@ public class GraphMap implements Graph{
                 if (cellIsWalkable(new WorldCoordinates(x,y))) {
                     GraphVertex vertex = new GraphVertex(new WorldCoordinates(x, y));
                     addVertexToRegionsGraph(new WorldCoordinates(x,y), vertex);
+                    addVertexToShopCenters(new WorldCoordinates(x,y), vertex);
                     addVertexToCellGraph(vertex);
                 }
             }
@@ -91,6 +90,13 @@ public class GraphMap implements Graph{
     private void addVertexToCellGraph(GraphVertex vertex){
         graphCells.addVertex(vertex);
         cellVertices.add(vertex);
+    }
+
+    private void addVertexToShopCenters(WorldCoordinates cellCoordinates, GraphVertex vertex){
+        if(cellIsShopCenter(cellCoordinates)){
+            vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
+            shopCentersVertices.add(vertex);
+        }
     }
 
     private void addVertexToRegionsGraph(WorldCoordinates cellCoordinates, GraphVertex vertex){
@@ -201,7 +207,12 @@ public class GraphMap implements Graph{
 
     private boolean cellIsRegion(WorldCoordinates cellCoordinates){
         List<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
-        return (cellTypes.toString().contains(REGION));
+        return cellTypes.toString().contains(REGION);
+    }
+
+    private boolean cellIsShopCenter(WorldCoordinates cellCoordinates){
+        List<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
+        return cellTypes.toString().contains(SHOP_CENTER);
     }
 
     private boolean cellIsSpecificRegion(GraphVertex vertex, CellType region){
@@ -271,5 +282,16 @@ public class GraphMap implements Graph{
 
         }
         return searchForVertex(shopPosition.getWorldCoordinates());
+    }
+
+    public GraphVertex getShopCenterPosition(int shopNumber){
+        GraphVertex shopCenterPosition = null;
+        for(GraphVertex shopCenter : shopCentersVertices){
+            if(shopCenter.getTypes().toString().contains(SHOP+shopNumber+SHOP_CENTER)){
+                shopCenterPosition = shopCenter;
+                break;
+            }
+        }
+        return searchForVertex(shopCenterPosition.getWorldCoordinates());
     }
 }

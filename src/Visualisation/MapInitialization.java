@@ -126,6 +126,11 @@ public class MapInitialization {
         cellMap.addEntrance(new WorldCoordinates(coordinates.getX(), coordinates.getY()+1));
     }
 
+    private void addShopCenter(WorldCoordinates coordinates, CellType type){
+        cellMap.addTypeToCell(type, coordinates.getX(), coordinates.getY());
+        cellMap.addShopCenter(new WorldCoordinates(coordinates.getX(), coordinates.getY()));
+    }
+
     private void addDoors(){
         addDoorX(new WorldCoordinates(2, 10), CellType.REGION_1, CellType.SHOP_0); //1.
         addDoorX(new WorldCoordinates(10, 10), CellType.REGION_1, CellType.SHOP_1); //2.
@@ -138,5 +143,11 @@ public class MapInitialization {
         addEntranceY(new WorldCoordinates(0, 14), CellType.REGION_1); //wejscie lewe
         addEntranceY(new WorldCoordinates(47, 14), CellType.REGION_1); //wejscie prawe
         addEntranceX(new WorldCoordinates(21, 0), CellType.REGION_1); //wejscie gorne
+        addShopCenter(new WorldCoordinates(2, 4), CellType.SHOP_0_CENTER);
+        addShopCenter(new WorldCoordinates(10, 4), CellType.SHOP_1_CENTER);
+        addShopCenter(new WorldCoordinates(32, 6), CellType.SHOP_2_CENTER);
+        addShopCenter(new WorldCoordinates(41, 4), CellType.SHOP_3_CENTER);
+        addShopCenter(new WorldCoordinates(8, 27), CellType.SHOP_4_CENTER);
+        addShopCenter(new WorldCoordinates(42, 24), CellType.SHOP_5_CENTER);
     }
 }

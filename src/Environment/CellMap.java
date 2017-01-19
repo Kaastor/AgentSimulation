@@ -23,6 +23,7 @@ public class CellMap extends BasicSimEntity implements Map{
     private List<Agent> agentsList;
     private List<WorldCoordinates> doorsList;
     private List<WorldCoordinates> entrancesList;
+    private List<WorldCoordinates> shopCentersList;
 
     public CellMap(int mapScreenWidth, int mapScreenHeight, int cellSize){
         super(SimModel.getInstance().getCommonSimContext());
@@ -32,6 +33,7 @@ public class CellMap extends BasicSimEntity implements Map{
         this.agentsList = new ArrayList<>();
         this.doorsList = new ArrayList<>();
         this.entrancesList = new ArrayList<>();
+        this.shopCentersList = new ArrayList<>();
         cells = new Cell[mapScreenHeight][mapScreenWidth];
         this.mapWorldHeight = mapScreenHeight /cellSize;
         this.mapWorldWidth = mapScreenWidth/cellSize;
@@ -71,8 +73,9 @@ public class CellMap extends BasicSimEntity implements Map{
 
     public void addDoor(WorldCoordinates doorCoordinates){ doorsList.add(doorCoordinates);}
 
-    public void addEntrance(WorldCoordinates entranceCoordinates){
-        entrancesList.add(entranceCoordinates);}
+    public void addEntrance(WorldCoordinates entranceCoordinates){ entrancesList.add(entranceCoordinates);}
+
+    public void addShopCenter(WorldCoordinates entranceCoordinates){ shopCentersList.add(entranceCoordinates);}
 
     private Cell getCell(int worldX, int worldY){
         return cells[worldX][worldY];

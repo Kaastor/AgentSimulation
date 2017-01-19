@@ -13,6 +13,7 @@ public interface Map {
     List<Agent> getAgentsList();
     List<WorldCoordinates> getDoorsList();
     List<WorldCoordinates> getEntrancesList();
+    List<WorldCoordinates> getShopCentersList();
     Point2D getCellScreenCoordinates(int worldX, int worldY);
     boolean cellExist(WorldCoordinates worldCoordinates);
     int getCellSize();

@@ -4,6 +4,7 @@ import Agent.Agent;
 import lombok.Data;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,6 @@ public class DesireModule {
     public void cognitiveProcessor() {
         updateDesiresList();
 
-        System.out.println("DesireModule: desires: ");
-        for (Desire desire : desires) {
-            System.out.println(desire);
-        }
         if (desires.isEmpty()) {
             System.out.println("Leave CH");
             //TODO lista pusta -> new desire - opusc sklep (w opusc sklep jesli koa = 0 to wychodzi tymi co wszedl,

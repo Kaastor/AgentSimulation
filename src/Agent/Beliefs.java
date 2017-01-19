@@ -12,8 +12,6 @@ import org.jgrapht.graph.DefaultEdge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @ToString(exclude = {"parentAgent", "decisionModule", "desireModule"})
@@ -42,11 +40,11 @@ public class Beliefs {
         this.KnowledgeOfArea = 1;
 //        this.KnowledgeOfArea = RandomGenerator.getInstance().uniformInt(0, 1);
         this.collision = false;
-        initializeBeliefs(graphMap);
+        initializeBeliefs();
     }
 
-    private void initializeBeliefs(Graph graphMap){
-        this.shopsToVisit = initializeShopsToVisit(graphMap.getShopsNumber());
+    private void initializeBeliefs(){
+        this.shopsToVisit = initializeShopsToVisit(Graph.SHOPS_NUMBER);
     }
 
     public void perceptualProcessor(){
