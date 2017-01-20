@@ -22,7 +22,7 @@ class VisitShop extends Desire {
     public void scenario() {
         if(getAgentBeliefs().getKnowledgeOfArea() == 1){
             System.out.print("scenario: ");
-            setPlan(new Plan(this, getParentAgent().getPosition()));
+
             setFinalPosition(getAgentBeliefs().getGraphMap().getShopPosition(shopNumber));
             getPlan().createShortestTopPath(getFinalPosition());
         }
@@ -38,8 +38,14 @@ class VisitShop extends Desire {
     }
 
     @Override
+    public void action() {
+        finalAction();
+    }
+
+    @Override
     public void finalAction() {
         this.terminate();
-        getParentAgent().getDesireModule().addDesire(new DoShopping(getParentAgent(), this));
+        Desire doShopping = new DoShopping(getParentAgent(), this);
+        getParentAgent().getDesireModule().addDesire(doShopping);
     }
 }

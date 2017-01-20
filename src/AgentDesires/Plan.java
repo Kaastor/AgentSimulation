@@ -1,5 +1,6 @@
 package AgentDesires;
 
+import Agent.AgentState;
 import Environment.Graph;
 import Environment.GraphVertex;
 import lombok.Data;
@@ -18,12 +19,14 @@ public class Plan {
     private Graph graphMap;
     private GraphVertex nextRegionVertex;
     private GraphVertex startRegionVertex;
+    private boolean randomPath;
 
     Plan(Desire parentDesire, GraphVertex startVertex){
         this.parentDesire = parentDesire;
         this.graphMap = parentDesire.getParentAgent().getBeliefs().getGraphMap();
         this.startRegionVertex = startVertex;
         this.regionPath = null;
+        this.randomPath = false;
     }
 
     void createShortestTopPath(GraphVertex endRegionVertex){
@@ -37,20 +40,32 @@ public class Plan {
     }
 
     void createWanderLocalPath(){
+        parentDesire.getParentAgent().setAgentState(AgentState.WANDER);
         GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
         localPath = graphMap.getRandomWalkPath(startVertex);
+        this.randomPath = true;
     }
 
-    public void createPath(){
+    void createPath(){
         GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
-        BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, nextRegionVertex);
+        createShortestPath(startVertex, nextRegionVertex);
+    }
+
+    void createPathToPoint(GraphVertex endVertex){
+        GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
+        createShortestPath(startVertex, endVertex);
+    }
+
+    private void createShortestPath(GraphVertex startVertex, GraphVertex endVertex){
+        BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, endVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
         getNextPosition(); //pierwsza jest aktualna poz agenta.
         System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
+
     public GraphVertex getNextPosition(){
-        if(regionPath != null) {
+        if(!randomPath) {
             return getNextPlannedPosition();
         }
         else{
@@ -60,6 +75,7 @@ public class Plan {
 
     private GraphVertex getNextPlannedPosition(){
         if (localPath.hasNext()) {
+            parentDesire.getParentAgent().setAgentState(AgentState.WALK);
             return localPath.next();
         } else {
             if (nextPlannedRegionPosition()) {
@@ -72,11 +88,12 @@ public class Plan {
     }
 
     private GraphVertex getNextWanderPosition(){
-        if(parentDesire.getAgentBeliefs().getVerticesAround().contains(parentDesire.getFinalPosition())){
-            parentDesire.finalAction();
+        if(parentDesire.getAgentBeliefs().getFurtherVerticesAround().contains(parentDesire.getFinalPosition())){
+            parentDesire.action();
             return null;
         }
         else if(localPath.hasNext()){
+            parentDesire.getParentAgent().setAgentState(AgentState.WANDER);
             return localPath.next();
         }
         else
@@ -84,13 +101,13 @@ public class Plan {
     }
 
     private boolean nextPlannedRegionPosition(){
-        if(regionPath.hasNext()){
+        if(regionPath != null && regionPath.hasNext()){
             startRegionVertex = nextRegionVertex;
             nextRegionVertex = regionPath.next();
             return true;
         }
         else{
-            parentDesire.finalAction();///WARUNEK STOPU DESIRE
+            parentDesire.action();///WARUNEK STOPU DESIRE
             return false;
         }
     }

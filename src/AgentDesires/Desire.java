@@ -23,11 +23,11 @@ public abstract class Desire {
     Desire(Agent agent){
         this.parentAgent = agent;
         this.agentBeliefs = agent.getBeliefs();
+        this.plan = new Plan(this, agent.getPosition());
     }
 
     Desire(Agent agent, boolean highPriorityIndicator){
-        this.parentAgent = agent;
-        this.agentBeliefs = agent.getBeliefs();
+        this(agent);
         if(highPriorityIndicator)
             this.priority = this.highPriority;
     }
@@ -35,6 +35,8 @@ public abstract class Desire {
     public abstract void scenario();
 
     public abstract void realTimePlanning();
+
+    public abstract void action();
 
     public abstract void finalAction();
 

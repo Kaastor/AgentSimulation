@@ -40,7 +40,7 @@ public class Agent extends BasicSimEntity {
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.agentState = AgentState.NOP;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.agentSpeed = RandomGenerator.getInstance().exponential(0.5);
         this.movingDirection = new Vector(0,-1);
         this.position = graphMap.getVertex(startPosition);
         this.previousPosition = graphMap.getVertex(startPosition);
@@ -57,16 +57,39 @@ public class Agent extends BasicSimEntity {
     }
 
     private void lookAround(){
-        List<GraphVertex> verticesAround = new ArrayList<>();
+        closeLookAround();
+        furtherLookAround();
+        System.out.println(agentState);
+    }
+
+    private void closeLookAround(){
+        List<GraphVertex> closeVerticesAround = new ArrayList<>();
         Set<DefaultEdge> aroundEdges =  beliefs.getGraphCells().edgesOf( beliefs.getGraphMap().getVertex(getPosition()));
         for(DefaultEdge edge : aroundEdges){
-            verticesAround.add( beliefs.getGraphCells().getEdgeSource(edge));
-            verticesAround.add( beliefs.getGraphCells().getEdgeTarget(edge));
+            closeVerticesAround.add( beliefs.getGraphCells().getEdgeSource(edge));
+            closeVerticesAround.add( beliefs.getGraphCells().getEdgeTarget(edge));
         }
-        verticesAround = verticesAround.parallelStream()
+        closeVerticesAround = closeVerticesAround.parallelStream()
                 .distinct()
                 .collect(Collectors.toList());
-        beliefs.setVerticesAround(verticesAround);
+        beliefs.setCloseVerticesAround(closeVerticesAround);
+    }
+
+    private void furtherLookAround(){
+        if(agentState == AgentState.WANDER){
+            List<GraphVertex> furtherVerticesAround = new ArrayList<>();
+            for(GraphVertex closeVertex : beliefs.getCloseVerticesAround()) {
+                Set<DefaultEdge> aroundEdges = beliefs.getGraphCells().edgesOf(closeVertex);
+                for (DefaultEdge edge : aroundEdges) {
+                    furtherVerticesAround.add(beliefs.getGraphCells().getEdgeSource(edge));
+                    furtherVerticesAround.add(beliefs.getGraphCells().getEdgeTarget(edge));
+                }
+                furtherVerticesAround = furtherVerticesAround.parallelStream()
+                        .distinct()
+                        .collect(Collectors.toList());
+            }
+            beliefs.setFurtherVerticesAround(furtherVerticesAround);
+        }
     }
 
     private void updateDirection(){
@@ -74,7 +97,7 @@ public class Agent extends BasicSimEntity {
             getMovingDirection().update(getPosition(), getNextPosition());
     }
 
-    public boolean lookForCollision() {
+    boolean lookForCollision() {
         return (getNextPosition().isOccupied() || getNextPosition().isReserved());
     }
 

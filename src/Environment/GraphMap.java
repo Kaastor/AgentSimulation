@@ -51,10 +51,10 @@ public class GraphMap implements Graph{
         verticesAround = verticesAround.parallelStream()
                 .distinct()
                 .collect(Collectors.toList());
-        System.out.println("gowno" + shopCentersVertices.size());
-        for(GraphVertex vertex : shopCentersVertices){
-            System.out.println(vertex);
-        }
+
+//        for(GraphVertex vertex : closeVerticesAround){
+//            System.out.println(vertex);
+//        }
 
     }
 

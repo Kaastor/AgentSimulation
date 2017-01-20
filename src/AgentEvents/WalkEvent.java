@@ -6,6 +6,7 @@ import dissim.simspace.core.BasicSimStateChange;
 import dissim.simspace.core.SimControlException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 
 @Data
 @EqualsAndHashCode(exclude = "parentAgent", callSuper = false)
@@ -20,7 +21,6 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
 
     @Override
     public void transition() {
-        parentAgent.setAgentState(AgentState.WALK);
         walkToNextPositionIfSet();
         setNextPositionOnMap();
         parentAgent.getBeliefs().perceptualProcessor();
@@ -33,6 +33,7 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
         }
     }
 
+    @SneakyThrows
     private void setNextPositionOnMap() {
         parentAgent.setNextPosition(parentAgent.getDecisionModule().getIntention().getPlan().getNextPosition());
         if(noNextPosition()){

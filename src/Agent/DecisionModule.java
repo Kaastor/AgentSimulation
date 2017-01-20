@@ -50,14 +50,12 @@ public class DecisionModule {
 
     @SneakyThrows
     void executePlan(){
-        System.out.println("Exec..");
         parentAgent.setWalkEvent(new WalkEvent(parentAgent, parentAgent.getAgentSpeed()));
     }
 
     private List<Desire> sortDesiresByPriority(List<Desire> desires){
         desires.sort(Comparator.comparing((Desire::getPriority)));
-        List<Desire>  sortedDesires = desires;
-        return sortedDesires;
+        return desires;
     }
 
     private Desire getDesireWithHighestPriority(List<Desire> sortedDesires){

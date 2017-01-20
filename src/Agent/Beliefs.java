@@ -25,7 +25,8 @@ public class Beliefs {
     private Graph graphMap;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
-    private List<GraphVertex> verticesAround;
+    private List<GraphVertex> closeVerticesAround;
+    private List<GraphVertex> furtherVerticesAround;
     private boolean collision;
     private List<Integer> shopsToVisit;
 
@@ -36,7 +37,8 @@ public class Beliefs {
         this.graphMap = graphMap;
         this.graphCells = graphMap.getGraphCells();
         this.graphRegions = graphMap.getGraphRegions();
-        this.verticesAround = new ArrayList<>();
+        this.closeVerticesAround = new ArrayList<>();
+        this.furtherVerticesAround = new ArrayList<>();
         this.KnowledgeOfArea = 1;
 //        this.KnowledgeOfArea = RandomGenerator.getInstance().uniformInt(0, 1);
         this.collision = false;
