@@ -29,6 +29,7 @@ public class Agent extends BasicSimEntity {
     private double agentSpeed;
     private Vector movingDirection;
     private GraphVertex previousPosition;
+    private GraphVertex previousRegionPosition;
     private GraphVertex position;
     private GraphVertex nextPosition;
     private AgentState agentState;
@@ -44,7 +45,7 @@ public class Agent extends BasicSimEntity {
         this.movingDirection = new Vector(0,-1);
         this.position = graphMap.getVertex(startPosition);
         this.previousPosition = graphMap.getVertex(startPosition);
-
+        this.previousRegionPosition = graphMap.getVertex(startPosition);
         this.desireModule = new DesireModule(this);
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
@@ -165,6 +166,11 @@ public class Agent extends BasicSimEntity {
     private void setPosition(GraphVertex position){
         position.occupy(this);
         this.position = position;
+    }
+
+    public void leaveShoppingCenter(){
+        beliefs.getGraphMap().dismissAgent(this);
+        System.out.println(id + " agent left SC.");
     }
 
 }

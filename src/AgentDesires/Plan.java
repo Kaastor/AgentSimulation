@@ -32,6 +32,7 @@ public class Plan {
     void createShortestTopPath(GraphVertex endRegionVertex){
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
+        System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
         setInitialNextPosition();
     }
 

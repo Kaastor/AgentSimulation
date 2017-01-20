@@ -49,21 +49,22 @@ public class Beliefs {
         this.shopsToVisit = initializeShopsToVisit(Graph.SHOPS_NUMBER);
     }
 
-    public void perceptualProcessor(){
+    public void perceptualProcessor() {
         parentAgent.observeEnvironment();
+        if (!(getParentAgent().getAgentState() == AgentState.LEAVING)) {
+            if (decisionModule.getIntention() == null) {
+                System.out.println("Beliefs: Intention == null");
+                desireModule.cognitiveProcessor();
+            } else if (parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
+                setCollision(true);
+                parentAgent.setAgentState(AgentState.COLLISION);
+                //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
 
-        if(decisionModule.getIntention() == null){
-            System.out.println("Beliefs: Intention == null" );
-            desireModule.cognitiveProcessor();
-        }
-        else if(parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
-            setCollision(true);
-            parentAgent.setAgentState(AgentState.COLLISION);
-            //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
-
-        }
-        else{
-            decisionModule.executePlan();
+            } else {
+                decisionModule.executePlan();
+            }
+        } else {
+            System.out.println("leaving..");
         }
     }
 
@@ -71,7 +72,8 @@ public class Beliefs {
         shopsToVisit = new ArrayList<>();
         int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
-            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber-1);
+            int shopToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
+            shopToVisit = 0;
             if(!shopsToVisit.contains(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }

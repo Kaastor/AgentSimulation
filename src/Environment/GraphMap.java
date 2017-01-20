@@ -1,9 +1,9 @@
 package Environment;
 
 
+import Agent.Agent;
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.BellmanFordShortestPath;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
@@ -13,20 +13,19 @@ import org.jgrapht.traverse.GraphIterator;
 import org.jgrapht.traverse.RandomWalkIterator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 public class GraphMap implements Graph{
 
     private UndirectedGraph<GraphVertex, DefaultEdge> graphCells;
     private UndirectedGraph<GraphVertex, DefaultEdge> graphRegions;
-    private List<GraphVertex> cellVertices;
-    private List<GraphVertex> regionsVertices;
-    private List<GraphVertex> shopsVertices;
-    private List<GraphVertex> shopCentersVertices;
+    private List<GraphVertex> cells;
+    private List<GraphVertex> regions;
+    private List<GraphVertex> shops;
+    private List<GraphVertex> shopCenters;
+    private List<GraphVertex> entrances;
     private Map map;
 
 
@@ -34,24 +33,25 @@ public class GraphMap implements Graph{
         this.map = map;
         this.graphCells = new SimpleGraph<>(DefaultEdge.class);
         this.graphRegions = new SimpleGraph<>(DefaultEdge.class);
-        this.cellVertices = new ArrayList<>();
-        this.regionsVertices = new ArrayList<>();
-        this.shopCentersVertices = new ArrayList<>();
+        this.cells = new ArrayList<>();
+        this.regions = new ArrayList<>();
+        this.shopCenters = new ArrayList<>();
+        this.entrances = new ArrayList<>();
         createGraphFromMap();
-        this.shopsVertices = createShopList();
+        this.shops = createShopList();
 
 
 
-        List<GraphVertex> verticesAround = new ArrayList<>();
-        Set<DefaultEdge> aroundEdges =  getGraphCells().edgesOf( getVertex(new WorldCoordinates(17, 8)));
-        for(DefaultEdge edge : aroundEdges){
-            verticesAround.add( getGraphCells().getEdgeSource(edge));
-            verticesAround.add( getGraphCells().getEdgeTarget(edge));
-        }
-        verticesAround = verticesAround.parallelStream()
-                .distinct()
-                .collect(Collectors.toList());
-
+//        List<GraphVertex> verticesAround = new ArrayList<>();
+//        Set<DefaultEdge> aroundEdges =  getGraphCells().edgesOf( getVertex(new WorldCoordinates(17, 8)));
+//        for(DefaultEdge edge : aroundEdges){
+//            verticesAround.add( getGraphCells().getEdgeSource(edge));
+//            verticesAround.add( getGraphCells().getEdgeTarget(edge));
+//        }
+//        verticesAround = verticesAround.parallelStream()
+//                .distinct()
+//                .collect(Collectors.toList());
+//
 //        for(GraphVertex vertex : closeVerticesAround){
 //            System.out.println(vertex);
 //        }
@@ -66,7 +66,7 @@ public class GraphMap implements Graph{
 
     private List<GraphVertex> createShopList(){
         List<GraphVertex> shops = new ArrayList<>();
-        for(GraphVertex vertex : regionsVertices){
+        for(GraphVertex vertex : regions){
             if(vertex.getTypes().toString().contains(SHOP)) {
                 shops.add(vertex);
             }
@@ -81,6 +81,7 @@ public class GraphMap implements Graph{
                     GraphVertex vertex = new GraphVertex(new WorldCoordinates(x, y));
                     addVertexToRegionsGraph(new WorldCoordinates(x,y), vertex);
                     addVertexToShopCenters(new WorldCoordinates(x,y), vertex);
+                    addVertexToEntrances(new WorldCoordinates(x,y), vertex);
                     addVertexToCellGraph(vertex);
                 }
             }
@@ -89,13 +90,20 @@ public class GraphMap implements Graph{
 
     private void addVertexToCellGraph(GraphVertex vertex){
         graphCells.addVertex(vertex);
-        cellVertices.add(vertex);
+        cells.add(vertex);
     }
 
     private void addVertexToShopCenters(WorldCoordinates cellCoordinates, GraphVertex vertex){
         if(cellIsShopCenter(cellCoordinates)){
             vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
-            shopCentersVertices.add(vertex);
+            shopCenters.add(vertex);
+        }
+    }
+
+    private void addVertexToEntrances(WorldCoordinates cellCoordinates, GraphVertex vertex){
+        if(cellIsEntrance(cellCoordinates)){
+            vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
+            entrances.add(vertex);
         }
     }
 
@@ -103,7 +111,7 @@ public class GraphMap implements Graph{
         if(cellIsRegion(cellCoordinates)){
             vertex.setTypes(map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY()));
             graphRegions.addVertex(vertex);
-            regionsVertices.add(vertex);
+            regions.add(vertex);
         }
     }
 
@@ -133,7 +141,7 @@ public class GraphMap implements Graph{
     }
 
     private void addEdgesToCellsGraph(){
-        for (GraphVertex vertex : cellVertices){
+        for (GraphVertex vertex : cells){
             addEdgesToVertex(vertex);
         }
     }
@@ -176,7 +184,7 @@ public class GraphMap implements Graph{
 
     private GraphVertex searchForVertex(WorldCoordinates vertexCoordinates){
         GraphVertex searchedVertex = null;
-        for (GraphVertex vertex : cellVertices){
+        for (GraphVertex vertex : cells){
             if(vertex.equals(new GraphVertex(vertexCoordinates)))
                 searchedVertex = vertex;
         }
@@ -189,7 +197,7 @@ public class GraphMap implements Graph{
 
     private GraphVertex searchForRegionVertex(WorldCoordinates vertexCoordinates){
         GraphVertex searchedVertex = null;
-        for (GraphVertex vertex : regionsVertices){
+        for (GraphVertex vertex : regions){
             if(vertex.equals(new GraphVertex(vertexCoordinates)))
                 searchedVertex = vertex;
         }
@@ -213,6 +221,11 @@ public class GraphMap implements Graph{
     private boolean cellIsShopCenter(WorldCoordinates cellCoordinates){
         List<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
         return cellTypes.toString().contains(SHOP_CENTER);
+    }
+
+    private boolean cellIsEntrance(WorldCoordinates cellCoordinates){
+        List<CellType> cellTypes = map.getCellTypes(cellCoordinates.getX(), cellCoordinates.getY());
+        return cellTypes.toString().contains(ENTRANCE);
     }
 
     private boolean cellIsSpecificRegion(GraphVertex vertex, CellType region){
@@ -274,7 +287,7 @@ public class GraphMap implements Graph{
 
     public GraphVertex getShopPosition(int shopNumber){
         GraphVertex shopPosition = null;
-        for(GraphVertex shop : shopsVertices){
+        for(GraphVertex shop : shops){
             if(shop.getTypes().toString().contains(SHOP+shopNumber)){
                 shopPosition = shop;
                 break;
@@ -286,12 +299,21 @@ public class GraphMap implements Graph{
 
     public GraphVertex getShopCenterPosition(int shopNumber){
         GraphVertex shopCenterPosition = null;
-        for(GraphVertex shopCenter : shopCentersVertices){
+        for(GraphVertex shopCenter : shopCenters){
             if(shopCenter.getTypes().toString().contains(SHOP+shopNumber+SHOP_CENTER)){
                 shopCenterPosition = shopCenter;
                 break;
             }
         }
         return searchForVertex(shopCenterPosition.getWorldCoordinates());
+    }
+
+    public GraphVertex getExitPosition(){
+        int exitNumber = RandomGenerator.getInstance().uniformInt(0, EXITS_NUMBER);
+        return entrances.get(exitNumber);
+    }
+
+    public void dismissAgent(Agent agent){
+        map.dismissAgent(agent);
     }
 }

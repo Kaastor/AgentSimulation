@@ -11,6 +11,7 @@ public interface Map {
     GraphMap createAndGetGraphMap();
     List<CellType> getCellTypes(int worldX, int worldY);
     List<Agent> getAgentsList();
+    void dismissAgent(Agent agent);
     List<WorldCoordinates> getDoorsList();
     List<WorldCoordinates> getEntrancesList();
     List<WorldCoordinates> getShopCentersList();

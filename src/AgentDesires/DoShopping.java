@@ -24,6 +24,7 @@ public class DoShopping extends Desire{
 
     @Override
     public void scenario() {
+        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition()));
         enterShop();
     }
 

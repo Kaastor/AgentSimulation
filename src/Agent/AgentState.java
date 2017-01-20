@@ -1,5 +1,5 @@
 package Agent;
 
 public enum AgentState {
-    NOP, WALK, WAIT, COLLISION, STANDING, WANDER
+    NOP, WALK, WAIT, COLLISION, STANDING, WANDER, LEAVING
 }

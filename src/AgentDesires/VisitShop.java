@@ -20,6 +20,8 @@ class VisitShop extends Desire {
 
     @Override
     public void scenario() {
+        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition()));
+
         if(getAgentBeliefs().getKnowledgeOfArea() == 1){
             System.out.print("scenario: ");
 
@@ -45,6 +47,7 @@ class VisitShop extends Desire {
     @Override
     public void finalAction() {
         this.terminate();
+        getParentAgent().setPreviousRegionPosition(getFinalPosition());
         Desire doShopping = new DoShopping(getParentAgent(), this);
         getParentAgent().getDesireModule().addDesire(doShopping);
     }

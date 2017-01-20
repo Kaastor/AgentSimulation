@@ -67,6 +67,10 @@ public class CellMap extends BasicSimEntity implements Map{
         }
     }
 
+    public void dismissAgent(Agent agent){
+        this.agentsList.remove(agent);
+    }
+
     public void addAgent(Agent agent){
         agentsList.add(agent);
     }

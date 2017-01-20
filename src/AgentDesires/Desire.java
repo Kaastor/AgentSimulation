@@ -23,7 +23,6 @@ public abstract class Desire {
     Desire(Agent agent){
         this.parentAgent = agent;
         this.agentBeliefs = agent.getBeliefs();
-        this.plan = new Plan(this, agent.getPosition());
     }
 
     Desire(Agent agent, boolean highPriorityIndicator){
