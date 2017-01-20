@@ -24,6 +24,7 @@ public class DesireModule {
 
         if (desires.isEmpty()) {
             System.out.println("Leave CH");
+
             //TODO lista pusta -> new desire - opusc sklep (w opusc sklep jesli koa = 0 to wychodzi tymi co wszedl,
             //TODO dla koa= 1 szuka najblizszego?
         }
