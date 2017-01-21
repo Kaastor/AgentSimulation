@@ -36,7 +36,7 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
     @SneakyThrows
     private void setNextPositionOnMap() {
         parentAgent.setNextPosition(parentAgent.getDecisionModule().getIntention().getPlan().getNextPosition());
-        if(noNextPosition() && getParentAgent().getAgentState() != AgentState.LEAVING){ //TODO WHYY jak wykomentuje standing to sie crashuje. nie usuwa agenta z mapki
+        if(noNextPosition() && getParentAgent().getAgentState() != AgentState.LEAVING){
             parentAgent.setAgentState(AgentState.STANDING);
         }
     }

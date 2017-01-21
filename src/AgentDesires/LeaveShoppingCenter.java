@@ -2,17 +2,19 @@ package AgentDesires;
 
 import Agent.Agent;
 import Agent.AgentState;
+import lombok.Data;
 
+@Data
 public class LeaveShoppingCenter extends Desire{
 
-    public LeaveShoppingCenter(Agent agent){
+    LeaveShoppingCenter(Agent agent){
         super(agent);
         setFinalPosition(agent.getBeliefs().getGraphMap().getExitPosition());
     }
 
     @Override
     public void scenario() {
-        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition()));
+        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition())); // to moze byc w Desire
         getPlan().createShortestTopPath(getFinalPosition());
     }
 
@@ -23,13 +25,13 @@ public class LeaveShoppingCenter extends Desire{
 
     @Override
     public void action() {
-        finalAction();
+        if(getParentAgent().getPosition().equals(getFinalPosition()))
+            finalAction();
     }
 
     @Override
     public void finalAction() {
         getParentAgent().setAgentState(AgentState.LEAVING);
         this.terminate();
-        getParentAgent().leaveShoppingCenter();
     }
 }

@@ -2,6 +2,7 @@ package Visualisation;
 
 
 import Agent.Agent;
+import Agent.AgentState;
 import Environment.*;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -81,7 +82,7 @@ public class EnvVisualisation extends Canvas {
 
     private void drawAgentsOnScreen(){
         for(Agent agent : agentsArrayList){
-            if(agent.getPosition() != null){
+            if(agent.getPosition() != null && !checkIfAgentLeft(agent)){
                 drawAgent(agent.getPosition().getWorldCoordinates());
                 //drawMovingVector(agent, agent.getPosition().getWorldCoordinates());
             }
@@ -91,8 +92,6 @@ public class EnvVisualisation extends Canvas {
     private void drawAgent(WorldCoordinates agentWorldCoordinates){
         Point2D agentScreenPosition = map.getCellScreenCoordinates(agentWorldCoordinates.getX(), agentWorldCoordinates.getY());
         graphicsContext.drawImage(agentImage, agentScreenPosition.getX(), agentScreenPosition.getY(), cellSize*0.95, cellSize*0.95);
-
-
     }
 
     private void drawMovingVector(Agent agent, WorldCoordinates agentWorldCoordinates){
@@ -131,5 +130,9 @@ public class EnvVisualisation extends Canvas {
 
             }
         }
+    }
+
+    private boolean checkIfAgentLeft(Agent agent){
+        return agent.getAgentState() == AgentState.LEFT;
     }
 }

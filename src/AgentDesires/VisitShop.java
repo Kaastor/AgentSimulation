@@ -24,7 +24,6 @@ class VisitShop extends Desire {
 
         if(getAgentBeliefs().getKnowledgeOfArea() == 1){
             System.out.print("scenario: ");
-
             setFinalPosition(getAgentBeliefs().getGraphMap().getShopPosition(shopNumber));
             getPlan().createShortestTopPath(getFinalPosition());
         }

@@ -64,7 +64,7 @@ public class Beliefs {
                 decisionModule.executePlan();
             }
         } else {
-            System.out.println("leaving..");
+            getParentAgent().leaveShoppingCenter();
         }
     }
 
