@@ -23,7 +23,7 @@ class VisitShop extends Desire {
         setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition()));
 
         if(getAgentBeliefs().getKnowledgeOfArea() == 1){
-            System.out.print("scenario: ");
+            //System.out.print("scenario: ");
             setFinalPosition(getAgentBeliefs().getGraphMap().getShopPosition(shopNumber));
             getPlan().createShortestTopPath(getFinalPosition());
         }

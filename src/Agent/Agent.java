@@ -52,7 +52,7 @@ public class Agent extends BasicSimEntity {
         beliefs.perceptualProcessor();
     }
 
-    public void observeEnvironment(){
+    void observeEnvironment(){
         lookAround();
         updateDirection();
     }

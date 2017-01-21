@@ -32,7 +32,7 @@ public class Plan {
     void createShortestTopPath(GraphVertex endRegionVertex){
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
-        System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
+        //System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
         setInitialNextPosition();
     }
 
@@ -61,7 +61,7 @@ public class Plan {
         BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, endVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
         getNextPosition(); //pierwsza jest aktualna poz agenta.
-        System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
+        //System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
 
