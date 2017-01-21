@@ -19,8 +19,8 @@ public class MapInitialization {
         addWalls();
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
-        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
-//        addAgents(1);
+//        addAgents(RandomGenerator.getInstance().uniformInt(maxAgentsNumber));
+        addAgents(1);
         return cellMap;
     }
 
@@ -80,7 +80,8 @@ public class MapInitialization {
         addWallsInWorldCoordinatesX(new WorldCoordinates(8, 19), new WorldCoordinates(47, 19));
         addWallsInWorldCoordinatesY(new WorldCoordinates(16, 20), new WorldCoordinates(16, 20));
         addWallsInWorldCoordinatesY(new WorldCoordinates(16, 23), new WorldCoordinates(16, 31));
-        addWallsInWorldCoordinatesX(new WorldCoordinates(3, 24), new WorldCoordinates(15, 24));
+        addWallsInWorldCoordinatesX(new WorldCoordinates(1, 24), new WorldCoordinates(4, 24));
+        addWallsInWorldCoordinatesX(new WorldCoordinates(7, 24), new WorldCoordinates(15, 24));
         //sklep 5. - na koncu regionu 2.
         addWallsInWorldCoordinatesY(new WorldCoordinates(37, 20), new WorldCoordinates(37, 23));
         addWallsInWorldCoordinatesY(new WorldCoordinates(37, 26), new WorldCoordinates(37, 31));
@@ -136,7 +137,7 @@ public class MapInitialization {
         addDoorX(new WorldCoordinates(10, 10), CellType.REGION_1, CellType.SHOP_1); //2.
         addDoorX(new WorldCoordinates(41, 10), CellType.REGION_1, CellType.SHOP_3); //4.
         addDoorX(new WorldCoordinates(6, 19), CellType.REGION_1, CellType.REGION_2); //przed-region
-        addDoorX(new WorldCoordinates(1, 24), CellType.REGION_2, CellType.SHOP_4); //5.
+        addDoorX(new WorldCoordinates(5, 24), CellType.REGION_2, CellType.SHOP_4); //5.
         addDoorY(new WorldCoordinates(27, 6), CellType.REGION_1, CellType.SHOP_2); //3.
         addDoorY(new WorldCoordinates(16, 21), CellType.REGION_2, CellType.REGION_3); //region
         addDoorY(new WorldCoordinates(37, 24), CellType.REGION_3, CellType.SHOP_5); //6.

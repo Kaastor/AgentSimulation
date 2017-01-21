@@ -70,9 +70,9 @@ public class Beliefs {
 
     private List<Integer> initializeShopsToVisit(int shopNumber){
         shopsToVisit = new ArrayList<>();
-        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
+        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
-            int shopToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
+            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
             if(!shopsToVisit.contains(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }

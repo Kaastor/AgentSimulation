@@ -26,13 +26,12 @@ public class DecisionModule {
         List<Desire> desires = parentAgent.getDesireModule().getDesires();
         List<Desire> sortedDesires = sortDesiresByPriority(desires);
 
-        //System.out.println("DecisionModule: sortedDesires: ");
         for (Desire desire : desires) {
             System.out.println(desire);
         }
 
         intention = getDesireWithHighestPriority(sortedDesires);
-        //System.out.println("DecisionModule - deliberation : choosed intention: " + intention);
+        System.out.println("Choosed intention: " + intention);
         plan();
     }
 

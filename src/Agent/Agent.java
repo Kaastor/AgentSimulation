@@ -2,6 +2,7 @@ package Agent;
 
 
 import AgentDesires.DesireModule;
+import AgentEvents.PhoneEvent;
 import AgentEvents.WalkEvent;
 import Environment.*;
 
@@ -35,6 +36,7 @@ public class Agent extends BasicSimEntity {
     private AgentState agentState;
 
     private WalkEvent walkEvent;
+    private PhoneEvent phoneEvent;
 
     @SneakyThrows
     public Agent(Graph graphMap, WorldCoordinates startPosition, int id){
@@ -49,12 +51,15 @@ public class Agent extends BasicSimEntity {
         this.desireModule = new DesireModule(this);
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
+
+        this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().exponential(5));
         beliefs.perceptualProcessor();
     }
 
     void observeEnvironment(){
         lookAround();
         updateDirection();
+        System.out.println(agentState);
     }
 
     private void lookAround(){

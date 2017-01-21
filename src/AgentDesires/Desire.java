@@ -44,8 +44,4 @@ public abstract class Desire {
         parentAgent.getDesireModule().getDesires().remove(this);
         this.aborted = true;//TODO??
     }
-
-    public void interrupt(){
-        parentAgent.getDecisionModule().setIntention(null);
-    }
 }

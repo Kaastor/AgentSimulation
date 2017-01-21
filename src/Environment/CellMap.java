@@ -2,7 +2,6 @@ package Environment;
 
 
 import Agent.Agent;
-import Agent.AgentState;
 import dissim.simspace.core.BasicSimEntity;
 import dissim.simspace.core.SimModel;
 import javafx.geometry.Point2D;

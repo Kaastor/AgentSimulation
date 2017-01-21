@@ -8,12 +8,12 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-class VisitShop extends Desire {
+@EqualsAndHashCode(callSuper = false)
+public class VisitShop extends Desire {
 
     private int shopNumber;
 
-    VisitShop(Agent agent, int shopNumber){
+    public VisitShop(Agent agent, int shopNumber){
         super(agent);
         this.shopNumber = shopNumber;
     }
@@ -50,4 +50,6 @@ class VisitShop extends Desire {
         Desire doShopping = new DoShopping(getParentAgent(), this);
         getParentAgent().getDesireModule().addDesire(doShopping);
     }
+
+
 }
