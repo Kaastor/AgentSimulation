@@ -21,9 +21,9 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
 
     @Override
     public void transition() {
+        walkToNextPositionIfSet();
+        if (parentAgent.getDecisionModule().intentionNotTerminated()) {
 
-            walkToNextPositionIfSet();
-        if(parentAgent.getDecisionModule().intentionNotTerminated()) {
             setNextPositionOnMap();
         }
         parentAgent.getBeliefs().perceptualProcessor();

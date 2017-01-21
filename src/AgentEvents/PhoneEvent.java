@@ -26,26 +26,24 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
         this.addShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
         cancelShopVisit = 1;
         addShopVisit = 0;
-        System.out.println("Phone event started. C:" + cancelShopVisit + " A:" + addShopVisit);
     }
 
     @Override
     protected void transition() throws SimControlException {
-        System.out.println("Phone event exec.");
         cancelShopVisit();
         addShopVisit();
     }
 
     private void cancelShopVisit(){
         if(cancelShopVisit == 1){
-            System.out.println("Phone event exec. Cancel");
+            System.out.println(parentAgent.getId() + " Phone event exec. Cancel");
             parentAgent.getDesireModule().removeDesire();
         }
     }
 
     private void addShopVisit(){
         if(addShopVisit == 1){
-            System.out.println("Phone event exec. Add");
+            System.out.println(parentAgent.getId() + "Phone event exec. Add");
             int shopNumber = RandomGenerator.getInstance().uniformInt(1, Graph.SHOPS_NUMBER);
             boolean added = parentAgent.getDesireModule().addDesire(new VisitShop(parentAgent, shopNumber));
             if(!added)

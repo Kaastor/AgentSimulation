@@ -51,16 +51,15 @@ public class Beliefs {
 
     public void perceptualProcessor() {
         parentAgent.observeEnvironment();
-        if (!(getParentAgent().getAgentState() == AgentState.LEAVING)) {
+        if (!parentAgent.isLeaving()) {
             if (decisionModule.getIntention() == null) {
-                System.out.println("Beliefs: Intention == null");
                 desireModule.cognitiveProcessor();
-            } else if (parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
+            } /*else if (parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
                 setCollision(true);
                 parentAgent.setAgentState(AgentState.COLLISION);
                 //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
 
-            } else {
+            } */else {
                 decisionModule.executePlan();
             }
         } else {

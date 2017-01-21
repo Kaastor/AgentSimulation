@@ -28,6 +28,7 @@ public class Agent extends BasicSimEntity {
 
     private int id;
     private double agentSpeed;
+    private boolean leaving;
     private Vector movingDirection;
     private GraphVertex previousPosition;
     private GraphVertex previousRegionPosition;
@@ -43,7 +44,9 @@ public class Agent extends BasicSimEntity {
         super(SimModel.getInstance().getCommonSimContext());
         this.id = id;
         this.agentState = AgentState.NOP;
-        this.agentSpeed = RandomGenerator.getInstance().exponential(0.4);
+//        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
+        this.agentSpeed = 0.1;
+        this.leaving = false;
         this.movingDirection = new Vector(0,-1);
         this.position = graphMap.getVertex(startPosition);
         this.previousPosition = graphMap.getVertex(startPosition);
@@ -52,13 +55,13 @@ public class Agent extends BasicSimEntity {
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
 
-        this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().exponential(5));
+        this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().exponential(0));
         beliefs.perceptualProcessor();
     }
 
     void observeEnvironment(){
         lookAround();
-        updateDirection();
+        //updateDirection();
     }
 
     private void lookAround(){
@@ -172,10 +175,6 @@ public class Agent extends BasicSimEntity {
     }
 
     public void leaveShoppingCenter() {
-        System.out.println("leaving..");
-        System.out.println("leaving.." + getPosition());
-        System.out.println("leaving.." + getPreviousPosition());
-//        beliefs.getGraphMap().dismissAgent(this);
         System.out.println(id + " agent left SC.");
         setAgentState(AgentState.LEFT);
     }

@@ -22,27 +22,24 @@ public class DecisionModule {
     }
 
     public void deliberate() {
-        System.out.println("DecisionModule - deliberation : desires exist: ");
         List<Desire> desires = parentAgent.getDesireModule().getDesires();
         List<Desire> sortedDesires = sortDesiresByPriority(desires);
 
         for (Desire desire : desires) {
-            System.out.println(desire);
+            System.out.println(parentAgent.getId() + " :Desire deliberation "+desire);
         }
 
         intention = getDesireWithHighestPriority(sortedDesires);
-        System.out.println("Choosed intention: " + intention);
+        System.out.println(parentAgent.getId() + " Chose intention: " + intention);
         plan();
     }
 
     private void plan(){
-        System.out.println("Planning..");
         intention.scenario();
         realTimePlanning();
     }
 
     void realTimePlanning(){
-        System.out.println("Planning realtime..");
         intention.realTimePlanning();
         executePlan();
     }

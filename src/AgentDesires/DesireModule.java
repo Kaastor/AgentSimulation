@@ -24,13 +24,10 @@ public class DesireModule {
 
     public void cognitiveProcessor() {
         updateDesiresList();
-
         if (desires.isEmpty()) {
-            System.out.println("Leave CH");
             Desire leaveShoppingCenter = new LeaveShoppingCenter(parentAgent);
             addDesire(leaveShoppingCenter);
         }
-
         parentAgent.getDecisionModule().deliberate();
     }
 
@@ -50,7 +47,7 @@ public class DesireModule {
 
     public boolean addDesire(Desire desire){
         if(!desires.contains(desire)) {
-            System.out.println("Added desire: " + desire);
+            System.out.println(parentAgent.getId() + " Added desire: " + desire);
             desires.add(desire);
             return true;
         }
@@ -59,13 +56,12 @@ public class DesireModule {
 
     public void removeDesire(){
         int desireNumber = RandomGenerator.getInstance().uniformInt(0, desires.size());
-        System.out.println("RemoveShopDesire");
         if(desires.get(desireNumber).equals(parentAgent.getDecisionModule().getIntention())){
-            System.out.println("RemoveIntention " + parentAgent.getDecisionModule().getIntention()); //nie wraca do deliberacji... w ogole wszystko stoi, wALK byl last
+            System.out.println(parentAgent.getId() + " RemoveIntention " + parentAgent.getDecisionModule().getIntention()); //nie wraca do deliberacji... w ogole wszystko stoi, wALK byl last
             parentAgent.getDecisionModule().getIntention().terminate();
         }
         else{
-            System.out.println("RemoveShopDesire : " + desires.get(desireNumber));
+            System.out.println(parentAgent.getId() + " RemoveShopDesire : " + desires.get(desireNumber));
             desires.remove(desireNumber);
         }
     }

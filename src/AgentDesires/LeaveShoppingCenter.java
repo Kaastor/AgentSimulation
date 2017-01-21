@@ -31,7 +31,7 @@ public class LeaveShoppingCenter extends Desire{
 
     @Override
     public void finalAction() {
-        getParentAgent().setAgentState(AgentState.LEAVING);
+        getParentAgent().setLeaving(true);
         this.terminate();
     }
 }
