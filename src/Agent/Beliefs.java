@@ -53,7 +53,7 @@ public class Beliefs {
         parentAgent.observeEnvironment();
         if (!(getParentAgent().getAgentState() == AgentState.LEAVING)) {
             if (decisionModule.getIntention() == null) {
-                //System.out.println("Beliefs: Intention == null");
+                System.out.println("Beliefs: Intention == null");
                 desireModule.cognitiveProcessor();
             } else if (parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
                 setCollision(true);
@@ -70,7 +70,7 @@ public class Beliefs {
 
     private List<Integer> initializeShopsToVisit(int shopNumber){
         shopsToVisit = new ArrayList<>();
-        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
+        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
         for(int i = 0; i < numberShopsToVisit; i++){
             int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
             if(!shopsToVisit.contains(shopToVisit))

@@ -69,4 +69,5 @@ public class DesireModule {
             desires.remove(desireNumber);
         }
     }
+
 }

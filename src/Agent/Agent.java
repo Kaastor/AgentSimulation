@@ -59,7 +59,6 @@ public class Agent extends BasicSimEntity {
     void observeEnvironment(){
         lookAround();
         updateDirection();
-        System.out.println(agentState);
     }
 
     private void lookAround(){
