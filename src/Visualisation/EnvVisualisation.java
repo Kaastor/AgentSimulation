@@ -84,7 +84,7 @@ public class EnvVisualisation extends Canvas {
         for(Agent agent : agentsArrayList){
             if(agent.getPosition() != null && !checkIfAgentLeft(agent)){
                 drawAgent(agent.getPosition().getWorldCoordinates());
-                System.out.println(agent.getPreviousPosition().getWorldCoordinates() + " "+agent.getPosition().getWorldCoordinates());
+//                System.out.println(agent.getPreviousPosition().getWorldCoordinates() + " "+agent.getPosition().getWorldCoordinates());
                 //drawMovingVector(agent, agent.getPosition().getWorldCoordinates());
             }
         }

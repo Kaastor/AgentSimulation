@@ -4,6 +4,7 @@ import Agent.Agent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Synchronized;
 import lombok.ToString;
 
 @Data
@@ -26,16 +27,23 @@ public class VisitShop extends Desire {
             //System.out.print("scenario: ");
             setFinalPosition(getAgentBeliefs().getGraphMap().getShopPosition(shopNumber));
             getPlan().createShortestTopPath(getFinalPosition());
+            getPlan().createPath();
         }
         else{
             setPlan(new Plan(this, getParentAgent().getPosition()));
             getPlan().createSearchTopPath();
+            getPlan().createPath();
         }
     }
 
     @Override
     public void realTimePlanning() {
-        getPlan().createPath();
+        if(!getParentAgent().getBeliefs().isCollision()){
+            getParentAgent().getDecisionModule().executePlan();
+        }
+        else {
+//            getPlan().createPath();
+        }
     }
 
     @Override

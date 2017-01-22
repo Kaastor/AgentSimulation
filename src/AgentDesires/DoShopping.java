@@ -30,10 +30,12 @@ public class DoShopping extends Desire{
 
     @Override
     public void realTimePlanning() {
-        if(inShopCenter)
-            getPlan().createWanderLocalPath();
-        else
-            enterShop();
+        if(!getParentAgent().getBeliefs().isCollision()){
+            getParentAgent().getDecisionModule().executePlan();
+        }
+        else{
+//            getPlan().createPath();
+        }
     }
 
     @Override

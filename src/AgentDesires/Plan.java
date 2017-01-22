@@ -50,11 +50,8 @@ public class Plan {
     }
 
     void createPath(){
-        System.out.println("RT planning");
         GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
-        System.out.println("1");
         createShortestPath(startVertex, nextRegionVertex);
-        System.out.println("2");
     }
 
     void createPathToPoint(GraphVertex endVertex){
@@ -65,7 +62,8 @@ public class Plan {
     private void createShortestPath(GraphVertex startVertex, GraphVertex endVertex){
         BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, endVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
-        //System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
+        getNextPosition(); // pierwsza to pozycja agenta
+        System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
 

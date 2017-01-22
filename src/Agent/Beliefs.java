@@ -58,9 +58,9 @@ public class Beliefs {
                 setCollision(true);
                 parentAgent.setAgentState(AgentState.COLLISION);
                 //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
-
-            } */else {
-                decisionModule.executePlan();
+            } */
+            else {
+                decisionModule.realTimePlanning();
             }
         } else {
             getParentAgent().leaveShoppingCenter();

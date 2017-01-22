@@ -24,8 +24,8 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
         this.parentAgent = getSimEntity();
         this.cancelShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
         this.addShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
-        cancelShopVisit = 1;
-        addShopVisit = 0;
+        cancelShopVisit = 0;
+        addShopVisit = 1;
     }
 
     @Override
@@ -49,6 +49,7 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
             boolean added = parentAgent.getDesireModule().addDesire(new VisitShop(parentAgent, shopNumber));
             if(!added)
                 addShopVisit();
+
         }
     }
 }

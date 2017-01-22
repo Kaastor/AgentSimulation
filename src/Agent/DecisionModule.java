@@ -35,18 +35,17 @@ public class DecisionModule {
     }
 
     private void plan(){
+        System.out.println(parentAgent.getId() + " Planning intention: " + intention);
         intention.scenario();
         realTimePlanning();
     }
 
     void realTimePlanning(){
-        System.out.println("RT planningModule" + intention);
         intention.realTimePlanning();
-        executePlan();
     }
 
     @SneakyThrows
-    void executePlan(){
+    public void executePlan(){
         parentAgent.setWalkEvent(new WalkEvent(parentAgent, parentAgent.getAgentSpeed()));
     }
 

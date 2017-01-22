@@ -1,10 +1,12 @@
 package AgentDesires;
 
 import Agent.Agent;
+import Agent.AgentState;
 import Agent.Beliefs;
 import Environment.GraphVertex;
 import Environment.RandomGenerator;
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.ToString;
 
 @Data
@@ -44,4 +46,5 @@ public abstract class Desire {
         parentAgent.getDesireModule().getDesires().remove(this);
         this.aborted = true;//TODO??
     }
+
 }
