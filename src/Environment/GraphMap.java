@@ -2,6 +2,7 @@ package Environment;
 
 
 import Agent.Agent;
+import com.sun.istack.internal.Nullable;
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
@@ -286,31 +287,26 @@ public class GraphMap implements Graph{
     }
 
     public GraphVertex getShopPosition(int shopNumber){
-        GraphVertex shopPosition = null;
         for(GraphVertex shop : shops){
             if(shop.getTypes().toString().contains(SHOP+shopNumber)){
-                shopPosition = shop;
-                break;
+                return searchForVertex(shop.getWorldCoordinates());
             }
-
         }
-        return searchForVertex(shopPosition.getWorldCoordinates());
+        return null;
     }
 
     public GraphVertex getShopCenterPosition(int shopNumber){
-        GraphVertex shopCenterPosition = null;
         for(GraphVertex shopCenter : shopCenters){
             if(shopCenter.getTypes().toString().contains(SHOP+shopNumber+SHOP_CENTER)){
-                shopCenterPosition = shopCenter;
-                break;
+                return searchForVertex(shopCenter.getWorldCoordinates());
             }
         }
-        return searchForVertex(shopCenterPosition.getWorldCoordinates());
+        return null;
     }
 
     public GraphVertex getExitPosition(){
         int exitNumber = RandomGenerator.getInstance().uniformInt(0, EXITS_NUMBER);
-        return entrances.get(exitNumber);
+        return entrances.get(2);
     }
 
     public void dismissAgent(Agent agent){

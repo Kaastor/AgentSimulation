@@ -3,6 +3,7 @@ package AgentDesires;
 import Agent.AgentState;
 import Environment.Graph;
 import Environment.GraphVertex;
+import com.sun.istack.internal.Nullable;
 import lombok.Data;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
 import org.jgrapht.alg.DijkstraShortestPath;
@@ -33,7 +34,7 @@ public class Plan {
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
         //System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
-        setInitialNextPosition();
+        nextPlannedRegionPosition();
     }
 
     void createSearchTopPath(){
@@ -60,7 +61,6 @@ public class Plan {
     private void createShortestPath(GraphVertex startVertex, GraphVertex endVertex){
         BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, endVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
-        getNextPosition(); //pierwsza jest aktualna poz agenta.
         //System.out.println("NEW LOCALPATH" + graphPath.getPath().getVertexList());
     }
 
@@ -88,6 +88,7 @@ public class Plan {
         }
     }
 
+    @Nullable
     private GraphVertex getNextWanderPosition(){
         if(parentDesire.getAgentBeliefs().getFurtherVerticesAround().contains(parentDesire.getFinalPosition())){
             parentDesire.action();
@@ -113,10 +114,6 @@ public class Plan {
         }
     }
 
-    private void setInitialNextPosition(){
-        nextPlannedRegionPosition();
-        nextPlannedRegionPosition();
-    }
 
     public void dropPlan(){
         localPath = null;
