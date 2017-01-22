@@ -306,7 +306,7 @@ public class GraphMap implements Graph{
 
     public GraphVertex getExitPosition(){
         int exitNumber = RandomGenerator.getInstance().uniformInt(0, EXITS_NUMBER);
-        return entrances.get(2);
+        return entrances.get(5);//////////////////
     }
 
     public void dismissAgent(Agent agent){

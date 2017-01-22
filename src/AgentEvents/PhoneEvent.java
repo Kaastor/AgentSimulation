@@ -35,6 +35,7 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
     }
 
     private void cancelShopVisit(){
+        System.out.println("PhoneEvent");
         if(cancelShopVisit == 1){
             System.out.println(parentAgent.getId() + " Phone event exec. Cancel");
             parentAgent.getDesireModule().removeDesire();

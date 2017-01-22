@@ -40,6 +40,7 @@ public class DecisionModule {
     }
 
     void realTimePlanning(){
+        System.out.println("RT planningModule" + intention);
         intention.realTimePlanning();
         executePlan();
     }

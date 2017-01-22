@@ -33,7 +33,8 @@ public class Plan {
     void createShortestTopPath(GraphVertex endRegionVertex){
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
-        //System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
+        System.out.println("NEW REGIONPATH" + graphPath.getPath().getVertexList());
+        nextPlannedRegionPosition();
         nextPlannedRegionPosition();
     }
 
@@ -49,8 +50,11 @@ public class Plan {
     }
 
     void createPath(){
+        System.out.println("RT planning");
         GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
+        System.out.println("1");
         createShortestPath(startVertex, nextRegionVertex);
+        System.out.println("2");
     }
 
     void createPathToPoint(GraphVertex endVertex){
@@ -83,8 +87,10 @@ public class Plan {
                 createPath();
                 return getNextPosition();
             }
-            else
+            else{
+                parentDesire.action();
                 return null;
+            }
         }
     }
 
@@ -109,7 +115,6 @@ public class Plan {
             return true;
         }
         else{
-            parentDesire.action();///WARUNEK STOPU DESIRE
             return false;
         }
     }
@@ -119,5 +124,6 @@ public class Plan {
         localPath = null;
         regionPath = null;
     }
+
 
 }
