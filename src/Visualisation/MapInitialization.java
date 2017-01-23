@@ -20,7 +20,7 @@ public class MapInitialization {
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
         int agentNumber = RandomGenerator.getInstance().uniformInt(1, maxAgentsNumber);
-        addAgents(1);
+        addAgents(agentNumber);
         return cellMap;
     }
 

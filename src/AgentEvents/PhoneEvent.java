@@ -16,16 +16,16 @@ import lombok.EqualsAndHashCode;
 public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
 
     private Agent parentAgent;
-    private int cancelShopVisit;
+    private int cancelDesire;
     private int addShopVisit;
 
     public PhoneEvent(Agent agent, double delay) throws SimControlException {
         super(agent, delay);
         this.parentAgent = getSimEntity();
-        this.cancelShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
+        this.cancelDesire = RandomGenerator.getInstance().uniformInt(0,2);
         this.addShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
-        cancelShopVisit = 0;
-        addShopVisit = 1;
+//        cancelDesire = 1;
+//        addShopVisit = 0;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
 
     private void cancelShopVisit(){
         System.out.println("PhoneEvent");
-        if(cancelShopVisit == 1){
+        if(cancelDesire == 1){
             System.out.println(parentAgent.getId() + " Phone event exec. Cancel");
             parentAgent.getDesireModule().removeDesire();
         }
