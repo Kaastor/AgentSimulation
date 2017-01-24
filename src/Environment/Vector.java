@@ -49,7 +49,6 @@ public class Vector extends WorldCoordinates{
         this.rotateBack();
         vectorSum(rightVector);
         normalize();
-        System.out.println(this);
     }
 
     public void rotateBackLeft(){

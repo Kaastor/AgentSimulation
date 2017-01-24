@@ -1,12 +1,12 @@
 package AgentDesires;
 
 import Agent.Agent;
-import Agent.AgentState;
 import lombok.Data;
-import lombok.SneakyThrows;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class LeaveShoppingCenter extends Desire{
 
@@ -17,7 +17,7 @@ public class LeaveShoppingCenter extends Desire{
 
     @Override
     public void scenario() {
-        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition())); // to moze byc w Desire
+        setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition()));
         getPlan().createShortestTopPath(getFinalPosition());
         getPlan().createPath();
     }
@@ -44,9 +44,7 @@ public class LeaveShoppingCenter extends Desire{
             finalAction();
     }
 
-    @Override
-    public void finalAction() {
-        System.out.println("SetLeaving");
+    private void finalAction() {
         getParentAgent().setLeaving(true);
         this.terminate();
     }

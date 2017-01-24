@@ -49,9 +49,8 @@ public class DoShopping extends Desire{
         }
     }
 
-    @Override
-    public void finalAction() {
-        System.out.println(getParentAgent().getId() + " :Zakończył zakupy w sklepie.");
+    private void finalAction() {
+        System.out.println(getParentAgent().getId() + " : Finished shopping.");
         this.terminate();
     }
 

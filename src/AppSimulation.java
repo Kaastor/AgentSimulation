@@ -17,6 +17,11 @@ import lombok.SneakyThrows;
 @EqualsAndHashCode(callSuper = false)
 public class AppSimulation extends Application{
 
+    public static final int MAP_WIDTH = 1200;
+    public static final int MAP_HEIGHT = 800;
+    public static final int CELL_SIZE = 25;
+    public static final int MAX_AGENTS_NUMBER = 30;
+
     @SneakyThrows
     public static void main(String[] args)
     {
@@ -32,8 +37,8 @@ public class AppSimulation extends Application{
         Scene theScene = new Scene( root );
         theStage.setScene( theScene );
 
-        Map map = new MapInitialization( 1200, 800, 25, 30).initialize();
-        EnvVisualisation envVisualisation = new EnvVisualisation(map, 1200, 800 );
+        Map map = new MapInitialization( MAP_WIDTH, MAP_HEIGHT, CELL_SIZE, MAX_AGENTS_NUMBER).initialize();
+        EnvVisualisation envVisualisation = new EnvVisualisation(map, MAP_WIDTH, MAP_HEIGHT );
         new VisualisationTimer(envVisualisation);
 
         Task task = new Task<Void>() {
@@ -51,7 +56,5 @@ public class AppSimulation extends Application{
 
         root.getChildren().add( envVisualisation );
         theStage.show();
-
-
     }
 }

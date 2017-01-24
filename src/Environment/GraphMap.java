@@ -2,7 +2,6 @@ package Environment;
 
 
 import Agent.Agent;
-import com.sun.istack.internal.Nullable;
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
@@ -40,23 +39,6 @@ public class GraphMap implements Graph{
         this.entrances = new ArrayList<>();
         createGraphFromMap();
         this.shops = createShopList();
-
-
-
-//        List<GraphVertex> verticesAround = new ArrayList<>();
-//        Set<DefaultEdge> aroundEdges =  getGraphCells().edgesOf( getVertex(new WorldCoordinates(17, 8)));
-//        for(DefaultEdge edge : aroundEdges){
-//            verticesAround.add( getGraphCells().getEdgeSource(edge));
-//            verticesAround.add( getGraphCells().getEdgeTarget(edge));
-//        }
-//        verticesAround = verticesAround.parallelStream()
-//                .distinct()
-//                .collect(Collectors.toList());
-//
-//        for(GraphVertex vertex : closeVerticesAround){
-//            System.out.println(vertex);
-//        }
-
     }
 
     private void createGraphFromMap(){
@@ -307,9 +289,5 @@ public class GraphMap implements Graph{
     public GraphVertex getExitPosition(){
         int exitNumber = RandomGenerator.getInstance().uniformInt(0, EXITS_NUMBER);
         return entrances.get(exitNumber);
-    }
-
-    public void dismissAgent(Agent agent){
-        map.dismissAgent(agent);
     }
 }

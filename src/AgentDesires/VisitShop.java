@@ -4,12 +4,11 @@ import Agent.Agent;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Synchronized;
 import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class VisitShop extends Desire {
 
     private int shopNumber;
@@ -50,8 +49,7 @@ public class VisitShop extends Desire {
         finalAction();
     }
 
-    @Override
-    public void finalAction() {
+    private void finalAction() {
         this.terminate();
         getParentAgent().setPreviousRegionPosition(getFinalPosition());
         Desire doShopping = new DoShopping(getParentAgent(), this);

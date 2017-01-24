@@ -45,7 +45,7 @@ public class Beliefs {
     }
 
     private void initializeBeliefs(){
-        this.shopsToVisit = initializeShopsToVisit(Graph.SHOPS_NUMBER);
+        this.shopsToVisit = initializeShopsToVisit();
     }
 
     public void perceptualProcessor() {
@@ -66,11 +66,11 @@ public class Beliefs {
         }
     }
 
-    private List<Integer> initializeShopsToVisit(int shopNumber){
+    private List<Integer> initializeShopsToVisit(){
         shopsToVisit = new ArrayList<>();
-        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, shopNumber);
+        int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, Graph.SHOPS_NUMBER);
         for(int i = 0; i < numberShopsToVisit; i++){
-            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, shopNumber);
+            int shopToVisit = RandomGenerator.getInstance().uniformInt(0, Graph.SHOPS_NUMBER);
             if(!shopsToVisit.contains(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }

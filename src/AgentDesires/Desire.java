@@ -18,7 +18,6 @@ public abstract class Desire {
     private int priority = RandomGenerator.getInstance().uniformInt(1, maxPriority);
     private Plan plan;
     private GraphVertex finalPosition;
-    private boolean aborted;
 
     Desire(Agent agent){
         this.parentAgent = agent;
@@ -37,12 +36,10 @@ public abstract class Desire {
 
     public abstract void action();
 
-    public abstract void finalAction();
-
-    void terminate(){
+    public void terminate(){
+        plan.dropPlan();
         parentAgent.getDecisionModule().setIntention(null);
         parentAgent.getDesireModule().getDesires().remove(this);
-        this.aborted = true;//TODO??
     }
 
 }

@@ -15,10 +15,8 @@ public interface Graph {
     String SHOP_CENTER = "_CENTER";
     String ENTRANCE = "ENTRANCE";
 
-    void dismissAgent(Agent agent);
     GraphVertex getVertex(WorldCoordinates vertexCoordinates);
     GraphVertex getVertex(GraphVertex vertex);
-    GraphVertex getRegionVertex(WorldCoordinates vertexCoordinates);
     GraphVertex getShopPosition(int shopNumber);
     GraphVertex getExitPosition();
     GraphVertex getShopCenterPosition(int shopNumber);

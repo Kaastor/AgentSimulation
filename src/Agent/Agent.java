@@ -57,13 +57,13 @@ public class Agent extends BasicSimEntity {
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
 
-        this.phoneEvent = new PhoneEvent(this, 1);
+        this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().uniformInt(1, 10));
         beliefs.perceptualProcessor();
     }
 
     void observeEnvironment(){
         lookAround();
-        //updateDirection();
+        updateDirection();
     }
 
     private void lookAround(){

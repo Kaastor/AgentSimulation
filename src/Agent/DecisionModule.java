@@ -58,6 +58,9 @@ public class DecisionModule {
         return sortedDesires.get(0);
     }
 
+    public void terminateIntention(){
+        intention.terminate();
+    }
     public boolean intentionNotTerminated(){
         return intention != null;
     }

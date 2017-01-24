@@ -1,12 +1,8 @@
 package AgentDesires;
 
 import Agent.Agent;
-import Environment.Graph;
-import Environment.Map;
 import Environment.RandomGenerator;
 import lombok.Data;
-import sun.security.krb5.internal.crypto.Des;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +54,7 @@ public class DesireModule {
         int desireNumber = RandomGenerator.getInstance().uniformInt(0, desires.size());
         if(desires.get(desireNumber).equals(parentAgent.getDecisionModule().getIntention())){
             System.out.println(parentAgent.getId() + " RemoveIntention " + parentAgent.getDecisionModule().getIntention()); //nie wraca do deliberacji... w ogole wszystko stoi, wALK byl last
-            parentAgent.getDecisionModule().getIntention().terminate();
+            parentAgent.getDecisionModule().terminateIntention();
         }
         else{
             System.out.println(parentAgent.getId() + " RemoveShopDesire : " + desires.get(desireNumber));

@@ -3,18 +3,15 @@ package Environment;
 
 import Agent.Agent;
 import javafx.geometry.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface Map {
 
-    GraphMap createAndGetGraphMap();
     List<CellType> getCellTypes(int worldX, int worldY);
     List<Agent> getAgentsList();
     void dismissAgent(Agent agent);
     List<WorldCoordinates> getDoorsList();
     List<WorldCoordinates> getEntrancesList();
-    List<WorldCoordinates> getShopCentersList();
     Point2D getCellScreenCoordinates(int worldX, int worldY);
     boolean cellExist(WorldCoordinates worldCoordinates);
     int getCellSize();
