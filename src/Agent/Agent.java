@@ -11,6 +11,7 @@ import dissim.simspace.core.SimModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Data
 @EqualsAndHashCode(callSuper = false, exclude = {"beliefs", "desireModule", "decisionModule"})
+@ToString(exclude = {"beliefs", "desireModule", "decisionModule", "walkEvent", "phoneEvent"})
 public class Agent extends BasicSimEntity {
 
     private Beliefs beliefs;

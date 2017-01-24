@@ -81,12 +81,23 @@ public class EnvVisualisation extends Canvas {
     }
 
     private void drawAgentsOnScreen(){
-        for(Agent agent : agentsArrayList){
-            if(agent.getPosition() != null && !checkIfAgentLeft(agent)){
-                drawAgent(agent.getPosition().getWorldCoordinates());
-//                System.out.println(agent.getPreviousPosition().getWorldCoordinates() + " "+agent.getPosition().getWorldCoordinates());
+        boolean agentLeft = false;
+        int agentWhoLeft = 0;
+        for(int agentIndex = 0; agentIndex < agentsArrayList.size(); agentIndex++ ){
+            if(agentsArrayList.get(agentIndex).getPosition() != null ){
+                if(!checkIfAgentLeft(agentsArrayList.get(agentIndex))) {
+                    drawAgent(agentsArrayList.get(agentIndex).getPosition().getWorldCoordinates());
+                }
+                else{
+                    agentWhoLeft = agentIndex;
+                    agentLeft = true;
+                }
                 //drawMovingVector(agent, agent.getPosition().getWorldCoordinates());
             }
+        }
+        if(agentLeft) {
+            agentsArrayList.remove(agentWhoLeft);
+            System.out.println(agentsArrayList.toString());
         }
     }
 
