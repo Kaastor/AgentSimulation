@@ -68,6 +68,7 @@ public class CellMap extends BasicSimEntity implements Map{
         }
     }
 
+    @SneakyThrows
     public void dismissAgent(Agent agent){
         this.agentsList.remove(agent);
     }

@@ -176,7 +176,9 @@ public class Agent extends BasicSimEntity {
         this.position = position;
     }
 
-    public void leaveShoppingCenter() {
+    @SneakyThrows
+    void leaveShoppingCenter() {
+        phoneEvent.terminate();
         System.out.println(id + " agent left SC.");
         setAgentState(AgentState.LEFT);
     }

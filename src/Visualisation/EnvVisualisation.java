@@ -92,12 +92,10 @@ public class EnvVisualisation extends Canvas {
                     agentWhoLeft = agentIndex;
                     agentLeft = true;
                 }
-                //drawMovingVector(agent, agent.getPosition().getWorldCoordinates());
             }
         }
         if(agentLeft) {
-            agentsArrayList.remove(agentWhoLeft);
-            System.out.println(agentsArrayList.toString());
+            map.dismissAgent(agentsArrayList.get(agentWhoLeft));
         }
     }
 

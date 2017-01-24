@@ -40,7 +40,6 @@ public class Beliefs {
         this.closeVerticesAround = new ArrayList<>();
         this.furtherVerticesAround = new ArrayList<>();
         this.KnowledgeOfArea = 1;
-//        this.KnowledgeOfArea = RandomGenerator.getInstance().uniformInt(0, 1);
         this.collision = false;
         initializeBeliefs();
     }

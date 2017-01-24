@@ -21,7 +21,6 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
 
     @Override
     public void transition() {
-//        System.out.println(getParentAgent().getPreviousPosition() + " " + getParentAgent().getPosition());
         if(parentAgent.getDecisionModule().intentionNotTerminated()){
             walkToNextPositionIfSet();
             setNextPositionOnMap();

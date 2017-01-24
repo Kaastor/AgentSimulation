@@ -20,7 +20,6 @@ public class LeaveShoppingCenter extends Desire{
         setPlan(new Plan(this, getParentAgent().getPreviousRegionPosition())); // to moze byc w Desire
         getPlan().createShortestTopPath(getFinalPosition());
         getPlan().createPath();
-//        System.out.println("Po scenario");
     }
 
     @Override
@@ -51,16 +50,4 @@ public class LeaveShoppingCenter extends Desire{
         getParentAgent().setLeaving(true);
         this.terminate();
     }
-
-//    @SneakyThrows
-//    private void setNextPositionOnMap() {
-//        getParentAgent().setNextPosition(getParentAgent().getDecisionModule().getIntention().getPlan().getNextPosition());
-//        if (noNextPosition() && getParentAgent().getAgentState() != AgentState.LEAVING) {
-//            getParentAgent().setAgentState(AgentState.STANDING);
-//        }
-//    }
-//
-//    private boolean noNextPosition(){
-//        return getParentAgent().getNextPosition() == null;
-//    }
 }

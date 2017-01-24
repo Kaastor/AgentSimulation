@@ -66,7 +66,7 @@ public class DesireModule {
         }
     }
 
-    public boolean noOtherDesires(){
+    boolean noOtherDesires(){
         return desires.size() == 1;
     }
 

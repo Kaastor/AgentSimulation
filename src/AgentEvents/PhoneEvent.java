@@ -24,8 +24,6 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
         this.parentAgent = getSimEntity();
         this.cancelDesire = RandomGenerator.getInstance().uniformInt(0,2);
         this.addShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
-//        cancelDesire = 1;
-//        addShopVisit = 0;
     }
 
     @Override
@@ -37,7 +35,7 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
     private void cancelShopVisit(){
         System.out.println("PhoneEvent");
         if(cancelDesire == 1){
-            System.out.println(parentAgent.getId() + " Phone event exec. Cancel");
+            System.out.println(parentAgent.getId() + " Phone event exec. Cancel" + parentAgent.getDesireModule());
             parentAgent.getDesireModule().removeDesire();
         }
     }
@@ -51,5 +49,12 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
                 addShopVisit();
 
         }
+    }
+
+    @Override
+    protected void onTermination() throws SimControlException {
+        super.onTermination();
+        cancelDesire = 0;
+        addShopVisit = 0;
     }
 }
