@@ -40,7 +40,7 @@ public class VisitShop extends Desire {
             getParentAgent().getDecisionModule().executePlan();
         }
         else {
-//            getPlan().createPath();
+            getParentAgent().avoidCollision();
         }
     }
 

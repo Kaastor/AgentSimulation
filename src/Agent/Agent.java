@@ -47,7 +47,7 @@ public class Agent extends BasicSimEntity {
         this.id = id;
         this.agentState = AgentState.NOP;
 //        this.agentSpeed = RandomGenerator.getInstance().exponential(1);
-        this.agentSpeed = 0.1;
+        this.agentSpeed = 0.2;
         this.leaving = false;
         this.movingDirection = new Vector(0,-1);
         this.position = graphMap.getVertex(startPosition);
@@ -57,7 +57,7 @@ public class Agent extends BasicSimEntity {
         this.decisionModule = new DecisionModule(this);
         this.beliefs = new Beliefs(this, graphMap);
 
-        this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().uniformInt(1, 10));
+        //this.phoneEvent = new PhoneEvent(this, RandomGenerator.getInstance().uniformInt(1, 10));
         beliefs.perceptualProcessor();
     }
 
@@ -102,60 +102,51 @@ public class Agent extends BasicSimEntity {
     }
 
     private void updateDirection(){
-        if(getAgentState() == AgentState.WALK)
-            getMovingDirection().update(getPosition(), getNextPosition());
+        if(agentState == AgentState.WALK)
+            movingDirection.update(position, nextPosition);
     }
 
-    boolean lookForCollision() {
-        return (getNextPosition().isOccupied() || getNextPosition().isReserved());
+    public void avoidCollision(){
+        List<GraphVertex> verticesAround = getBeliefs().getCloseVerticesAround();
+        GraphVertex nextFreeVertex = null;
+        for(GraphVertex vertex : verticesAround){
+            if(!vertex.isOccupiedOrReserved()){
+                nextFreeVertex = vertex;
+                break;
+            }
+        }
+        if(nextFreeVertex != null){
+
+            if(decisionModule.getIntention().getPlan().isRandomPath()){
+                nextFreeVertex = position;
+                decisionModule.getIntention().getPlan().createWanderLocalPath(nextFreeVertex);
+            }
+            else {
+                System.out.println(  id+"1?");
+                reserveNextPosition(nextFreeVertex);
+                System.out.println( id+"2? " + agentState + " " + decisionModule.getIntention().getPlan().isRandomPath());
+                decisionModule.getIntention().getPlan().updatePath(nextFreeVertex);
+                System.out.println(  id+"3?");
+            }
+        }
+        else{
+            nextFreeVertex = getPosition(); //stoi w miejscu
+            setNextPosition(nextFreeVertex);
+            decisionModule.getIntention().getPlan().updatePath(nextFreeVertex);
+        }
+        System.out.println( "przedexec");
+        getDecisionModule().executePlan();
     }
 
-    public void moveForward(){
-        previousPosition = position;
-        GraphVertex forwardVertex = beliefs.getGraphMap().getVertex(position.getWorldCoordinates().getForwardPointCoordinates(movingDirection));
-        if(forwardVertex != null && forwardVertex.isFree())
-            position = forwardVertex;
-        else
-            waitInPlace();
-    }
-
-    public void moveRight(){
-        movingDirection.rotateRight();
-        moveForward();
-    }
-
-    public void moveForwardRight(){
-        movingDirection.rotateForwardRight();
-        moveForward();
-    }
-
-    public void moveForwardLeft(){
-        movingDirection.rotateForwardLeft();
-        moveForward();
-    }
-
-    public void moveLeft(){
-        movingDirection.rotateLeft();
-        moveForward();
-    }
-
-    public void moveBackLeft(){
-        movingDirection.rotateBackLeft();
-        moveForward();
-    }
-
-    public void moveBackRight(){
-        movingDirection.rotateBackRight();
-        moveForward();
-    }
-
-    public void moveBack(){
-        movingDirection.rotateBack();
-        moveForward();
-    }
-
-    public void waitInPlace(){
-
+    private boolean lookForCollision(GraphVertex nextPosition) {
+        boolean collision = false;
+        if(nextPosition != null){
+            if(nextPosition.isOccupiedOrReserved()) {
+                collision = true;
+            }
+        }
+        beliefs.setCollision(collision);
+        return collision;
     }
 
     public void moveToNextPosition(){
@@ -163,12 +154,18 @@ public class Agent extends BasicSimEntity {
         setPosition(getNextPosition());
     }
 
-    public void moveToPreviousPosition(){
-        setPosition(getPreviousPosition());
+    private void waitInPlace(){
+        nextPosition = position;
     }
 
-    public void reservePosition(GraphVertex nextPosition){
-        nextPosition.reserve();
+    public void reserveNextPosition(GraphVertex nextPosition){
+        System.out.println( getId() + "Collision position = " + nextPosition);
+        if(nextPosition != null){
+            if(!lookForCollision(nextPosition)){
+                nextPosition.reserve();
+                setNextPosition(nextPosition);
+            }
+        }
     }
 
     private void setPosition(GraphVertex position){
@@ -176,9 +173,12 @@ public class Agent extends BasicSimEntity {
         this.position = position;
     }
 
+
+
     @SneakyThrows
     void leaveShoppingCenter() {
-        phoneEvent.terminate();
+        //phoneEvent.terminate();
+        position.free();
         System.out.println(id + " agent left SC.");
         setAgentState(AgentState.LEFT);
     }

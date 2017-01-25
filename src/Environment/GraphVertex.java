@@ -43,11 +43,11 @@ public class GraphVertex {
         this.occupied = false;
     }
 
-    public boolean isFree(){
-        return occupied && reserved;
+    public boolean isOccupiedOrReserved(){
+        return occupied || reserved;
     }
 
-    public void reserve(){
+    public void reserve() {
         this.reserved = true;
     }
 
@@ -61,8 +61,7 @@ public class GraphVertex {
     }
 
     public void occupy(Agent agent){
+        this.agent = agent;
         occupied = true;
-        setAgent(agent);
-        reserve();
     }
 }

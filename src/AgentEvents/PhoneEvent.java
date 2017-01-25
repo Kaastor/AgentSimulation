@@ -24,8 +24,6 @@ public class PhoneEvent extends BasicSimStateChange<Agent, Object> {
         this.parentAgent = getSimEntity();
         this.cancelDesire = RandomGenerator.getInstance().uniformInt(0,2);
         this.addShopVisit = RandomGenerator.getInstance().uniformInt(0,2);
-        cancelDesire = 1;
-        addShopVisit = 1;
     }
 
     @Override

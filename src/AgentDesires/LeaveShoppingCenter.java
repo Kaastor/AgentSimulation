@@ -1,9 +1,14 @@
 package AgentDesires;
 
 import Agent.Agent;
+import Agent.AgentState;
+import Environment.GraphVertex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,8 +28,9 @@ public class LeaveShoppingCenter extends Desire{
     }
 
     @Override
+    @SneakyThrows
     public void realTimePlanning() {
-        if(!getParentAgent().getBeliefs().isCollision()){
+        if(getParentAgent().getAgentState() != AgentState.COLLISION){
             if(getParentAgent().getDesireModule().noOtherDesires()) {
                 getParentAgent().getDecisionModule().executePlan();
             }
@@ -33,8 +39,8 @@ public class LeaveShoppingCenter extends Desire{
                 getParentAgent().getBeliefs().perceptualProcessor();
             }
         }
-        else{
-//            getPlan().createPath();
+        else {
+            getParentAgent().avoidCollision();
         }
     }
 

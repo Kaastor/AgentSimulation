@@ -20,7 +20,7 @@ public class MapInitialization {
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
         int agentNumber = RandomGenerator.getInstance().uniformInt(1, maxAgentsNumber);
-        addAgents(agentNumber);
+        addAgents(2);
         return cellMap;
     }
 
@@ -35,7 +35,7 @@ public class MapInitialization {
         int count = 0;
         while(count != agentNumber){
             int entranceNumber = RandomGenerator.getInstance().uniformInt(0, cellMap.getEntrancesList().size());
-            cellMap.addAgent(new Agent(graphMap, cellMap.getEntrancesList().get(entranceNumber), count));
+            cellMap.addAgent(new Agent(graphMap, cellMap.getEntrancesList().get(0), count));
             count++;
             }
     }

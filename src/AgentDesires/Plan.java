@@ -41,9 +41,8 @@ public class Plan {
         regionPath = graphMap.getRegionSearchPath(startRegionVertex);
     }
 
-    void createWanderLocalPath(){
+    public void createWanderLocalPath(GraphVertex startVertex){
         parentDesire.getParentAgent().setAgentState(AgentState.WANDER);
-        GraphVertex startVertex = parentDesire.getParentAgent().getPosition();
         localPath = graphMap.getRandomWalkPath(startVertex);
         this.randomPath = true;
     }
@@ -64,6 +63,9 @@ public class Plan {
         getNextPosition(); // pierwsza to pozycja agenta
     }
 
+    public void updatePath(GraphVertex vertex){
+        createShortestPath(vertex, nextRegionVertex);
+    }
 
     public GraphVertex getNextPosition(){
         if(!randomPath) {

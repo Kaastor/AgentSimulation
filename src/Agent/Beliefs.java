@@ -6,6 +6,7 @@ import Environment.Graph;
 import Environment.GraphVertex;
 import Environment.RandomGenerator;
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.ToString;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -48,16 +49,17 @@ public class Beliefs {
         this.shopsToVisit = initializeShopsToVisit();
     }
 
+    @SneakyThrows
     public void perceptualProcessor() {
         parentAgent.observeEnvironment();
         if (!parentAgent.isLeaving()) {
             if (decisionModule.getIntention() == null) {
                 desireModule.cognitiveProcessor();
-            } /*else if (parentAgent.getAgentState() == AgentState.WALK && parentAgent.lookForCollision()) {
-                setCollision(true);
+            } else if (collision) {
                 parentAgent.setAgentState(AgentState.COLLISION);
-                //TODO collision ->realtimeplanner- ustawienie nowego planu + nextPosition, jak metoda wroci do WalkProcess, bedzie juz miała nowe pole.
-            } */
+
+                decisionModule.realTimePlanning();
+            }
             else {
                 decisionModule.realTimePlanning();
             }
@@ -69,8 +71,10 @@ public class Beliefs {
     private List<Integer> initializeShopsToVisit(){
         shopsToVisit = new ArrayList<>();
         int numberShopsToVisit = RandomGenerator.getInstance().uniformInt(1, Graph.SHOPS_NUMBER);
+        numberShopsToVisit = 1;
         for(int i = 0; i < numberShopsToVisit; i++){
             int shopToVisit = RandomGenerator.getInstance().uniformInt(0, Graph.SHOPS_NUMBER);
+            shopToVisit = 0;
             if(!shopsToVisit.contains(shopToVisit))
                 shopsToVisit.add(shopToVisit);
         }

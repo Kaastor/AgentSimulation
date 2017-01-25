@@ -34,7 +34,9 @@ public class DoShopping extends Desire{
             getParentAgent().getDecisionModule().executePlan();
         }
         else{
-//            getPlan().createPath();
+            System.out.println(getParentAgent().getId() + "Przed.");
+            getParentAgent().avoidCollision();
+            System.out.println(getParentAgent().getId() + "Po.");
         }
     }
 
@@ -42,7 +44,7 @@ public class DoShopping extends Desire{
     public void action() {
         if(!inShopCenter) {
             this.inShopCenter = true;
-            getPlan().createWanderLocalPath();
+            getPlan().createWanderLocalPath(getParentAgent().getPosition());
         }
         else{
             finalAction();
