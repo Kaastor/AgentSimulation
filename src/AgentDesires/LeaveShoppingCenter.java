@@ -2,13 +2,11 @@ package AgentDesires;
 
 import Agent.Agent;
 import Agent.AgentState;
-import Environment.GraphVertex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

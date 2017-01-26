@@ -21,12 +21,10 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
 
     @Override
     public void transition() {
-        System.out.println(parentAgent.getId() + " Walking: " + parentAgent.getPreviousPosition() + " " + parentAgent.getPosition() + " " + parentAgent.getNextPosition());
         if(parentAgent.getDecisionModule().intentionNotTerminated()){
             walkToNextPositionIfSet();
             setNextPositionOnMap();
         }
-        System.out.println( "654");
         parentAgent.getBeliefs().perceptualProcessor();
     }
 
@@ -40,11 +38,10 @@ public class WalkEvent extends BasicSimStateChange<Agent, Object> {
     @SneakyThrows
     private void setNextPositionOnMap() {
         parentAgent.reserveNextPosition(parentAgent.getDecisionModule().getIntention().getPlan().getNextPosition());
-        System.out.println( "1");
+
         if (noNextPosition() && getParentAgent().getAgentState() != AgentState.LEAVING) {
             parentAgent.setAgentState(AgentState.STANDING);
         }
-        System.out.println( "2");
     }
 
     private boolean noNextPosition(){

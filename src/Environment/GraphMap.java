@@ -1,7 +1,6 @@
 package Environment;
 
 
-import Agent.Agent;
 import lombok.Data;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
@@ -168,19 +167,6 @@ public class GraphMap implements Graph{
     private GraphVertex searchForVertex(WorldCoordinates vertexCoordinates){
         GraphVertex searchedVertex = null;
         for (GraphVertex vertex : cells){
-            if(vertex.equals(new GraphVertex(vertexCoordinates)))
-                searchedVertex = vertex;
-        }
-        return searchedVertex;
-    }
-
-    public GraphVertex getRegionVertex(WorldCoordinates vertexCoordinates){
-        return searchForRegionVertex(vertexCoordinates);
-    }
-
-    private GraphVertex searchForRegionVertex(WorldCoordinates vertexCoordinates){
-        GraphVertex searchedVertex = null;
-        for (GraphVertex vertex : regions){
             if(vertex.equals(new GraphVertex(vertexCoordinates)))
                 searchedVertex = vertex;
         }

@@ -13,7 +13,7 @@ public class Vector extends WorldCoordinates{
         super(x, y);
     }
 
-    public void rotateRight(){
+    private void rotateRight(){
         int x = this.getY()*(-1);
         this.setY(this.getX());
         this.setX(x);
@@ -33,13 +33,13 @@ public class Vector extends WorldCoordinates{
         normalize();
     }
 
-    public void rotateLeft(){
+    private void rotateLeft(){
         int x = this.getY();
         this.setY(this.getX()*(-1));
         this.setX(x);
     }
 
-    public void rotateBack(){
+    private void rotateBack(){
         this.setX(this.getX()*(-1));
         this.setY(this.getY()*(-1));
     }

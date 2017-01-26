@@ -34,9 +34,7 @@ public class DoShopping extends Desire{
             getParentAgent().getDecisionModule().executePlan();
         }
         else{
-            System.out.println(getParentAgent().getId() + "Przed.");
             getParentAgent().avoidCollision();
-            System.out.println(getParentAgent().getId() + "Po.");
         }
     }
 

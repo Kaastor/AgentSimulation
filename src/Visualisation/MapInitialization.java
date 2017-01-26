@@ -19,8 +19,8 @@ public class MapInitialization {
         addWalls();
         addDoors();
         this.graphMap = cellMap.createAndGetGraphMap();
-        int agentNumber = RandomGenerator.getInstance().uniformInt(1, maxAgentsNumber);
-        addAgents(2);
+        int agentNumber = RandomGenerator.getInstance().uniformInt(maxAgentsNumber-5, maxAgentsNumber);
+        addAgents(agentNumber);
         return cellMap;
     }
 
@@ -35,7 +35,7 @@ public class MapInitialization {
         int count = 0;
         while(count != agentNumber){
             int entranceNumber = RandomGenerator.getInstance().uniformInt(0, cellMap.getEntrancesList().size());
-            cellMap.addAgent(new Agent(graphMap, cellMap.getEntrancesList().get(0), count));
+            cellMap.addAgent(new Agent(graphMap, cellMap.getEntrancesList().get(entranceNumber), count));
             count++;
             }
     }
@@ -144,7 +144,7 @@ public class MapInitialization {
         addEntranceY(new WorldCoordinates(0, 14), CellType.REGION_1); //wejscie lewe
         addEntranceY(new WorldCoordinates(47, 14), CellType.REGION_1); //wejscie prawe
         addEntranceX(new WorldCoordinates(21, 0), CellType.REGION_1); //wejscie gorne
-        addShopCenter(new WorldCoordinates(2, 4), CellType.SHOP_0_CENTER);
+        addShopCenter(new WorldCoordinates(3, 3), CellType.SHOP_0_CENTER);
         addShopCenter(new WorldCoordinates(10, 4), CellType.SHOP_1_CENTER);
         addShopCenter(new WorldCoordinates(32, 6), CellType.SHOP_2_CENTER);
         addShopCenter(new WorldCoordinates(41, 4), CellType.SHOP_3_CENTER);

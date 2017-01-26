@@ -33,8 +33,7 @@ public class Plan {
     void createShortestTopPath(GraphVertex endRegionVertex){
         DijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPath(graphMap.getGraphRegions(), startRegionVertex, endRegionVertex);
         regionPath = graphPath.getPath().getVertexList().iterator();
-        nextPlannedRegionPosition();
-        nextPlannedRegionPosition();
+        getInitialNextRegionPosition();
     }
 
     void createSearchTopPath(){
@@ -60,11 +59,14 @@ public class Plan {
     private void createShortestPath(GraphVertex startVertex, GraphVertex endVertex){
         BidirectionalDijkstraShortestPath<GraphVertex, DefaultEdge> graphPath = graphMap.getShortestPathBi(graphMap.getGraphCells(), startVertex, endVertex);
         localPath = graphPath.getPath().getVertexList().iterator();
-        getNextPosition(); // pierwsza to pozycja agenta
+        getInitialNextPosition();
     }
 
     public void updatePath(GraphVertex vertex){
-        createShortestPath(vertex, nextRegionVertex);
+        if(nextRegionVertex != null)
+            createShortestPath(vertex, nextRegionVertex);
+        else
+            createPathToPoint(vertex);
     }
 
     public GraphVertex getNextPosition(){
@@ -117,7 +119,16 @@ public class Plan {
         }
     }
 
-    public void dropPlan(){
+    private void getInitialNextPosition(){
+        getNextPosition();
+    }
+
+    private void getInitialNextRegionPosition(){
+        nextPlannedRegionPosition();
+        nextPlannedRegionPosition();
+    }
+
+    void dropPlan(){
         localPath = null;
         regionPath = null;
     }

@@ -53,7 +53,7 @@ public class DesireModule {
     public void removeDesire(){
         int desireNumber = RandomGenerator.getInstance().uniformInt(0, desires.size());
         if(desires.get(desireNumber).equals(parentAgent.getDecisionModule().getIntention())){
-            System.out.println(parentAgent.getId() + " RemoveIntention " + parentAgent.getDecisionModule().getIntention()); //nie wraca do deliberacji... w ogole wszystko stoi, wALK byl last
+            System.out.println(parentAgent.getId() + " RemoveIntention " + parentAgent.getDecisionModule().getIntention());
             parentAgent.getDecisionModule().terminateIntention();
         }
         else{
@@ -65,5 +65,4 @@ public class DesireModule {
     boolean noOtherDesires(){
         return desires.size() == 1;
     }
-
 }

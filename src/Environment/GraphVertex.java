@@ -33,11 +33,6 @@ public class GraphVertex {
         return worldCoordinates.equals(vertex.worldCoordinates);
     }
 
-    private void setAgent(Agent agent){
-        this.agent = agent;
-        this.occupied = true;
-    }
-
     private void removeAgent(){
         this.agent = null;
         this.occupied = false;

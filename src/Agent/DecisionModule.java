@@ -24,11 +24,9 @@ public class DecisionModule {
     public void deliberate() {
         List<Desire> desires = parentAgent.getDesireModule().getDesires();
         List<Desire> sortedDesires = sortDesiresByPriority(desires);
-
         for (Desire desire : desires) {
             System.out.println(parentAgent.getId() + " :Desire deliberation "+desire);
         }
-
         intention = getDesireWithHighestPriority(sortedDesires);
         System.out.println(parentAgent.getId() + " Chose intention: " + intention);
         plan();
