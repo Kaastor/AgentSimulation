@@ -3,6 +3,7 @@ package AgentDesires;
 import Agent.AgentState;
 import Environment.Graph;
 import Environment.GraphVertex;
+import Environment.RandomGenerator;
 import com.sun.istack.internal.Nullable;
 import lombok.Data;
 import org.jgrapht.alg.BidirectionalDijkstraShortestPath;
@@ -21,6 +22,10 @@ public class Plan {
     private GraphVertex nextRegionVertex;
     private GraphVertex startRegionVertex;
     private boolean randomPath;
+    private int randomPathSteps;
+    private final int randomPathStepsImpatience = RandomGenerator.getInstance().uniformInt(450, 900);
+    private int plannedPathSteps;
+    private final int plannedPathStepsImpatience = RandomGenerator.getInstance().uniformInt(900, 1800);
 
     Plan(Desire parentDesire, GraphVertex startVertex){
         this.parentDesire = parentDesire;
@@ -28,6 +33,8 @@ public class Plan {
         this.startRegionVertex = startVertex;
         this.regionPath = null;
         this.randomPath = false;
+        this.randomPathSteps = 0;
+        this.plannedPathSteps = 0;
     }
 
     void createShortestTopPath(GraphVertex endRegionVertex){
@@ -71,10 +78,23 @@ public class Plan {
 
     public GraphVertex getNextPosition(){
         if(!randomPath) {
-            return getNextPlannedPosition();
+            plannedPathSteps++;
+            if(plannedPathSteps < plannedPathStepsImpatience)
+                return getNextPlannedPosition();
+            else{
+                parentDesire.terminate();
+                return null;
+            }
+
         }
         else{
-            return getNextWanderPosition();
+            randomPathSteps++;
+            if(randomPathSteps < randomPathStepsImpatience)
+                return getNextWanderPosition();
+            else{
+                parentDesire.action();
+                return null;
+            }
         }
     }
 

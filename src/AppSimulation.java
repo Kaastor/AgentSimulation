@@ -44,8 +44,11 @@ public class AppSimulation extends Application{
         Task task = new Task<Void>() {
             @SneakyThrows
             @Override public Void call() {
-
-                SimModel.getInstance().ASTRONOMICALSimulation();
+//                SimModel.getInstance().ASTRONOMICALSimulation();
+//
+//                double ratio = SimModel.getInstance().getSimTimeRatio();
+//                SimModel.getInstance().setSimTimeRatio(ratio*3);
+                SimModel.getInstance().ASAPSimulation();
                 SimModel.getInstance().startSimulation();
                 return null;
             }
@@ -53,6 +56,9 @@ public class AppSimulation extends Application{
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
+
+        EnvVisualisation.SIMULATION_START_TIME = System.nanoTime();
+        System.out.println("Simulation started. " +  EnvVisualisation.SIMULATION_START_TIME);
 
         root.getChildren().add( envVisualisation );
         theStage.show();

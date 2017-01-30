@@ -106,9 +106,8 @@ public class Agent extends BasicSimEntity {
     }
 
     public void avoidCollision(){
-        GraphVertex nextFreeVertex = chooseNextFreeVertex();
-
-        if(nextFreeVertex != null){
+        if(!allClosePositionsAreOccupied()){
+            GraphVertex nextFreeVertex = chooseNextFreeVertex();
             if(decisionModule.getIntention().getPlan().isRandomPath()){
                 nextFreeVertex = position;
                 decisionModule.getIntention().getPlan().createWanderLocalPath(nextFreeVertex);
@@ -119,11 +118,21 @@ public class Agent extends BasicSimEntity {
             }
         }
         else{
-            nextFreeVertex = getPosition();
+            GraphVertex nextFreeVertex = getPosition();
             setNextPosition(nextFreeVertex);
             decisionModule.getIntention().getPlan().updatePath(nextFreeVertex);
         }
         getDecisionModule().executePlan();
+    }
+
+    private boolean allClosePositionsAreOccupied(){
+        int vertexCount = 0;
+        for(GraphVertex vertex : beliefs.getCloseVerticesAround()){
+            if(vertex.isOccupiedOrReserved()){
+                vertexCount++;
+            }
+        }
+        return vertexCount == beliefs.getCloseVerticesAround().size();
     }
 
     private GraphVertex chooseNextFreeVertex(){
